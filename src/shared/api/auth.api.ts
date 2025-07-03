@@ -1,6 +1,5 @@
 import api from "./index";
 import { APP_URL } from "../constants/apiConstants";
-import { UserInfo } from "@/types/authType";
 
 export interface LoginPayload {
   email: string;
@@ -15,7 +14,11 @@ export interface RegisterPayload {
 }
 
 export const login = async (payload: LoginPayload) => {
-  const response = await api.post(`${APP_URL}/auth/login`, payload);
+  console.log("url", `${APP_URL}/auth/login`);
+  const response = await api.post(
+    `https://allenquiz.runasp.net/auth/login`,
+    payload
+  );
   return response.data;
 };
 

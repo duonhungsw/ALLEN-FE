@@ -1,28 +1,21 @@
 "use client";
 
+import {
+  validateEmail,
+  validatePassword,
+} from "@/utils/validation/validationUtils";
 import { useLogin } from "@/hooks/auth/useLogin";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LoginPayload } from "@/shared/api/auth.api";
 
-function validateEmail(email: string) {
-  if (!email) return "Email is required";
-  // Simple email regex
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return "Invalid email address";
-  return "";
-}
-
-function validatePassword(password: string) {
-  if (!password) return "Password is required";
-  if (password.length < 6) return "Password must be at least 6 characters";
-  return "";
-}
-
 export const LoginForm = () => {
   const { mutate, isPending } = useLogin();
   const router = useRouter();
   const [form, setForm] = useState<LoginPayload>({ email: "", password: "" });
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
   const [submitError, setSubmitError] = useState("");
   const [remember, setRemember] = useState(false);
 
@@ -39,13 +32,11 @@ export const LoginForm = () => {
       setErrors({ email: emailError, password: passwordError });
       return;
     }
+
     setSubmitError("");
     mutate(form, {
       onSuccess() {
         router.replace("/");
-      },
-      onError(err: any) {
-        setSubmitError(err?.message || "Login failed");
       },
     });
   };
@@ -101,7 +92,7 @@ export const LoginForm = () => {
           <input
             type="checkbox"
             checked={remember}
-            onChange={e => setRemember(e.target.checked)}
+            onChange={(e) => setRemember(e.target.checked)}
             className="mr-2"
             disabled={isPending}
           />
@@ -117,7 +108,9 @@ export const LoginForm = () => {
         </button>
       </div>
       {submitError && (
-        <div className="text-red-600 text-center text-sm mb-2">{submitError}</div>
+        <div className="text-red-600 text-center text-sm mb-2">
+          {submitError}
+        </div>
       )}
       <button
         type="submit"
