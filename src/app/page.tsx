@@ -32,7 +32,10 @@ export default function Home() {
       >
         <div className="mb-6">
           <Image
-            src={user?.avatarUrl || `https://avatar.vercel.sh/${user?.username}.svg`}
+            src={
+              user?.avatarUrl ||
+              `https://avatar.vercel.sh/${user?.username}.svg`
+            }
             alt={user?.fullName || "User Avatar"}
             width={96}
             height={96}
@@ -40,10 +43,14 @@ export default function Home() {
           />
         </div>
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
-          Welcome back, <span className="text-blue-600 dark:text-blue-400">{user?.fullName || "User"}</span>!
+          Welcome back,{" "}
+          <span className="text-blue-600 dark:text-blue-400">
+            {user?.fullName || "User"}
+          </span>
+          !
         </h1>
         <p className="text-gray-600 dark:text-gray-300 mb-8">
-          It's great to see you again. Let's get learning!
+          I great to see you again. Le get learning!
         </p>
         <button
           onClick={handleLogout}
