@@ -1,64 +1,54 @@
 "use client";
 
 import { LoginForm } from "@/components/login/LoginForm";
-import Image from "next/image";
+import LoginGoogleButton from "@/components/login/LoginGoogleButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Typography, Button, Divider } from "antd";
 import { useEffect } from "react";
-import { getGoogleLoginUrl } from "@/shared/api/auth.api";
 import { useActivateAccount } from "@/hooks/auth/useActiveAccount";
+
+const GOOGLE_CLIENT_ID = "854827289345-ujctmgkd40m3ej1j929cqpdhgvvoqm5t.apps.googleusercontent.com";
 
 export default function LoginPage() {
   const router = useRouter();
   const { mutate: activateAccount } = useActivateAccount();
 
-  const handleLoginWithGoogle = () => {
-    const callbackUrl = `${window.location.origin}/auth/callback`;
-    const googleLoginUrl = getGoogleLoginUrl(callbackUrl);
-    window.location.href = googleLoginUrl;
-  };
-
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const activateToken = searchParams.get("activateToken");
-
     if (activateToken) {
       activateAccount(activateToken);
       router.replace("/login");
     }
   }, []);
+
   return (
-    <div className="flex justify-center min-h-[90vh]  bg-gray-200 bg-cover bg-center">
-      <div className="flex justify-center bg-white items-center py-2 px-2 h-full w-[1100px] my-auto mx-auto rounded-3xl">
-        <div className="h-full lg:w-1/2 flex flex-col items-center justify-center ">
-          <div className="w-full max-w-md bg-white px-8 py-4 rounded-2xl">
-            <Typography.Title
-              level={3}
-              className="block text-center mb-6 text-gray-500"
-            >
-              Connect to Platform
-            </Typography.Title>
-            <Button
-              icon={
-                <Image
-                  src={"/icons/google.svg"}
-                  alt="Google Icon"
-                  width={20}
-                  height={20}
-                />
-              }
-              block
-              className="!rounded-3xl !w-full"
-              style={{
-                padding: "18px 30px",
-                border: "2px solid #DCDCDC",
-              }}
-              onClick={handleLoginWithGoogle}
-            >
-              Using Google account
-            </Button>
-            <Divider>OR</Divider>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-cyan-100 dark:from-gray-900 dark:via-gray-900 dark:to-blue-900 p-4">
+      <div className="w-full max-w-2xl bg-white/80 dark:bg-gray-800/90 rounded-3xl shadow-xl flex flex-col md:flex-row overflow-hidden">
+        <div className="hidden md:flex flex-col justify-center items-center bg-gradient-to-br from-blue-400 to-cyan-400 dark:from-blue-700 dark:to-cyan-700 p-8 w-1/2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-white text-center"
+          >
+            <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
+            <p className="text-lg">Sign in to continue to the platform</p>
+            <img src="/globe.svg" alt="Welcome" className="w-24 h-24 mx-auto mt-8" />
+          </motion.div>
+        </div>
+        <div className="flex-1 flex flex-col justify-center items-center p-8">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full max-w-md"
+          >
+            <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-6">
+              Đăng nhập vào Allen
+            </h2>
+            <LoginGoogleButton clientId={GOOGLE_CLIENT_ID} />
+            <div className="my-4 text-center text-gray-400 font-semibold">OR</div>
             <AnimatePresence mode="wait">
               <motion.div
                 key="login"
@@ -70,23 +60,23 @@ export default function LoginPage() {
                 <LoginForm />
               </motion.div>
             </AnimatePresence>
-            <div className="text-center text-sm text-gray-400">
-              Dont have an account?
-              <Button
-                type="link"
-                className="!text-blue-500 hover:underline hover:decoration-blue-500 !p-1"
+            <div className="text-center text-sm text-gray-500 mt-4">
+              Chưa có tài khoản?
+              <button
+                type="button"
+                className="text-blue-500 hover:underline hover:decoration-blue-500 p-1 bg-transparent font-semibold"
                 onClick={() => router.push("/register")}
               >
-                Sign Up
-              </Button>
+                Đăng ký
+              </button>
             </div>
             <div className="text-center text-xs text-gray-400 mt-2">
-              By signing in, you agree to our
-              <a className="underline" href="#">
-                Terms & Privacy
+              Khi đăng nhập, bạn đồng ý với
+              <a className="underline ml-1" href="#">
+                Điều khoản & Bảo mật
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

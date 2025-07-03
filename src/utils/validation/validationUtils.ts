@@ -1,5 +1,3 @@
-import { Rule } from "antd/es/form";
-
 export const validateEmail: Rule[] = [
   { required: true, message: "Please input your email!" },
   {

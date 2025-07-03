@@ -6,7 +6,6 @@ import "./globals.css";
 import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
-import { ConfigProvider } from "antd";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,18 +33,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <ConfigProvider>
-          <ReduxProvider>
-            <QueryClientProvider>
-              <AuthHydration />
-              <div className="min-h-screen flex flex-col">
-                {/* <Navbar /> */}
-                <main className="flex-1">{children}</main>
-                {/* <Footer /> */}
-              </div>
-            </QueryClientProvider>
-          </ReduxProvider>
-        </ConfigProvider>
+        <ReduxProvider>
+          <QueryClientProvider>
+            <AuthHydration />
+            <div className="min-h-screen flex flex-col">
+              {/* <Navbar /> */}
+              <main className="flex-1">{children}</main>
+              {/* <Footer /> */}
+            </div>
+          </QueryClientProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
