@@ -14,11 +14,7 @@ export interface RegisterPayload {
 }
 
 export const login = async (payload: LoginPayload) => {
-  console.log("url", `${APP_URL}/auth/login`);
-  const response = await api.post(
-    `https://allenquiz.runasp.net/auth/login`,
-    payload
-  );
+  const response = await api.post(`${APP_URL}/auth/login`, payload);
   return response.data;
 };
 
