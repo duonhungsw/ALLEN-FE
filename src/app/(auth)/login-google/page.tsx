@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/providers/store";
 import { setUser } from "@/providers/auth/reducer/authSlice";
 import { setStorageData } from "@/shared/store";
 
-export default function LoginWithGoogle() {
+function LoginWithGoogleContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -41,4 +41,12 @@ export default function LoginWithGoogle() {
   }, [searchParams]);
 
   return <p className="text-center mt-20">Signing in with Google...</p>;
+}
+
+export default function LoginWithGooglePage() {
+  return (
+    <Suspense fallback={<p className="text-center mt-20">Preparing login...</p>}>
+      <LoginWithGoogleContent />
+    </Suspense>
+  );
 }

@@ -43,7 +43,7 @@ export default function Home() {
           />
         </div>
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
-          Welcome back,{" "}
+          Hello world,{" "}
           <span className="text-blue-600 dark:text-blue-400">
             {user?.fullName || "User"}
           </span>
