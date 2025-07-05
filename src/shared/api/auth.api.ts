@@ -19,9 +19,7 @@ export const login = async (payload: LoginPayload) => {
 };
 
 export const getGoogleLoginUrl = (redirectUrl: string) => {
-  return `${APP_URL}/auth/google?redirectUrl=${encodeURIComponent(
-    redirectUrl
-  )}`;
+  return `${APP_URL}/auth/signin-google`;
 };
 
 export const logout = async () => {
