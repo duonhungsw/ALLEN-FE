@@ -6,6 +6,7 @@ import "./globals.css";
 import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({
             </div>
           </QueryClientProvider>
         </ReduxProvider>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

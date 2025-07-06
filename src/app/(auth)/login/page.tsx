@@ -1,7 +1,6 @@
 "use client";
 
-import { LoginForm } from "@/components/login/LoginForm";
-
+import LoginForm from "@/components/login/LoginForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -10,14 +9,12 @@ import { useActivateAccount } from "@/hooks/auth/useActiveAccount";
 import Image from "next/image";
 import { getGoogleLoginUrl } from "@/shared/api/auth.api";
 
-
 export default function LoginPage() {
   const router = useRouter();
   const { mutate: activateAccount } = useActivateAccount();
 
   const handleLoginWithGoogle = () => {
-    const callbackUrl = `${window.location.origin}/auth/callback`;
-    const googleLoginUrl = getGoogleLoginUrl(callbackUrl);
+    const googleLoginUrl = getGoogleLoginUrl();
     window.location.href = googleLoginUrl;
   };
 
@@ -42,11 +39,6 @@ export default function LoginPage() {
           >
             <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
             <p className="text-lg">Sign in to continue to the platform</p>
-            <img
-              src="/globe.svg"
-              alt="Welcome"
-              className="w-24 h-24 mx-auto mt-8"
-            />
           </motion.div>
         </div>
         <div className="flex-1 flex flex-col justify-center items-center p-8">

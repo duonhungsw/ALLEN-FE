@@ -5,6 +5,7 @@ import { setStorageData } from "@/shared/store";
 import { extractErrorMessage } from "@/utils/ErrorHandle";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,9 +16,11 @@ export const useLogin = () => {
       setStorageData("accessToken", data.accessToken);
       setStorageData("refreshToken", data.refreshToken);
       dispatch(setUser(data.userInfo));
+      toast.success("Đăng nhập thành công!");
     },
     onError: (error) => {
       const msg = extractErrorMessage(error);
+      toast.error(msg);
     },
   });
 };
