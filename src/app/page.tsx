@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+
 export default function Home() {
   const user = useSelector(selectAuthUser);
   const dispatch = useDispatch<AppDispatch>();
@@ -45,7 +46,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
           Hello world,{" "}
           <span className="text-blue-600 dark:text-blue-400">
-            {user?.fullName || "User"}
+            {user?.fullName || "Users111"}
           </span>
           !
         </h1>
