@@ -1,124 +1,65 @@
 "use client";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  validateEmail,
-  validatePassword,
-} from "@/utils/validation/validationUtils";
+  loginSchema,
+  LoginFormValues,
+} from "@/utils/validation/auth/loginSchema";
 import { useLogin } from "@/hooks/auth/useLogin";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { LoginPayload } from "@/shared/api/auth.api";
 
-export const LoginForm = () => {
+export default function LoginForm() {
   const { mutate, isPending } = useLogin();
-  const router = useRouter();
-  const [form, setForm] = useState<LoginPayload>({ email: "", password: "" });
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {}
-  );
-  const [submitError, setSubmitError] = useState("");
-  const [remember, setRemember] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: undefined });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const emailError = validateEmail(form.email);
-    const passwordError = validatePassword(form.password);
-    if (emailError || passwordError) {
-      setErrors({ email: emailError, password: passwordError });
-      return;
-    }
-
-    setSubmitError("");
-    mutate(form, {
-      onSuccess() {
-        router.replace("/");
-      },
-    });
-  };
-
-  const handleForgotPassword = () => {
-    router.push("/forgot-password");
+  const onSubmit = (data: LoginFormValues) => {
+    mutate(data);
   };
 
   return (
     <form
-      className="space-y-6 w-full max-w-md mx-auto"
-      onSubmit={handleSubmit}
-      autoComplete="off"
+      onSubmit={handleSubmit(onSubmit)}
+      className="max-w-sm mx-auto space-y-4"
     >
       <div>
-        <label className="block text-sm font-bold mb-1" htmlFor="email">
-          Email
-        </label>
+        <label className="block mb-1 font-bold">Email</label>
         <input
-          id="email"
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="your@email.com"
-          disabled={isPending}
+          {...register("email")}
+          className="border px-3 py-2 rounded w-full"
+          placeholder="Nhập email"
         />
         {errors.email && (
-          <div className="text-red-500 text-xs mt-1">{errors.email}</div>
+          <div className="text-red-500 text-sm">{errors.email.message}</div>
         )}
       </div>
       <div>
-        <label className="block text-sm font-bold mb-1" htmlFor="password">
-          Password
-        </label>
+        <label className="block mb-1 font-bold">Mật khẩu</label>
         <input
-          id="password"
-          name="password"
+          {...register("password")}
           type="password"
-          value={form.password}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="••••••••"
-          disabled={isPending}
+          className="border px-3 py-2 rounded w-full"
+          placeholder="Nhập mật khẩu"
         />
         {errors.password && (
-          <div className="text-red-500 text-xs mt-1">{errors.password}</div>
+          <div className="text-red-500 text-sm">{errors.password.message}</div>
         )}
       </div>
-      <div className="flex justify-between items-center mb-2">
-        <label className="flex items-center text-sm">
-          <input
-            type="checkbox"
-            checked={remember}
-            onChange={(e) => setRemember(e.target.checked)}
-            className="mr-2"
-            disabled={isPending}
-          />
-          Remember me
-        </label>
-        <button
-          type="button"
-          className="text-sm text-blue-500 hover:underline"
-          onClick={handleForgotPassword}
-          disabled={isPending}
-        >
-          Forgot password?
-        </button>
-      </div>
-      {submitError && (
-        <div className="text-red-600 text-center text-sm mb-2">
-          {submitError}
-        </div>
-      )}
       <button
         type="submit"
-        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-xl transition duration-200 shadow-md hover:shadow-lg disabled:opacity-60"
+        className="w-full py-2 bg-blue-600 text-white rounded font-bold"
         disabled={isPending}
       >
-        {isPending ? "Logging in..." : "Login"}
+        {isPending ? "Đang đăng nhập..." : "Đăng nhập"}
       </button>
     </form>
   );
-};
+}

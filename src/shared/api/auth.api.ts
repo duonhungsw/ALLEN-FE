@@ -4,6 +4,7 @@ import { APP_URL } from "../constants/apiConstants";
 export interface LoginPayload {
   email: string;
   password: string;
+  remember?: boolean;
 }
 
 export interface RegisterPayload {
@@ -18,10 +19,8 @@ export const login = async (payload: LoginPayload) => {
   return response.data;
 };
 
-export const getGoogleLoginUrl = (redirectUrl: string) => {
-  return `${APP_URL}/auth/google?redirectUrl=${encodeURIComponent(
-    redirectUrl
-  )}`;
+export const getGoogleLoginUrl = () => {
+  return `${APP_URL}/auth/signin-google`;
 };
 
 export const logout = async () => {

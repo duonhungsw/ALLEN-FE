@@ -1,17 +1,24 @@
 "use client";
 
-import { LoginForm } from "@/components/login/LoginForm";
-import LoginGoogleButton from "@/components/login/LoginGoogleButton";
+import LoginForm from "@/components/login/LoginForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import GoogleIcon from "@p/svg/google.svg";
 import { useActivateAccount } from "@/hooks/auth/useActiveAccount";
-
-const GOOGLE_CLIENT_ID = "854827289345-ujctmgkd40m3ej1j929cqpdhgvvoqm5t.apps.googleusercontent.com";
+import Image from "next/image";
+import { getGoogleLoginUrl } from "@/shared/api/auth.api";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { mutate: activateAccount } = useActivateAccount();
+
+  const handleLoginWithGoogle = () => {
+    const googleLoginUrl = getGoogleLoginUrl();
+    window.location.href = googleLoginUrl;
+  };
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -32,9 +39,8 @@ export default function LoginPage() {
             transition={{ duration: 0.6 }}
             className="text-white text-center"
           >
-            <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
-            <p className="text-lg">Sign in to continue to the platform</p>
-            <img src="/globe.svg" alt="Welcome" className="w-24 h-24 mx-auto mt-8" />
+            <h1 className="text-3xl font-bold mb-4">{t("Welcome Back!")}</h1>
+            <p className="text-lg">{t("Sign in to continue to the platform")}</p>
           </motion.div>
         </div>
         <div className="flex-1 flex flex-col justify-center items-center p-8">
@@ -45,10 +51,25 @@ export default function LoginPage() {
             className="w-full max-w-md"
           >
             <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-6">
-              Đăng nhập vào Allen
+              {t("Login to Allen")}
             </h2>
-            <LoginGoogleButton clientId={GOOGLE_CLIENT_ID} />
-            <div className="my-4 text-center text-gray-400 font-semibold">OR</div>
+            <button
+              type="button"
+              onClick={handleLoginWithGoogle}
+              className="flex cursor-pointer text-black items-center justify-center w-full rounded-3xl border-2 border-gray-300 py-4 px-8 font-semibold bg-white hover:bg-gray-100 transition"
+            >
+              <Image
+                src={GoogleIcon}
+                alt="Google Icon"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              {t("Using Google account")}
+            </button>
+            <div className="my-4 text-center text-gray-400 font-semibold">
+              {t("OR")}
+            </div>
             <AnimatePresence mode="wait">
               <motion.div
                 key="login"
@@ -61,19 +82,19 @@ export default function LoginPage() {
               </motion.div>
             </AnimatePresence>
             <div className="text-center text-sm text-gray-500 mt-4">
-              Chưa có tài khoản?
+              {t("Chưa có tài khoản?")}
               <button
                 type="button"
                 className="text-blue-500 hover:underline hover:decoration-blue-500 p-1 bg-transparent font-semibold"
                 onClick={() => router.push("/register")}
               >
-                Đăng ký
+                {t("Đăng ký")}
               </button>
             </div>
             <div className="text-center text-xs text-gray-400 mt-2">
-              Khi đăng nhập, bạn đồng ý với
+              {t("Khi đăng nhập, bạn đồng ý với")}
               <a className="underline ml-1" href="#">
-                Điều khoản & Bảo mật
+                {t("Điều khoản & Bảo mật")}
               </a>
             </div>
           </motion.div>
