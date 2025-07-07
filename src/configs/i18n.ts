@@ -3,6 +3,8 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 
+
+
 i18n
 
   .use(Backend)
@@ -35,9 +37,12 @@ export const LANGUAGE_OPTIONS = [
   {
     lang: "Tiếng Việt",
     value: "vi",
+    flag: "/svg/VietnamFlag.svg",
   },
   {
     lang: "English",
     value: "en",
+    flag: "/svg/EnglandFlag.svg",
   },
 ];
+

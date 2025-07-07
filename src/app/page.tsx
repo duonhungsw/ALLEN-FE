@@ -1,16 +1,17 @@
 "use client";
 
-import { selectAuthUser } from "@/providers/auth/selector/authSelector";
-import { useDispatch, useSelector } from "react-redux";
+import { useProfile } from "@/hooks/auth/useProfile";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/providers/store";
 import { logout } from "@/providers/auth/reducer/authSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-
 export default function Home() {
-  const user = useSelector(selectAuthUser);
+  const { data: user, formatted } = useProfile();
+  console.log("user1111", user);
+
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
@@ -37,7 +38,7 @@ export default function Home() {
               user?.avatarUrl ||
               `https://avatar.vercel.sh/${user?.username}.svg`
             }
-            alt={user?.fullName || "User Avatar"}
+            alt={formatted?.name || "User Avatar"}
             width={96}
             height={96}
             className="w-24 h-24 mx-auto rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-md"
@@ -46,9 +47,8 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
           Hello world,{" "}
           <span className="text-blue-600 dark:text-blue-400">
-            {user?.fullName || "Users111"}
+            {formatted?.name || "Users111"}
           </span>
-          !
         </h1>
         <p className="text-gray-600 dark:text-gray-300 mb-8">
           I great to see you again. Le get learning!

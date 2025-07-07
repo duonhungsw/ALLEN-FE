@@ -9,7 +9,7 @@ import { removeStorageData } from "@/shared/store";
 import { useTranslation } from "react-i18next";
 import { LANGUAGE_OPTIONS } from "@/configs/i18n";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { getStorageData } from "@/shared/store";
 import { parseJwt } from "@/utils/jwt";
@@ -32,6 +32,24 @@ export default function Navbar() {
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
 
+  const languageDropdownRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        languageDropdownRef.current &&
+        !languageDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsLanguageDropdownOpen(false);
+      }
+    }
+    if (isLanguageDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isLanguageDropdownOpen]);
+
   console.log("user", user);
 
   if (!hasMounted) {
@@ -52,7 +70,7 @@ export default function Navbar() {
   const userEmail =
     userAny?.email ||
     userAny?.[
-      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
     ] ||
     "";
 
@@ -88,11 +106,10 @@ export default function Navbar() {
         >
           <Link href={path}>
             <button
-              className={`transition-colors font-bold px-3 py-2 rounded-md ${
-                pathname === path
-                  ? "text-yellow-300"
-                  : "text-white hover:text-gray-300"
-              }`}
+              className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === path
+                ? "text-yellow-300"
+                : "text-white hover:text-gray-300"
+                }`}
             >
               {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
             </button>
@@ -167,16 +184,8 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
             className="flex"
           >
-            <span role="img" aria-label="music">
-              <div
-                onClick={() => router.push("/")}
-                className="w-10 h-10 cursor-pointer bg-blue-500 rounded-full flex items-center justify-center"
-              >
-                <span className="text-white font-bold text-lg">A</span>
-              </div>
-            </span>
             <button className="cursor-pointer" onClick={() => router.push("/")}>
-              <span className="font-semibold text-2xl">Allen Courses</span>
+              <span className="font-semibold text-2xl">Allen</span>
             </button>
           </motion.div>
         </div>
@@ -190,11 +199,10 @@ export default function Navbar() {
             >
               <Link href={href}>
                 <button
-                  className={`transition-colors font-bold px-3 py-2 rounded-md ${
-                    pathname === href || pathname.startsWith(href + "/")
-                      ? "text-blue-500 font-bold"
-                      : "text-white hover:text-gray-300"
-                  }`}
+                  className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === href || pathname.startsWith(href + "/")
+                    ? "text-blue-500 font-bold"
+                    : "text-white hover:text-gray-300"
+                    }`}
                 >
                   {label}
                 </button>
@@ -203,34 +211,33 @@ export default function Navbar() {
           ))}
 
           {/* Language Dropdown */}
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-            <div className="relative">
-              <button
-                onClick={() =>
-                  setIsLanguageDropdownOpen(!isLanguageDropdownOpen)
-                }
-                className="hover:text-yellow-300 transition-colors font-bold text-white flex items-center px-3 py-2 rounded-md"
-              >
-                🌐
-                {LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)
-                  ?.lang || "Tiếng Việt"}
-              </button>
-
-              {isLanguageDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                  {LANGUAGE_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => handleChangeLanguage(option.value)}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      {option.lang}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </motion.div>
+          <div className="relative" ref={languageDropdownRef}>
+            <button
+              onClick={() => setIsLanguageDropdownOpen((v) => !v)}
+              className="hover:text-yellow-300 transition-colors font-bold text-white flex items-center px-3 py-2 rounded-md"
+            >
+              <img
+                src={LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)?.flag}
+                alt={LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)?.lang}
+                className="w-6 h-6 inline-block mr-2"
+              />
+              {LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)?.lang || "Tiếng Việt"}
+            </button>
+            {isLanguageDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    onClick={() => handleChangeLanguage(option.value)}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                  >
+                    <img src={option.flag} alt={option.lang} className="w-6 h-6 inline-block mr-2" />
+                    {option.lang}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
             <DarkModeToggle />

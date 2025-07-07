@@ -1,20 +1,32 @@
+import { useEffect, useState } from "react";
 import { setUser } from "@/providers/auth/reducer/authSlice";
-import {
-  fetchUserProfile,
-  updateUserProfile,
-  uploadAvatar,
-} from "@/shared/api/user.api";
+import { updateUserProfile, uploadAvatar } from "@/shared/api/user.api";
 import { getStorageData } from "@/shared/store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/providers/store";
 import { parseJwt } from "@/utils/jwt";
 
+export function formatUserClaims(user: Record<string, any>) {
+  return {
+    email: user?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] || "",
+    name: user?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "",
+    role: user?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || "",
+  };
+}
+
 export const useProfile = () => {
-  const accessToken = getStorageData("accessToken");
-  const userInfo = accessToken ? parseJwt(accessToken) : null;
-  // Nếu muốn fetch thêm từ API, có thể kết hợp ở đây
-  return { data: userInfo };
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const accessToken = getStorageData("accessToken");
+      setUser(accessToken ? parseJwt(accessToken) : null);
+    }
+  }, []);
+
+  const formatted = user ? formatUserClaims(user) : null;
+  return { data: user, formatted };
 };
 
 export const useUpdateProfile = () => {
