@@ -9,8 +9,9 @@ export const useActivateAccount = () => {
       // message.success("Account activated successfully");
     },
     onError: (error) => {
-      const msg = extractErrorMessage(error);
-      // message.error(msg);
+      const message: string = extractErrorMessage(error);
+      // You can replace this with a UI notification if desired
+      console.error("Account activation failed:", message);
     },
   });
 };

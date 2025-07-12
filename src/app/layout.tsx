@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// import Footer from "@/components/layouts/Footer";
-// import Navbar from "@/components/layouts/Navbar";
 import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
+import { Toaster } from "sonner";
+import Navbar from "@/components/common/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Allen - Learn Anything",
-  description: "Allen Courses - Learn Anything",
+  description: "Allen - Learn Anything",
 };
 
 export default function RootLayout({
@@ -37,12 +37,13 @@ export default function RootLayout({
           <QueryClientProvider>
             <AuthHydration />
             <div className="min-h-screen flex flex-col">
-              {/* <Navbar /> */}
+              <Navbar />
               <main className="flex-1">{children}</main>
               {/* <Footer /> */}
             </div>
           </QueryClientProvider>
         </ReduxProvider>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
