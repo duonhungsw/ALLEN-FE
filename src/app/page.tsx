@@ -7,13 +7,15 @@ import { logout } from "@/providers/auth/reducer/authSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function Home() {
   const { data: user, formatted } = useProfile();
-  console.log("user1111", user);
-
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const { customColors } = useTheme();
+
+  console.log("111", customColors.bodyBg);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -23,7 +25,9 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100 dark:from-gray-900 dark:via-gray-900 dark:to-blue-900 flex items-center justify-center p-4">
+    <div
+      className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}
+    >
       <div className="absolute top-0 left-0 w-full h-full bg-[url('/grid.svg')] bg-repeat opacity-5 dark:opacity-20"></div>
 
       <motion.div

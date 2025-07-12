@@ -1,7 +1,6 @@
 // Validate email: trả về lỗi nếu không hợp lệ, rỗng nếu hợp lệ
 export function validateEmail(email: string): string {
   if (!email) return "Please input your email!";
-  // Simple email regex
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
     return "Please input a valid email address!";
   return "";
