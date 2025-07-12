@@ -12,14 +12,13 @@ import { parseJwt } from "@/utils/jwt";
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  
+
   return useMutation({
     mutationFn: login,
     onSuccess: (data, variables) => {
       const { remember, email, password } = variables;
-
       const userInfo = parseJwt(data.accessToken);
-      
+
       if (remember) {
         setCookie("accessToken", data.accessToken, 30);
         setCookie("refreshToken", data.refreshToken, 30);
@@ -35,11 +34,10 @@ export const useLogin = () => {
         setCookie("rememberedEmail", "");
         setCookie("rememberedPassword", "");
       }
-      
+
       dispatch(setUser(userInfo));
-      
       toast.success("Đăng nhập thành công!");
-      router.push("/");
+      router.push("/register");
     },
     onError: (error) => {
       const msg = extractErrorMessage(error);

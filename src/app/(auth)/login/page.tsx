@@ -31,7 +31,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 p-4 relative overflow-hidden">
-      {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -39,9 +38,7 @@ export default function LoginPage() {
       </div>
 
       <div className="w-full max-w-4xl bg-white/90 dark:bg-gray-800/90 rounded-3xl shadow-2xl flex flex-col lg:flex-row overflow-hidden backdrop-blur-sm border border-white/20">
-        {/* Left Side - Welcome Section */}
         <div className="hidden lg:flex flex-col justify-center items-center bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-12 w-1/2 relative overflow-hidden">
-          {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0" style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -89,7 +86,6 @@ export default function LoginPage() {
           </motion.div>
         </div>
 
-        {/* Right Side - Login Form */}
         <div className="flex-1 flex flex-col justify-center items-center p-8 lg:p-12">
           <motion.div
             initial={{ opacity: 0, x: 30 }}
