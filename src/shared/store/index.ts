@@ -1,3 +1,5 @@
+import { deleteCookie } from "@/utils/cookies";
+
 const isClient = typeof window !== "undefined";
 
 export const fromStoredData = (storageData: any) => {
@@ -29,4 +31,13 @@ export const setStorageData = (key: any, data: any) => {
 export const removeStorageData = (key: any) => {
   if (!isClient) return;
   localStorage.removeItem(key);
+};
+
+export const clearAllAuthData = () => {
+  deleteCookie("accessToken");
+  deleteCookie("refreshToken");
+  deleteCookie("user");
+  // deleteCookie("rememberMe");
+  // deleteCookie("rememberedEmail");
+  // deleteCookie("rememberedPassword");
 };

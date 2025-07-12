@@ -5,32 +5,52 @@ import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { logout } from "@/providers/auth/reducer/authSlice";
-import { removeStorageData } from "@/shared/store";
+import { clearAllAuthData } from "@/shared/store/index";
 import { useTranslation } from "react-i18next";
 import { LANGUAGE_OPTIONS } from "@/configs/i18n";
 import { toast } from "sonner";
 import { useState, useRef, useEffect } from "react";
 import { useHasMounted } from "@/hooks/useHasMounted";
-import { getStorageData } from "@/shared/store";
+import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
+import Image from "next/image";
+import DarkModeToggle from "./Darkmode";
 
-const DarkModeToggle = () => (
-  <button className="hover:text-yellow-300 transition-colors font-bold text-white px-3 py-2 rounded-md">
-    🌙
-  </button>
-);
+const JWT_CLAIMS = {
+  EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+  NAME: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
+  ROLE: "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+} as const;
+
+interface UserClaims {
+  Id: string;
+  Picture: string;
+  aud: string;
+  exp: number;
+  iss: string;
+  [JWT_CLAIMS.EMAIL]: string;
+  [JWT_CLAIMS.NAME]: string;
+  [JWT_CLAIMS.ROLE]: string;
+  [key: string]: unknown;
+}
+<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+  <DarkModeToggle />
+</motion.div>;
 
 export default function Navbar() {
   const hasMounted = useHasMounted();
   const dispatch = useDispatch();
-  const accessToken = getStorageData("accessToken");
-  const user = accessToken ? parseJwt(accessToken) : null;
-
+  const accessToken = getCookie("accessToken");
+  const user: UserClaims | null = accessToken ? parseJwt(accessToken) : null;
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
+
+  const currentLang = LANGUAGE_OPTIONS.find(
+    (opt) => opt.value === i18n.language
+  );
 
   const languageDropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -50,8 +70,6 @@ export default function Navbar() {
     };
   }, [isLanguageDropdownOpen]);
 
-  console.log("user", user);
-
   if (!hasMounted) {
     return (
       <div className="h-screen flex justify-center items-center">
@@ -60,29 +78,28 @@ export default function Navbar() {
     );
   }
 
-  const userAny = user as any;
-  const userName =
-    userAny?.name ||
-    userAny?.username ||
-    userAny?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ||
-    "User";
+  const getUserName = (user: UserClaims | null): string => {
+    if (!user) return "User";
+    return user[JWT_CLAIMS.NAME] || "User";
+  };
 
-  const userEmail =
-    userAny?.email ||
-    userAny?.[
-    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-    ] ||
-    "";
+  const getUserEmail = (user: UserClaims | null): string => {
+    if (!user) return "";
+    return user[JWT_CLAIMS.EMAIL] || "";
+  };
 
-  const userRole =
-    userAny?.role ||
-    userAny?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
-    "";
+  const getUserRole = (user: UserClaims | null): string => {
+    if (!user) return "";
+    return user[JWT_CLAIMS.ROLE] || "";
+  };
+
+  const userName = getUserName(user);
+  const userEmail = getUserEmail(user);
+  const userRole = getUserRole(user);
 
   const handleLogout = () => {
     dispatch(logout());
-    removeStorageData("accessToken");
-    removeStorageData("refreshToken");
+    clearAllAuthData();
     toast.success("Đăng xuất thành công!");
     router.push("/login");
   };
@@ -106,10 +123,11 @@ export default function Navbar() {
         >
           <Link href={path}>
             <button
-              className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === path
-                ? "text-yellow-300"
-                : "text-white hover:text-gray-300"
-                }`}
+              className={`transition-colors font-bold px-3 py-2 rounded-md ${
+                pathname === path
+                  ? "text-yellow-300"
+                  : "text-white hover:text-gray-300"
+              }`}
             >
               {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
             </button>
@@ -129,12 +147,12 @@ export default function Navbar() {
         >
           <button
             onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-            className="hover:text-yellow-300 transition-colors font-bold text-white flex items-center px-3 py-2 rounded-md"
+            className="hover:text-yellow-300 transition-colors font-bold text-white flex items-center px-3 py-2 rounded-md gap-2"
           >
-            {userName}
             <motion.span transition={{ duration: 0.2 }} className="ml-1">
               👤
             </motion.span>
+            {userName}
           </button>
         </motion.div>
 
@@ -199,29 +217,32 @@ export default function Navbar() {
             >
               <Link href={href}>
                 <button
-                  className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === href || pathname.startsWith(href + "/")
-                    ? "text-blue-500 font-bold"
-                    : "text-white hover:text-gray-300"
-                    }`}
+                  className={`transition-colors font-bold px-3 py-2 rounded-md ${
+                    pathname === href || pathname.startsWith(href + "/")
+                      ? "text-blue-500 font-bold"
+                      : "text-white hover:text-gray-300"
+                  }`}
                 >
                   {label}
                 </button>
               </Link>
             </motion.div>
           ))}
-
-          {/* Language Dropdown */}
           <div className="relative" ref={languageDropdownRef}>
             <button
               onClick={() => setIsLanguageDropdownOpen((v) => !v)}
               className="hover:text-yellow-300 transition-colors font-bold text-white flex items-center px-3 py-2 rounded-md"
             >
-              <img
-                src={LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)?.flag}
-                alt={LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)?.lang}
-                className="w-6 h-6 inline-block mr-2"
+              <Image
+                src={currentLang?.flag || "/default-flag.png"}
+                alt={currentLang?.lang || "flag"}
+                width={24}
+                height={24}
+                className="inline-block mr-2 "
+                style={{ width: "24px", height: "24px" }}
               />
-              {LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)?.lang || "Tiếng Việt"}
+              {LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)
+                ?.lang || "Tiếng Việt"}
             </button>
             {isLanguageDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
@@ -231,7 +252,13 @@ export default function Navbar() {
                     onClick={() => handleChangeLanguage(option.value)}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                   >
-                    <img src={option.flag} alt={option.lang} className="w-6 h-6 inline-block mr-2" />
+                    <Image
+                      src={option.flag}
+                      alt={option.lang}
+                      width={24}
+                      height={24}
+                      className="inline-block mr-2"
+                    />
                     {option.lang}
                   </button>
                 ))}
@@ -247,7 +274,6 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Click outside to close dropdowns */}
       {(isUserDropdownOpen || isLanguageDropdownOpen) && (
         <div
           className="fixed inset-0 z-40"
