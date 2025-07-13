@@ -4,7 +4,7 @@ import { selectIsAuthenticated } from "@/providers/auth/selector/authSelector";
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 type AuthLayoutProps = {
@@ -14,12 +14,26 @@ type AuthLayoutProps = {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/");
-    }
+    const timer = setTimeout(() => {
+      if (isAuthenticated) {
+        router.push("/");
+      }
+      setIsLoading(false);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [isAuthenticated, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
