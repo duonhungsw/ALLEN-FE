@@ -34,7 +34,7 @@ interface UserClaims {
   [key: string]: unknown;
 }
 
-export default function Navbar() {
+export default function NavBar() {
   const hasMounted = useHasMounted();
   const dispatch = useDispatch();
   const accessToken = getCookie("accessToken");
