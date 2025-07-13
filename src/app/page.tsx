@@ -1,28 +1,15 @@
 "use client";
 
 import { useProfile } from "@/hooks/auth/useProfile";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/providers/store";
-import { logout } from "@/providers/auth/reducer/authSlice";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/useTheme";
 
 export default function Home() {
   const { data: user, formatted } = useProfile();
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
   const { customColors } = useTheme();
 
   console.log("111", customColors.bodyBg);
-
-  const handleLogout = () => {
-    dispatch(logout());
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    router.push("/login");
-  };
 
   return (
     <div
@@ -39,8 +26,9 @@ export default function Home() {
         <div className="mb-6">
           <Image
             src={
-              user?.avatarUrl ||
-              `https://avatar.vercel.sh/${user?.username}.svg`
+              typeof user?.avatarUrl === "string" && user.avatarUrl
+                ? user.avatarUrl
+                : `https://avatar.vercel.sh/${user?.username ?? "default"}.svg`
             }
             alt={formatted?.name || "User Avatar"}
             width={96}
@@ -57,12 +45,6 @@ export default function Home() {
         <p className="text-gray-600 dark:text-gray-300 mb-8">
           I great to see you again. Le get learning!
         </p>
-        <button
-          onClick={handleLogout}
-          className="w-full px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 transition-all duration-300 ease-in-out transform hover:scale-105"
-        >
-          Logout
-        </button>
       </motion.div>
     </div>
   );
