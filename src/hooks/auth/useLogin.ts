@@ -37,7 +37,7 @@ export const useLogin = () => {
 
       dispatch(setUser(userInfo));
       toast.success("Đăng nhập thành công!");
-      router.push("/register");
+      router.push("/");
     },
     onError: (error) => {
       const msg = extractErrorMessage(error);

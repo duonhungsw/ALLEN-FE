@@ -33,9 +33,6 @@ interface UserClaims {
   [JWT_CLAIMS.ROLE]: string;
   [key: string]: unknown;
 }
-<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-  <DarkModeToggle />
-</motion.div>;
 
 export default function Navbar() {
   const hasMounted = useHasMounted();
@@ -121,16 +118,15 @@ export default function Navbar() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Link href={path}>
-            <button
-              className={`transition-colors font-bold px-3 py-2 rounded-md ${
-                pathname === path
-                  ? "text-yellow-300"
-                  : "text-white hover:text-gray-300"
-              }`}
-            >
-              {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
-            </button>
+          <Link
+            href={path}
+            className={`transition-colors font-bold px-3 py-2 rounded-md ${
+              pathname === path
+                ? "text-yellow-300"
+                : "text-white hover:text-gray-300"
+            }`}
+          >
+            {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
           </Link>
         </motion.div>
       ))}
