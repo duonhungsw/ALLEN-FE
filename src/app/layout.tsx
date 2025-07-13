@@ -5,7 +5,7 @@ import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
 import { Toaster } from "sonner";
-import Navbar from "@/components/common/Navbar";
+import Navbar from "@/components/common/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
 
 const geistSans = Geist({

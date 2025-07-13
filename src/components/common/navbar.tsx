@@ -14,7 +14,7 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
 import Image from "next/image";
-import DarkModeToggle from "./Darkmode";
+import DarkModeToggle from "./DarkMode";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
