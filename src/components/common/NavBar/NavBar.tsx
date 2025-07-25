@@ -14,7 +14,7 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
 import Image from "next/image";
-import DarkModeToggle from "./DarkMode";
+import DarkModeToggle from "../DarkMode";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -43,7 +43,9 @@ export default function NavBar() {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('common');
+
+  // const { t } = useTranslation('common')
 
   const currentLang = LANGUAGE_OPTIONS.find(
     (opt) => opt.value === i18n.language

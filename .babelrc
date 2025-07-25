@@ -1,0 +1,14 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    [
+      "i18next-extract",
+      {
+        "locales": ["en", "vi"],
+        "keyAsDefaultValue": true,
+        "useI18nextDefaultValue": true,
+        "outputPath": "src/{{dirname}}/{{locale}}.json"
+      }
+    ]
+  ]
+}

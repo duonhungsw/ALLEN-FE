@@ -5,8 +5,9 @@ import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
 import { Toaster } from "sonner";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/common/NavBar/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
+import "../configs/i18n"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

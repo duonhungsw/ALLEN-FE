@@ -1,0 +1,23 @@
+{
+  "activateToken": "activateToken",
+  "Welcome-Back": "Welcome-Back",
+  "Sign-into": "Sign-into",
+  "Login-to-Allen": "Login-to-Allen",
+  "Continue with Google": "Continue with Google",
+  "Chưa có tài khoản?": "Chưa có tài khoản?",
+  "Đăng ký": "Đăng ký",
+  "Khi đăng nhập, bạn đồng ý với": "Khi đăng nhập, bạn đồng ý với",
+  "Điều khoản & Bảo mật": "Điều khoản & Bảo mật",
+  "Đăng nhập": "Đăng nhập",
+  "Hồ sơ": "Hồ sơ",
+  "Giảng viên": "Giảng viên",
+  "Đăng xuất": "Đăng xuất",
+  "Trang chủ": "Trang chủuuuu",
+  "navbar.title": "Thanh điều hướng",
+  "${APP_URL}/auth/logout": "${APP_URL}/auth/logout",
+  "${APP_URL}/auth/activate?token=${token}": "${APP_URL}/auth/activate?token=${token}",
+  "${APP_URL}/users": "${APP_URL}/users",
+  "${APP_URL}/users/social": "${APP_URL}/users/social",
+  ";": ";",
+  ".": "."
+}

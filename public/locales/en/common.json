@@ -1,0 +1,22 @@
+{
+  "activateToken": "",
+  "Welcome-Back": "",
+  "Sign-into": "",
+  "Login-to-Allen": "",
+  "Continue with Google": "",
+  "Chưa có tài khoản?": "",
+  "Đăng ký": "",
+  "Khi đăng nhập, bạn đồng ý với": "",
+  "Điều khoản & Bảo mật": "",
+  "Đăng nhập": "",
+  "Hồ sơ": "",
+  "Giảng viên": "",
+  "Đăng xuất": "dấdasdad",
+  "Trang chủ": "dấdsakdandj",
+  "${APP_URL}/auth/logout": "",
+  "${APP_URL}/auth/activate?token=${token}": "",
+  "${APP_URL}/users": "",
+  "${APP_URL}/users/social": "",
+  ";": "",
+  ".": ""
+}

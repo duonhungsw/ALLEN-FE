@@ -2,20 +2,28 @@
   "name": "allen-fe",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "i18n": "ts-node --project tsconfig.scripts.json scripts/i18n-extract.ts",
+    "dev": "npm run i18n && next dev --turbopack",
     "build": "next build --no-lint",
     "start": "next start",
     "lint": "next lint"
-  },
+  }
+  ,
   "dependencies": {
+    "@babel/parser": "^7.28.0",
+    "@babel/traverse": "^7.28.0",
+    "@babel/types": "^7.28.2",
     "@hookform/resolvers": "^5.1.1",
     "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-query": "^5.80.10",
     "axios": "^1.10.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
+    "fast-glob": "^3.3.3",
     "framer-motion": "^12.18.1",
+    "fs-extra": "^11.3.0",
     "i18next": "^25.3.1",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
@@ -32,14 +40,17 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/fs-extra": "^11.0.4",
     "@types/i18next-browser-languagedetector": "^2.0.2",
-    "@types/node": "^20",
+    "@types/node": "^20.19.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "babel-plugin-i18next-extract": "^1.1.0",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
