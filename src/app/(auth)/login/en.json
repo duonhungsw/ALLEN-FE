@@ -7,10 +7,5 @@
   "Đăng ký": "Register",
   "Khi đăng nhập, bạn đồng ý với": "When logging in, you agree to",
   "Điều khoản & Bảo mật": "Terms & Privacy",
-  "activateToken": "activateToken",
-  "Đăng nhập": "Login",
-  "Hồ sơ": "Profile",
-  "Giảng viên": "Instructor",
-  "Đăng xuất": "Logout",
-  "Trang chủ": "Home"
+  "activateToken": "activateToken"
 }

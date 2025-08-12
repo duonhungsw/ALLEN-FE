@@ -34,15 +34,21 @@ function extractKeysFromFile(content: string): string[] {
 }
 
 function extractAndGenerate() {
+  console.log('🔄 Starting legacy merge process...');
+  
   const keySet = new Set<string>();
 
   srcDirs.forEach(dir => {
-    walkFiles(dir).forEach(file => {
-      const content = fs.readFileSync(file, 'utf-8');
-      const keys = extractKeysFromFile(content);
-      keys.forEach(k => keySet.add(k));
-    });
+    if (fs.existsSync(dir)) {
+      walkFiles(dir).forEach(file => {
+        const content = fs.readFileSync(file, 'utf-8');
+        const keys = extractKeysFromFile(content);
+        keys.forEach(k => keySet.add(k));
+      });
+    }
   });
+
+  console.log(`📝 Found ${keySet.size} unique keys`);
 
   locales.forEach(locale => {
     const localeFile = path.join(outputDir, locale, 'common.json');
@@ -61,8 +67,10 @@ function extractAndGenerate() {
     const merged = { ...existing, ...newData };
     fs.mkdirSync(path.dirname(localeFile), { recursive: true });
     fs.writeFileSync(localeFile, JSON.stringify(merged, null, 2), 'utf-8');
-    console.log(`✅ Generated ${locale}/common.json`);
+    console.log(`✅ Generated ${locale}/common.json with ${Object.keys(merged).length} keys`);
   });
+  
+  console.log('🎉 Legacy merge completed!');
 }
 
 extractAndGenerate();
