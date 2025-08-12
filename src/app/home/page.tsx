@@ -1,63 +1,33 @@
+"use client";
+
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-const page = () => {
+const HomePage = () => {
+  const { t } = useTranslation();
+
   return (
- <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">E</span>
-              </div>
-              <span className="font-bold text-xl">EnglishMaster</span>
-            </div>
-
-            <div className="hidden md:flex items-center space-x-6">
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Courses
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Practice
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Progress
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Community
-              </a>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <Button variant="ghost">Sign In</Button>
-              <Button>Start Learning</Button>
-            </div>
-          </nav>
-        </div>
-      </header>
-
+    <div className="min-h-screen flex flex-col">
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-20 px-4 text-center bg-gradient-to-b from-blue-50 to-white">
           <div className="container mx-auto max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Master English
-              <span className="text-blue-600"> Fluently</span>
+              {t("Master English")}
+              <span className="text-blue-600"> {t("Fluently")}</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Learn English with interactive lessons, personalized practice, and real-world conversations. Join millions
-              of learners achieving fluency every day.
+              {t("Learn English with interactive lessons, personalized practice, and real-world conversations. Join millions of learners achieving fluency every day.")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8 py-3">
-                Start Free Trial
+                {t("Start Free Trial")}
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-8 py-3 bg-transparent">
-                Take Level Test
+                {t("Take Level Test")}
               </Button>
             </div>
           </div>
@@ -67,9 +37,9 @@ const page = () => {
         <section className="py-20 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Learn With Us?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t("Why Learn With Us?")}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover the features that make our platform the most effective way to learn English.
+                {t("Discover the features that make our platform the most effective way to learn English.")}
               </p>
             </div>
 
@@ -86,12 +56,11 @@ const page = () => {
                       />
                     </svg>
                   </div>
-                  <CardTitle>Interactive Conversations</CardTitle>
+                  <CardTitle>{t("Interactive Conversations")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    Practice speaking with AI tutors and real native speakers. Build confidence through natural
-                    conversations.
+                    {t("Practice speaking with AI tutors and real native speakers. Build confidence through natural conversations.")}
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -108,12 +77,11 @@ const page = () => {
                       />
                     </svg>
                   </div>
-                  <CardTitle>Personalized Learning</CardTitle>
+                  <CardTitle>{t("Personalized Learning")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    Adaptive lessons that adjust to your pace and learning style. Track progress with detailed
-                    analytics.
+                    {t("Adaptive lessons that adjust to your pace and learning style. Track progress with detailed analytics.")}
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -130,12 +98,11 @@ const page = () => {
                       />
                     </svg>
                   </div>
-                  <CardTitle>Comprehensive Curriculum</CardTitle>
+                  <CardTitle>{t("Comprehensive Curriculum")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    From beginner to advanced levels. Grammar, vocabulary, pronunciation, and cultural context all
-                    included.
+                    {t("From beginner to advanced levels. Grammar, vocabulary, pronunciation, and cultural context all included.")}
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -146,12 +113,12 @@ const page = () => {
         {/* CTA Section */}
         <section className="py-20 px-4 bg-gray-900 text-white">
           <div className="container mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Speak English Confidently?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">{t("Ready to Speak English Confidently?")}</h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join over 10 million learners who have improved their English skills with our proven method.
+              {t("Join over 10 million learners who have improved their English skills with our proven method.")}
             </p>
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3">
-              Start Learning Today
+              {t("Start Learning Today")}
             </Button>
           </div>
         </section>
@@ -169,83 +136,83 @@ const page = () => {
                 <span className="font-bold text-xl">EnglishMaster</span>
               </div>
               <p className="text-gray-600">
-                Empowering learners worldwide to achieve English fluency through innovative technology.
+                {t("Empowering learners worldwide to achieve English fluency through innovative technology.")}
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Learning</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">{t("Learning")}</h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Courses
+                    {t("Courses")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Grammar Guide
+                    {t("Grammar Guide")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Vocabulary
+                    {t("Vocabulary")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Pronunciation
+                    {t("Pronunciation")}
                   </a>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Practice</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">{t("Practice")}</h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Speaking Practice
+                    {t("Speaking Practice")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Writing Exercises
+                    {t("Writing Exercises")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Listening Tests
+                    {t("Listening Tests")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Reading Comprehension
+                    {t("Reading Comprehension")}
                   </a>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Support</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">{t("Support")}</h3>
               <ul className="space-y-2 text-gray-600">
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Help Center
+                    {t("Help Center")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Community Forum
+                    {t("Community Forum")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Live Tutoring
+                    {t("Live Tutoring")}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-gray-900 transition-colors">
-                    Contact Us
+                    {t("Contact Us")}
                   </a>
                 </li>
               </ul>
@@ -253,7 +220,7 @@ const page = () => {
           </div>
 
           <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-600">© 2024 EnglishMaster. All rights reserved.</p>
+            <p className="text-gray-600">© 2024 EnglishMaster. {t("All rights reserved.")}</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
                 <span className="sr-only">Twitter</span>
@@ -275,4 +242,4 @@ const page = () => {
   )
 }
 
-export default page
+export default HomePage

@@ -52,6 +52,15 @@ export default function NavBar() {
   );
 
   const languageDropdownRef = useRef<HTMLDivElement>(null);
+  
+  // Khôi phục ngôn ngữ từ localStorage khi component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage && ['en', 'vi'].includes(savedLanguage)) {
+      i18n.changeLanguage(savedLanguage);
+    }
+  }, [i18n]);
+  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -104,6 +113,9 @@ export default function NavBar() {
   };
 
   const handleChangeLanguage = (lang: string) => {
+    // Lưu ngôn ngữ được chọn vào localStorage
+    localStorage.setItem('selectedLanguage', lang);
+    
     i18n.changeLanguage(lang);
     setIsLanguageDropdownOpen(false);
     const languageName = LANGUAGE_OPTIONS.find(
@@ -189,11 +201,17 @@ export default function NavBar() {
     );
   };
 
-  const navLinks = [{ href: "/", label: t("Trang chủ") }];
+  const navLinks = [
+    { href: "/", label: t("Trang chủ") },
+    { href: "/courses", label: t("Courses") },
+    { href: "/practice", label: t("Practice") },
+    { href: "/progress", label: t("Progress") },
+    { href: "/community", label: t("Community") }
+  ];
 
   return (
     <div>
-      <header className="bg-gradient-to-l bg-[#0A092D] text-white px-8 py-6 flex justify-between items-center shadow-lg">
+      <header className="bg-gradient-to-l from-[#0A092D] to-blue-900 text-white px-8 py-6 flex justify-between items-center shadow-lg">
         <div className="flex items-center space-x-3 mt-4">
           <motion.div
             whileHover={{ scale: 1.2 }}
@@ -217,8 +235,8 @@ export default function NavBar() {
                 <button
                   className={`transition-colors font-bold px-3 py-2 rounded-md ${
                     pathname === href || pathname.startsWith(href + "/")
-                      ? "text-blue-500 font-bold"
-                      : "text-white hover:text-gray-300"
+                      ? "text-blue-300 font-bold bg-blue-900/20 px-4 py-2 rounded-lg"
+                      : "text-white hover:text-blue-200"
                   }`}
                 >
                   {label}
