@@ -1,84 +1,81 @@
-import { useEffect, useState } from "react";
-import { setUser } from "@/providers/auth/reducer/authSlice";
+import { useEffect } from "react";
+import { setUser, setError } from "@/providers/auth/reducer/authSlice";
+import { getCurrentUser } from "@/shared/api/auth.api";
 import { updateUserProfile, uploadAvatar } from "@/shared/api/user.api";
-import { getCookie } from "@/utils/cookies";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
+import { isAuthenticated } from "@/shared/store";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/providers/store";
-import { parseJwt } from "@/utils/jwt";
-
-const JWT_CLAIMS = {
-  EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-  NAME: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
-  ROLE: "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-} as const;
-export interface UserClaims {
-  Id: string;
-  Picture: string;
-  aud: string;
-  exp: number;
-  iss: string;
-  [JWT_CLAIMS.EMAIL]: string;
-  [JWT_CLAIMS.NAME]: string;
-  [JWT_CLAIMS.ROLE]: string;
-  [key: string]: unknown;
-}
-export interface FormattedUser {
-  email: string;
-  name: string;
-  role: string;
-}
-
-export function formatUserClaims(user: UserClaims): FormattedUser {
-  return {
-    email: user[JWT_CLAIMS.EMAIL] || "",
-    name: user[JWT_CLAIMS.NAME] || "",
-    role: user[JWT_CLAIMS.ROLE] || "",
-  };
-}
+import { selectAuthUser, selectAuthLoading, selectAuthError } from "@/providers/auth/selector/authSelector";
 
 export const useProfile = () => {
-  const [user, setUser] = useState<UserClaims | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector(selectAuthUser);
+  const loading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
 
+  // Fetch user profile if authenticated but no user data
+  const { data: profileData, isLoading: isProfileLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getCurrentUser,
+    enabled: isAuthenticated() && !user,
+  });
+
+  // Handle profile data success
+  useEffect(() => {
+    if (profileData?.data) {
+      dispatch(setUser(profileData.data));
+    }
+  }, [profileData, dispatch]);
+
+  // Check authentication status on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const accessToken = getCookie("accessToken");
-      if (accessToken) {
-        try {
-          const userInfo = parseJwt(accessToken) as UserClaims;
-          setUser(userInfo);
-        } catch (error) {
-          console.error("Failed to parse access token:", error);
-          setUser(null);
-        }
-      } else {
-        setUser(null);
+      const hasToken = isAuthenticated();
+      if (!hasToken && user) {
+        // Clear user if no valid tokens
+        dispatch(setUser(null as any));
       }
     }
-  }, []);
+  }, [dispatch, user]);
 
-  const formatted = user ? formatUserClaims(user) : null;
-  return { data: user, formatted };
+  return { 
+    data: user, 
+    loading: loading || isProfileLoading, 
+    error 
+  };
 };
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch<AppDispatch>();
+  
   return useMutation({
     mutationFn: updateUserProfile,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
-      dispatch(setUser(data));
+      if (data?.data) {
+        dispatch(setUser(data.data));
+      }
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Failed to update profile";
+      dispatch(setError(errorMessage));
     },
   });
 };
 
 export const useUploadAvatar = () => {
   const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: uploadAvatar,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Failed to upload avatar";
+      console.error("Avatar upload error:", errorMessage);
     },
   });
 };

@@ -1,0 +1,6 @@
+import * as babel from '@babel/types';
+
+const ast = parser.parse(content, {
+  sourceType: 'module',
+  plugins: ['typescript', 'jsx'],
+}) as babel.File;

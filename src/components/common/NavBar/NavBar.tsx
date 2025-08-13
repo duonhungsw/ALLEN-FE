@@ -14,7 +14,7 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
 import Image from "next/image";
-import DarkModeToggle from "./DarkMode";
+import DarkModeToggle from "../DarkMode";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -43,13 +43,24 @@ export default function NavBar() {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('common');
+
+  // const { t } = useTranslation('common')
 
   const currentLang = LANGUAGE_OPTIONS.find(
     (opt) => opt.value === i18n.language
   );
 
   const languageDropdownRef = useRef<HTMLDivElement>(null);
+  
+  // Khôi phục ngôn ngữ từ localStorage khi component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage && ['en', 'vi'].includes(savedLanguage)) {
+      i18n.changeLanguage(savedLanguage);
+    }
+  }, [i18n]);
+  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -102,6 +113,9 @@ export default function NavBar() {
   };
 
   const handleChangeLanguage = (lang: string) => {
+    // Lưu ngôn ngữ được chọn vào localStorage
+    localStorage.setItem('selectedLanguage', lang);
+    
     i18n.changeLanguage(lang);
     setIsLanguageDropdownOpen(false);
     const languageName = LANGUAGE_OPTIONS.find(
@@ -126,7 +140,7 @@ export default function NavBar() {
                 : "text-white hover:text-gray-300"
             }`}
           >
-            {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
+            {path === "/login" ? t("Login") : t("Register")}
           </Link>
         </motion.div>
       ))}
@@ -165,13 +179,13 @@ export default function NavBar() {
             </div>
             <Link href="/profile">
               <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                {t("Hồ sơ")}
+                {t("Profile")}
               </button>
             </Link>
             {userRole === "instructor" && (
               <Link href="/instructor">
                 <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  {t("Giảng viên")}
+                  {t("Instructor")}
                 </button>
               </Link>
             )}
@@ -179,7 +193,7 @@ export default function NavBar() {
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              {t("Đăng xuất")}
+              {t("Logout")}
             </button>
           </div>
         )}
@@ -187,12 +201,19 @@ export default function NavBar() {
     );
   };
 
-  const navLinks = [{ href: "/", label: t("Trang chủ") }];
+  const navLinks = [
+    { href: "/", label: t("Home") },
+    { href: "/courses", label: t("Courses") },
+    { href: "/practice", label: t("Practice") },
+    { href: "/progress", label: t("Progress") },
+    { href: "/community", label: t("Community") },
+    { href: "/social", label: t("Social") }
+  ];
 
   return (
     <div>
-      <header className="bg-gradient-to-l bg-[#0A092D] text-white px-8 py-6 flex justify-between items-center shadow-lg">
-        <div className="flex items-center space-x-3 mt-4">
+      <header className="bg-gradient-to-l from-[#0A092D] to-blue-900 text-white px-8 py-6 flex justify-between items-center shadow-lg">
+        <div className="flex items-center space-x-3">
           <motion.div
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.95 }}
@@ -204,7 +225,7 @@ export default function NavBar() {
           </motion.div>
         </div>
 
-        <nav className="flex items-center space-x-6 mt-4">
+        <nav className="flex items-center space-x-6">
           {navLinks.map(({ href, label }) => (
             <motion.div
               key={href}
@@ -215,8 +236,8 @@ export default function NavBar() {
                 <button
                   className={`transition-colors font-bold px-3 py-2 rounded-md ${
                     pathname === href || pathname.startsWith(href + "/")
-                      ? "text-blue-500 font-bold"
-                      : "text-white hover:text-gray-300"
+                      ? "text-blue-300 font-bold bg-blue-900/20 px-4 py-2 rounded-lg"
+                      : "text-white hover:text-blue-200"
                   }`}
                 >
                   {label}

@@ -9,4 +9,4 @@ export const themeColors = {
     textColor: "text-white",
     cardBg: "bg-gray-800/80",
   },
-}; 
+};
