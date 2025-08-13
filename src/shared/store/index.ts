@@ -34,10 +34,10 @@ export const removeStorageData = (key: any) => {
 };
 
 export const clearAllAuthData = () => {
-  deleteCookie("accessToken");
-  deleteCookie("refreshToken");
-  deleteCookie("user");
-  // deleteCookie("rememberMe");
-  // deleteCookie("rememberedEmail");
-  // deleteCookie("rememberedPassword");
+  removeStorageData("accessToken");
+  removeStorageData("refreshToken");
+  removeStorageData("user");
+  removeStorageData("rememberMe");
+  removeStorageData("rememberedEmail");
+  removeStorageData("rememberedPassword");
 };

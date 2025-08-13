@@ -2,28 +2,63 @@
 
 import { toast } from "sonner";
 import { useState } from "react";
-import { useProfile, useUpdateProfile } from "@/hooks/auth/useProfile";
+import { updateUserProfile } from "@/shared/api/user.api";
 import ProfileForm from "@/components/profile/ProfileForm";
 import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import ChangePassForm from "@/components/profile/ChangePassForm";
-import { UserInfo } from "@/providers/auth/types/authType";
+import { getStorageData } from "@/shared/store";
+import { parseJwt } from "@/utils/jwt";
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const { data } = useProfile();
-  console.log("9090", data);
-
-  const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
+  const [isUpdating, setIsUpdating] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
 
   const handleCancel = () => {
     setIsEdit(false);
   };
 
-  const handleSubmitUpdateProfile = async (values: any) => {
-    updateProfile(values);
-    setIsEdit(false);
-    toast.success("Profile updated successfully");
+  const handleSubmitUpdateProfile = async (values: any, avatarFile?: File | null) => {
+    const token = getStorageData('accessToken');
+    let userId = "";
+
+    if (token) {
+      try {
+        const decoded = parseJwt(token);
+        userId = decoded?.Id || "";
+      } catch (error) {
+        console.error("Error parsing JWT:", error);
+      }
+    }
+
+    if (!userId) {
+      toast.error("User ID not found");
+      return;
+    }
+
+    setIsUpdating(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("phone", values.phone);
+      formData.append("birthDay", values.birthDay);
+      if (avatarFile) {
+        formData.append("avatar", avatarFile);
+      }
+
+      await updateUserProfile(userId, formData);
+
+      setIsEdit(false);
+      toast.success("Profile updated successfully");
+
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile");
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const handleEdit = () => {
@@ -42,26 +77,8 @@ const Profile = () => {
   };
 
   const renderProfileInfo = () => {
-    const mappedData: UserInfo | null = data
-      ? {
-          id: String(data.ObjectId ?? ""),
-          name:
-            data[
-              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-            ] ?? "",
-          email:
-            data[
-              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-            ] ?? "",
-          phone: "",
-          picture: String(data.Picture ?? ""),
-          birthDay: "",
-        }
-      : null;
-
     return (
       <ProfileForm
-        data={mappedData}
         isEdit={isEdit}
         isUpdating={isUpdating}
         onCancel={handleCancel}

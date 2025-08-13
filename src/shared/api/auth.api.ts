@@ -59,3 +59,6 @@ export const resetPassword = async (data: {
   );
   return response.data;
 };
+
+export const getActivateAccount = (token: string) =>
+  api.get(`${APP_URL}/auth/activate?token=${token}`);

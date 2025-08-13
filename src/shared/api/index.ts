@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { APP_URL, EXPIRED_TOKEN } from '../constants/apiConstants';
 import { getStorageData, setStorageData } from '../store';
+import { getCookie } from '../../utils/cookies';
+
 export class Api {
   instance: AxiosInstance;
   private isRefreshing = false;
@@ -35,12 +37,14 @@ export class Api {
 
   private async refreshToken() {
     try {
-      const response = await axios.get(`${APP_URL}/refresh-token`, {
-        headers: {
-          Authorization: `Bearer ${getStorageData('accessToken')}`,
-        },
-      });
+      const refreshToken = getCookie('refreshToken');
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
+      }
 
+      const response = await axios.post(`${APP_URL}/auth/refresh-token`, {
+        token: refreshToken
+      });
       const newToken = response.data.data.accessToken;
       setStorageData('accessToken', newToken);
 

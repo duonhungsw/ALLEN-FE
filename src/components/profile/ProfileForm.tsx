@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
-import { UserInfo } from "@/providers/auth/types/authType";
 import CustomAvatar from "./CustomAvatar";
+import { useHasMounted } from "@/hooks/useHasMounted";
+import { useProfile } from "@/hooks/user/useProfile";
 
 interface ProfileFormProps {
-  data?: UserInfo | null;
   isEdit: boolean;
   isUpdating: boolean;
   onCancel: () => void;
@@ -23,13 +23,14 @@ type FormValues = {
 };
 
 const ProfileForm = ({
-  data,
   isEdit,
   isUpdating,
   onCancel,
   onEdit,
   onSubmit,
 }: ProfileFormProps) => {
+  const hasMounted = useHasMounted();
+  const { data: userData, isLoading } = useProfile();
   const [selectedAvatarFile, setSelectedAvatarFile] = useState<File | null>(null);
 
   const {
@@ -47,17 +48,17 @@ const ProfileForm = ({
   });
 
   useEffect(() => {
-    if (data) {
+    if (userData) {
       reset({
-        name: data.name || "",
-        email: data.email || "",
-        phone: data.phone || "",
-        birthDay: data.birthDay
-          ? dayjs(data.birthDay).format("YYYY-MM-DD")
+        name: userData.name || "",
+        email: userData.email || "",
+        phone: userData.phone || "",
+        birthDay: userData.birthDay
+          ? dayjs(userData.birthDay).format("YYYY-MM-DD")
           : "",
       });
     }
-  }, [data, reset]);
+  }, [userData, reset]);
 
   const handleAvatarChange = (file: File) => {
     setSelectedAvatarFile(file);
@@ -66,6 +67,18 @@ const ProfileForm = ({
   const handleFormSubmit = (values: FormValues) => {
     onSubmit(values, selectedAvatarFile);
   };
+
+  if (!hasMounted || isLoading) {
+    return (
+      <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-center p-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 lg:p-8">
@@ -83,7 +96,7 @@ const ProfileForm = ({
           <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
             <div className="mb-8 text-center">
               <CustomAvatar
-                avatar={data?.picture}
+                avatar={userData?.picture}
                 isEdit={isEdit}
                 onAvatarChange={handleAvatarChange}
                 isUploading={isUpdating}

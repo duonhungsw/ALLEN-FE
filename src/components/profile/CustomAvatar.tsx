@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface Props {
   avatar?: string;
@@ -13,8 +13,15 @@ const CustomAvatar = ({
   onAvatarChange,
   isUploading,
 }: Props) => {
-  const [previewImage, setPreviewImage] = useState<string>(avatar || "");
+  const [previewImage, setPreviewImage] = useState<string>("");
+  const [isClient, setIsClient] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Ensure client-side rendering to avoid hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+    setPreviewImage(avatar || "");
+  }, [avatar]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -35,13 +42,23 @@ const CustomAvatar = ({
     }
   };
 
+  // Show loading state during SSR to avoid hydration mismatch
+  if (!isClient) {
+    return (
+      <div className="relative inline-block">
+        <div className="relative md:w-[180px] md:h-[180px] w-[150px] h-[150px] rounded-full overflow-hidden border-4 border-gray-200 bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center">
+          <div className="animate-pulse w-full h-full bg-gray-200 rounded-full"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative inline-block">
       <div
         onClick={handleAvatarClick}
-        className={`relative md:w-[180px] md:h-[180px] w-[150px] h-[150px] rounded-full overflow-hidden border-4 border-gray-200 transition-all duration-200 ${
-          isEdit ? "cursor-pointer hover:border-blue-400 hover:shadow-lg" : ""
-        }`}
+        className={`relative md:w-[180px] md:h-[180px] w-[150px] h-[150px] rounded-full overflow-hidden border-4 border-gray-200 transition-all duration-200 ${isEdit ? "cursor-pointer hover:border-blue-400 hover:shadow-lg" : ""
+          }`}
       >
         {previewImage ? (
           <img
