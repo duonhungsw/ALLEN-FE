@@ -163,7 +163,7 @@ export default function NavBar() {
                 <div className="text-xs text-gray-400 italic">{userRole}</div>
               )}
             </div>
-            <Link href="/profile">
+            <Link href="/personal">
               <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 {t("Hồ sơ")}
               </button>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { setUser } from "@/providers/auth/reducer/authSlice";
-import { updateUserProfile, uploadAvatar } from "@/shared/api/user.api";
+import { updateUserProfile } from "@/shared/api/user.api";
 import { getCookie } from "@/utils/cookies";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
@@ -73,12 +73,3 @@ export const useUpdateProfile = () => {
   });
 };
 
-export const useUploadAvatar = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: uploadAvatar,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
-    },
-  });
-};
