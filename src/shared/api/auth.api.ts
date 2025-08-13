@@ -1,5 +1,6 @@
 import api from "./index";
 import { APP_URL } from "../constants/apiConstants";
+import axios from "axios";
 
 export interface LoginPayload {
   email: string;
@@ -33,11 +34,13 @@ export const register = async (payload: RegisterPayload) => {
   return response.data;
 };
 
-export const changePassword = async (data: {
-  currentPassword: string;
-  newPassword: string;
-}) => {
-  const response = await api.post(`${APP_URL}/users/change-password`, data);
+export const changePassword = async (data: { currentPassword: string; newPassword: string }) => {
+  const response = await axios.post(`${APP_URL}/auth/change-password`, data,  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+
   return response.data;
 };
 
@@ -56,6 +59,3 @@ export const resetPassword = async (data: {
   );
   return response.data;
 };
-
-export const getActivateAccount = (token: string) =>
-  api.get(`${APP_URL}/auth/activate?token=${token}`);

@@ -5,7 +5,7 @@ import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
 import { Toaster } from "sonner";
-import Navbar from "@/components/common/Navbar";
+import NavBar from "@/components/common/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
 
 const geistSans = Geist({
@@ -39,7 +39,7 @@ export default function RootLayout({
             <QueryClientProvider>
               <AuthHydration />
               <div className="min-h-screen flex flex-col">
-                <Navbar />
+                <NavBar />
                 <main className="flex-1">{children}</main>
                 {/* <Footer /> */}
               </div>

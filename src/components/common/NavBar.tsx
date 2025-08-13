@@ -14,7 +14,7 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
 import Image from "next/image";
-import DarkModeToggle from "./Darkmode";
+import DarkModeToggle from "./DarkMode";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -34,7 +34,7 @@ interface UserClaims {
   [key: string]: unknown;
 }
 
-export default function Navbar() {
+export default function NavBar() {
   const hasMounted = useHasMounted();
   const dispatch = useDispatch();
   const accessToken = getCookie("accessToken");
@@ -163,7 +163,7 @@ export default function Navbar() {
                 <div className="text-xs text-gray-400 italic">{userRole}</div>
               )}
             </div>
-            <Link href="/profile">
+            <Link href="/personal">
               <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 {t("Hồ sơ")}
               </button>
