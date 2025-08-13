@@ -140,7 +140,7 @@ export default function NavBar() {
                 : "text-white hover:text-gray-300"
             }`}
           >
-            {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
+            {path === "/login" ? t("Login") : t("Register")}
           </Link>
         </motion.div>
       ))}
@@ -179,13 +179,13 @@ export default function NavBar() {
             </div>
             <Link href="/profile">
               <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                {t("Hồ sơ")}
+                {t("Profile")}
               </button>
             </Link>
             {userRole === "instructor" && (
               <Link href="/instructor">
                 <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  {t("Giảng viên")}
+                  {t("Instructor")}
                 </button>
               </Link>
             )}
@@ -193,7 +193,7 @@ export default function NavBar() {
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              {t("Đăng xuất")}
+              {t("Logout")}
             </button>
           </div>
         )}
@@ -202,17 +202,18 @@ export default function NavBar() {
   };
 
   const navLinks = [
-    { href: "/", label: t("Trang chủ") },
+    { href: "/", label: t("Home") },
     { href: "/courses", label: t("Courses") },
     { href: "/practice", label: t("Practice") },
     { href: "/progress", label: t("Progress") },
-    { href: "/community", label: t("Community") }
+    { href: "/community", label: t("Community") },
+    { href: "/social", label: t("Social") }
   ];
 
   return (
     <div>
       <header className="bg-gradient-to-l from-[#0A092D] to-blue-900 text-white px-8 py-6 flex justify-between items-center shadow-lg">
-        <div className="flex items-center space-x-3 mt-4">
+        <div className="flex items-center space-x-3">
           <motion.div
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.95 }}
@@ -224,7 +225,7 @@ export default function NavBar() {
           </motion.div>
         </div>
 
-        <nav className="flex items-center space-x-6 mt-4">
+        <nav className="flex items-center space-x-6">
           {navLinks.map(({ href, label }) => (
             <motion.div
               key={href}

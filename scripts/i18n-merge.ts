@@ -9,11 +9,11 @@ const mergeLocaleFiles = async () => {
   const vi: Record<string, string> = {};
 
   // Tìm tất cả file en.json và vi.json trong src
-  const enFiles = await glob(['src/**/en.json']);
-  const viFiles = await glob(['src/**/vi.json']);
+  const enFiles = await glob(['src/**/common.en.json']);
+  const viFiles = await glob(['src/**/common.vi.json']);
 
-  console.log(`📁 Found ${enFiles.length} en.json files`);
-  console.log(`📁 Found ${viFiles.length} vi.json files`);
+  console.log(`📁 Found ${enFiles.length} common.en.json files`);
+  console.log(`📁 Found ${viFiles.length} common.vi.json files`);
 
   // Merge tất cả file en.json
   for (const file of enFiles) {

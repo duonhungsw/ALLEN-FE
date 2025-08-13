@@ -23,14 +23,14 @@ const extractKeysFromFile = (filePath: string): string[] => {
   return keys;
 };
 
-// ✅ Ghi file en.json và vi.json vào thư mục tương ứng
+// ✅ Ghi file common.en.json và common.vi.json vào thư mục tương ứng
 const writeLocaleFiles = (filePath: string, keys: string[]) => {
   // Lấy đường dẫn tương đối từ src
   const relativePath = path.relative('src', filePath);
   const dir = path.dirname(path.join('src', relativePath));
   
-  const enPath = path.join(dir, 'en.json');
-  const viPath = path.join(dir, 'vi.json');
+  const enPath = path.join(dir, 'common.en.json');
+  const viPath = path.join(dir, 'common.vi.json');
 
   // Đọc file hiện tại nếu có
   const en: Record<string, string> = fs.existsSync(enPath) ? fs.readJsonSync(enPath) : {};
