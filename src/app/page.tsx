@@ -1,6 +1,6 @@
 "use client";
 
-import { useProfile } from "@/hooks/auth/useProfile";
+// import { useProfile } from "@/hooks/auth/useProfile";
 // import Image from "next/image";
 // import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/useTheme";
@@ -10,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 
 export default function Home() {
-  const { data: user, formatted } = useProfile();
+  // const { data: user, formatted } = useProfile();
+
   const { customColors } = useTheme();
   const { t } = useTranslation();
 
