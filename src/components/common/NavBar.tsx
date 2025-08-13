@@ -3,18 +3,16 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { logout } from "@/providers/auth/reducer/authSlice";
-import { clearAllAuthData } from "@/shared/store/index";
+import { getStorageData } from "@/shared/store/index";
 import { useTranslation } from "react-i18next";
 import { LANGUAGE_OPTIONS } from "@/configs/i18n";
 import { toast } from "sonner";
 import { useState, useRef, useEffect } from "react";
 import { useHasMounted } from "@/hooks/useHasMounted";
-import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
 import Image from "next/image";
 import DarkModeToggle from "./DarkMode";
+import { useLogout } from "@/hooks/auth/useLogout";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -36,14 +34,14 @@ interface UserClaims {
 
 export default function NavBar() {
   const hasMounted = useHasMounted();
-  const dispatch = useDispatch();
-  const accessToken = getCookie("accessToken");
+  const accessToken = getStorageData("accessToken");
   const user: UserClaims | null = accessToken ? parseJwt(accessToken) : null;
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
+  const { mutate: logoutUser, isPending: isLoggingOut } = useLogout();
 
   const currentLang = LANGUAGE_OPTIONS.find(
     (opt) => opt.value === i18n.language
@@ -95,10 +93,7 @@ export default function NavBar() {
   const userRole = getUserRole(user);
 
   const handleLogout = () => {
-    dispatch(logout());
-    clearAllAuthData();
-    toast.success("Đăng xuất thành công!");
-    router.push("/login");
+    logoutUser();
   };
 
   const handleChangeLanguage = (lang: string) => {
@@ -120,11 +115,10 @@ export default function NavBar() {
         >
           <Link
             href={path}
-            className={`transition-colors font-bold px-3 py-2 rounded-md ${
-              pathname === path
-                ? "text-yellow-300"
-                : "text-white hover:text-gray-300"
-            }`}
+            className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === path
+              ? "text-yellow-300"
+              : "text-white hover:text-gray-300"
+              }`}
           >
             {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
           </Link>
@@ -177,9 +171,10 @@ export default function NavBar() {
             )}
             <button
               onClick={handleLogout}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              disabled={isLoggingOut}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t("Đăng xuất")}
+              {isLoggingOut ? "Đang đăng xuất..." : t("Đăng xuất")}
             </button>
           </div>
         )}
@@ -213,11 +208,10 @@ export default function NavBar() {
             >
               <Link href={href}>
                 <button
-                  className={`transition-colors font-bold px-3 py-2 rounded-md ${
-                    pathname === href || pathname.startsWith(href + "/")
-                      ? "text-blue-500 font-bold"
-                      : "text-white hover:text-gray-300"
-                  }`}
+                  className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === href || pathname.startsWith(href + "/")
+                    ? "text-blue-500 font-bold"
+                    : "text-white hover:text-gray-300"
+                    }`}
                 >
                   {label}
                 </button>

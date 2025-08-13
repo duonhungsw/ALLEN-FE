@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getStorageData, setStorageData } from "@/shared/store";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 type ThemeContextType = {
   isDark: boolean;
@@ -20,6 +21,7 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
 import { themeColors } from "@/theme/themeColors";
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const hasMounted = useHasMounted();
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -42,7 +44,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const customColors = isDark ? themeColors.dark : themeColors.light;
+  // Use light theme during SSR to avoid hydration mismatch
+  const customColors = hasMounted && isDark ? themeColors.dark : themeColors.light;
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme, customColors }}>
