@@ -6,7 +6,18 @@ const nextConfig: NextConfig = {
   output: "standalone",
 
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, 
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'allenblob.blob.core.windows.net',
+        port: '',
+        pathname: '/allen/**',
+      },
+    ],
   },
 
   webpack: (config) => {

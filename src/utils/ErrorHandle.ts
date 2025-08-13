@@ -1,8 +1,5 @@
 import { AxiosError } from "axios";
 
-/**
- * Trích xuất thông báo lỗi từ các phản hồi khác nhau
- */
 export const extractErrorMessage = (error: unknown): string => {
   if (error instanceof AxiosError) {
     const res = error.response?.data;
@@ -19,7 +16,6 @@ export const extractErrorMessage = (error: unknown): string => {
       return firstError;
     }
 
-    // fallback nếu response có status
     return `Request failed with status ${error.response?.status}`;
   }
 

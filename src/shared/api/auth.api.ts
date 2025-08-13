@@ -1,5 +1,6 @@
 import api from "./index";
-import { APP_URL, AUTH_ENDPOINTS, USER_ENDPOINTS } from "../constants/apiConstants";
+import { APP_URL } from "../constants/apiConstants";
+import axios from "axios";
 
 export interface LoginPayload {
   email: string;
@@ -14,53 +15,37 @@ export interface RegisterPayload {
   confirmPassword: string;
 }
 
-export interface RefreshTokenResponse {
-  accessToken: string;
-  expiresIn: number;
-  tokenType: string;
-}
-
 export const login = async (payload: LoginPayload) => {
-  const response = await api.post(`${APP_URL}${AUTH_ENDPOINTS.LOGIN}`, payload);
-  return response.data;
-};
-
-export const refreshToken = async (refreshToken: string): Promise<RefreshTokenResponse> => {
-  const response = await api.post(`${APP_URL}${AUTH_ENDPOINTS.REFRESH_TOKEN}`, {
-    refreshToken,
-  });
+  const response = await api.post(`${APP_URL}/auth/login`, payload);
   return response.data;
 };
 
 export const getGoogleLoginUrl = () => {
-  return `${APP_URL}${AUTH_ENDPOINTS.GOOGLE_LOGIN}`;
+  return `${APP_URL}/auth/signin-google`;
 };
 
 export const logout = async () => {
-  const response = await api.post(`${APP_URL}${AUTH_ENDPOINTS.LOGOUT}`);
+  const response = await api.post(`${APP_URL}/auth/logout`);
   return response.data;
 };
 
 export const register = async (payload: RegisterPayload) => {
-  const response = await api.post(`${APP_URL}${AUTH_ENDPOINTS.REGISTER}`, payload);
+  const response = await api.post(`${APP_URL}/auth/register`, payload);
   return response.data;
 };
 
-export const getCurrentUser = async () => {
-  const response = await api.get(`${APP_URL}${USER_ENDPOINTS.GET_PROFILE}`);
-  return response.data;
-};
+export const changePassword = async (data: { currentPassword: string; newPassword: string }) => {
+  const response = await axios.post(`${APP_URL}/auth/change-password`, data,  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
 
-export const changePassword = async (data: {
-  currentPassword: string;
-  newPassword: string;
-}) => {
-  const response = await api.post(`${APP_URL}${USER_ENDPOINTS.CHANGE_PASSWORD}`, data);
   return response.data;
 };
 
 export const forgotPassword = async (data: { email: string }) => {
-  const response = await api.post(`${APP_URL}${USER_ENDPOINTS.FORGOT_PASSWORD}`, data);
+  const response = await api.post(`${APP_URL}/users/forgot-password`, data);
   return response.data;
 };
 
@@ -69,11 +54,11 @@ export const resetPassword = async (data: {
   password: string;
 }) => {
   const response = await api.post(
-    `${APP_URL}${USER_ENDPOINTS.RESET_PASSWORD}`,
+    `${APP_URL}/users/update-forgot-password`,
     data
   );
   return response.data;
 };
 
 export const getActivateAccount = (token: string) =>
-  api.get(`${APP_URL}${AUTH_ENDPOINTS.ACTIVATE_ACCOUNT}?token=${token}`);
+  api.get(`${APP_URL}/auth/activate?token=${token}`);

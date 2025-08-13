@@ -1,12 +1,14 @@
-import { loginSuccess, setLoading, setError } from "@/providers/auth/reducer/authSlice";
-import { AppDispatch } from "@/providers/store";
-import { login } from "@/shared/api/auth.api";
-import { setAccessToken, setRefreshToken, setUserInfo } from "@/shared/store";
-import { extractErrorMessage } from "@/utils/ErrorHandle";
-import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { setUser } from '@/providers/auth/reducer/authSlice';
+import { AppDispatch } from '@/providers/store';
+import { logout as logoutAction } from '@/providers/auth/reducer/authSlice';
+import { login } from '@/shared/api/auth.api';
+import { clearAllAuthData, setStorageData } from '@/shared/store';
+import { extractErrorMessage } from '@/utils/ErrorHandle';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { logout } from '@/shared/api/auth.api';
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,37 +16,38 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: login,
-    onMutate: () => {
-      dispatch(setLoading(true));
-      dispatch(setError(null));
-    },
-    onSuccess: (data, variables) => {
-      const { remember } = variables;
-      const { user, tokens } = data.data;
-
-      // Store tokens in localStorage
-      setAccessToken(tokens.accessToken);
-      setRefreshToken(tokens.refreshToken);
-      setUserInfo(user);
-
-      // Store in Redux
-      dispatch(loginSuccess(data.data));
-
-      // Set cookies for remember me functionality
-      if (remember) {
-        // You can add cookie logic here if needed
-      }
-
-      toast.success("Đăng nhập thành công!");
-      router.push("/");
+    onSuccess: (data) => {
+      if (data.userInfo) setStorageData('user', data.userInfo);
+      setStorageData('accessToken', data.accessToken);
+      setStorageData('refreshToken', data.refreshToken);
+      dispatch(setUser(data.userInfo));
+      toast.success('Login Successfully');
+      router.push('/');
     },
     onError: (error) => {
       const msg = extractErrorMessage(error);
-      dispatch(setError(msg));
       toast.error(msg);
     },
-    onSettled: () => {
-      dispatch(setLoading(false));
+  });
+};
+
+export const useLogout = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      dispatch(logoutAction());
+      clearAllAuthData();
+      toast.success('Đăng xuất thành công!');
+      router.push('/login');
+    },
+    onError: () => {
+      dispatch(logoutAction());
+      clearAllAuthData();
+      toast.success('Đăng xuất thành công, nhưng đã xóa dữ liệu local');
+      router.push('/login');
     },
   });
 };

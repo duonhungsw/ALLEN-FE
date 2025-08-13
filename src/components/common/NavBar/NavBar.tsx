@@ -3,18 +3,16 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { logout } from "@/providers/auth/reducer/authSlice";
-import { clearAllAuthData } from "@/shared/store/index";
+import { getStorageData } from "@/shared/store/index";
 import { useTranslation } from "react-i18next";
 import { LANGUAGE_OPTIONS } from "@/configs/i18n";
 import { toast } from "sonner";
 import { useState, useRef, useEffect } from "react";
 import { useHasMounted } from "@/hooks/useHasMounted";
-import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
 import Image from "next/image";
 import DarkModeToggle from "../DarkMode";
+import { useLogout } from "@/hooks/auth/useLogin";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -36,31 +34,20 @@ interface UserClaims {
 
 export default function NavBar() {
   const hasMounted = useHasMounted();
-  const dispatch = useDispatch();
-  const accessToken = getCookie("accessToken");
+  const accessToken = getStorageData("accessToken");
   const user: UserClaims | null = accessToken ? parseJwt(accessToken) : null;
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { t, i18n } = useTranslation('common');
-
-  // const { t } = useTranslation('common')
+  const { t, i18n } = useTranslation();
+  const { mutate: logoutUser, isPending: isLoggingOut } = useLogout();
 
   const currentLang = LANGUAGE_OPTIONS.find(
     (opt) => opt.value === i18n.language
   );
 
   const languageDropdownRef = useRef<HTMLDivElement>(null);
-  
-  // Khôi phục ngôn ngữ từ localStorage khi component mount
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('selectedLanguage');
-    if (savedLanguage && ['en', 'vi'].includes(savedLanguage)) {
-      i18n.changeLanguage(savedLanguage);
-    }
-  }, [i18n]);
-  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -106,16 +93,10 @@ export default function NavBar() {
   const userRole = getUserRole(user);
 
   const handleLogout = () => {
-    dispatch(logout());
-    clearAllAuthData();
-    toast.success("Đăng xuất thành công!");
-    router.push("/login");
+    logoutUser();
   };
 
   const handleChangeLanguage = (lang: string) => {
-    // Lưu ngôn ngữ được chọn vào localStorage
-    localStorage.setItem('selectedLanguage', lang);
-    
     i18n.changeLanguage(lang);
     setIsLanguageDropdownOpen(false);
     const languageName = LANGUAGE_OPTIONS.find(
@@ -140,7 +121,7 @@ export default function NavBar() {
                 : "text-white hover:text-gray-300"
             }`}
           >
-            {path === "/login" ? t("Login") : t("Register")}
+            {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
           </Link>
         </motion.div>
       ))}
@@ -177,23 +158,24 @@ export default function NavBar() {
                 <div className="text-xs text-gray-400 italic">{userRole}</div>
               )}
             </div>
-            <Link href="/profile">
+            <Link href="/personal">
               <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                {t("Profile")}
+                {t("Hồ sơ")}
               </button>
             </Link>
             {userRole === "instructor" && (
               <Link href="/instructor">
                 <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  {t("Instructor")}
+                  {t("Giảng viên")}
                 </button>
               </Link>
             )}
             <button
               onClick={handleLogout}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              disabled={isLoggingOut}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t("Logout")}
+              {isLoggingOut ? "Đang đăng xuất..." : t("Đăng xuất")}
             </button>
           </div>
         )}
@@ -201,19 +183,12 @@ export default function NavBar() {
     );
   };
 
-  const navLinks = [
-    { href: "/", label: t("Home") },
-    { href: "/courses", label: t("Courses") },
-    { href: "/practice", label: t("Practice") },
-    { href: "/progress", label: t("Progress") },
-    { href: "/community", label: t("Community") },
-    { href: "/social", label: t("Social") }
-  ];
+  const navLinks = [{ href: "/", label: t("Trang chủ") }];
 
   return (
     <div>
-      <header className="bg-gradient-to-l from-[#0A092D] to-blue-900 text-white px-8 py-6 flex justify-between items-center shadow-lg">
-        <div className="flex items-center space-x-3">
+      <header className="bg-gradient-to-l bg-[#0A092D] text-white px-8 py-6 flex justify-between items-center shadow-lg">
+        <div className="flex items-center space-x-3 mt-4">
           <motion.div
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.95 }}
@@ -225,7 +200,7 @@ export default function NavBar() {
           </motion.div>
         </div>
 
-        <nav className="flex items-center space-x-6">
+        <nav className="flex items-center space-x-6 mt-4">
           {navLinks.map(({ href, label }) => (
             <motion.div
               key={href}
@@ -236,8 +211,8 @@ export default function NavBar() {
                 <button
                   className={`transition-colors font-bold px-3 py-2 rounded-md ${
                     pathname === href || pathname.startsWith(href + "/")
-                      ? "text-blue-300 font-bold bg-blue-900/20 px-4 py-2 rounded-lg"
-                      : "text-white hover:text-blue-200"
+                      ? "text-blue-500 font-bold"
+                      : "text-white hover:text-gray-300"
                   }`}
                 >
                   {label}
