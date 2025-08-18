@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { parseJwt } from "@/utils/jwt";
+import { setStorageData } from "@/shared/store";
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +19,7 @@ export const useLogin = () => {
     onSuccess: (data, variables) => {
       const { remember, email, password } = variables;
       const userInfo = parseJwt(data.accessToken);
+      setStorageData('accessToken', data.accessToken);
 
       if (remember) {
         setCookie("accessToken", data.accessToken, 30);
