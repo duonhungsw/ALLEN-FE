@@ -76,7 +76,6 @@ export default function ResetPasswordPage() {
 
     return (
         <div className="min-h-screen flex">
-            {/* Left Panel - Gradient Background */}
             <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-b from-green-800 to-blue-600 items-center justify-center">
                 <div className="text-center text-white">
                     <div className="w-20 h-20 bg-green-200/20 rounded-full flex items-center justify-center mx-auto mb-6">
