@@ -45,7 +45,7 @@ export default function RootLayout({
               </div>
             </QueryClientProvider>
           </ReduxProvider>
-          <Toaster richColors position="top-right" />
+          <Toaster richColors position="bottom-right" />
         </ThemeProvider>
       </body>
     </html>
