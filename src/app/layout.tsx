@@ -5,8 +5,9 @@ import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
 import { Toaster } from "sonner";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/common/NavBar/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
+import SessionProvider from "@/context/SessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,19 +35,21 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <ThemeProvider>
-          <ReduxProvider>
-            <QueryClientProvider>
-              <AuthHydration />
-              <div className="min-h-screen flex flex-col">
-                <NavBar />
-                <main className="flex-1">{children}</main>
-                {/* <Footer /> */}
-              </div>
-            </QueryClientProvider>
-          </ReduxProvider>
-          <Toaster richColors position="bottom-right" />
-        </ThemeProvider>
+         <SessionProvider>
+          <ThemeProvider>
+            <ReduxProvider>
+              <QueryClientProvider>
+                <AuthHydration />
+                <div className="min-h-screen flex flex-col">
+                  {/* <NavBar /> */}
+                  <main className="flex-1">{children}</main>
+                  {/* <Footer /> */}
+                </div>
+              </QueryClientProvider>
+            </ReduxProvider>
+            <Toaster richColors position="top-right" />
+         </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

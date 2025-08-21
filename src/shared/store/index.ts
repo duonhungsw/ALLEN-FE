@@ -1,4 +1,5 @@
 import { deleteCookie } from "@/utils/cookies";
+import { TOKEN_KEYS } from "../constants/apiConstants";
 
 const isClient = typeof window !== "undefined";
 
@@ -33,11 +34,34 @@ export const removeStorageData = (key: any) => {
   localStorage.removeItem(key);
 };
 
+// Token management functions
+export const getAccessToken = () => getStorageData(TOKEN_KEYS.ACCESS_TOKEN);
+export const getRefreshToken = () => getStorageData(TOKEN_KEYS.REFRESH_TOKEN);
+export const getUserInfo = () => getStorageData(TOKEN_KEYS.USER_INFO);
+
+export const setAccessToken = (token: string) => setStorageData(TOKEN_KEYS.ACCESS_TOKEN, token);
+export const setRefreshToken = (token: string) => setStorageData(TOKEN_KEYS.REFRESH_TOKEN, token);
+export const setUserInfo = (user: any) => setStorageData(TOKEN_KEYS.USER_INFO, user);
+
+export const removeAccessToken = () => removeStorageData(TOKEN_KEYS.ACCESS_TOKEN);
+export const removeRefreshToken = () => removeStorageData(TOKEN_KEYS.REFRESH_TOKEN);
+export const removeUserInfo = () => removeStorageData(TOKEN_KEYS.USER_INFO);
+
 export const clearAllAuthData = () => {
+  // Clear localStorage
+  removeAccessToken();
+  removeRefreshToken();
+  removeUserInfo();
+  
+  // Clear cookies
   deleteCookie("accessToken");
   deleteCookie("refreshToken");
   deleteCookie("user");
-  // deleteCookie("rememberMe");
-  // deleteCookie("rememberedEmail");
-  // deleteCookie("rememberedPassword");
+};
+
+// Check if user is authenticated
+export const isAuthenticated = () => {
+  const accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+  return !!(accessToken && refreshToken);
 };
