@@ -1,11 +1,10 @@
 export interface UserInfo {
   id: string;
-  fullName: string;
-  username: string;
+  name: string;
   email: string;
-  phoneNumber: string;
-  avatarUrl: string;
-  dob: string;
+  phone: string;
+  picture: string;
+  birthDay: string;
 }
 
 export interface AuthState {

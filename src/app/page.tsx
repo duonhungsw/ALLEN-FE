@@ -6,10 +6,29 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/useTheme";
 
 export default function Home() {
-  const { data: user, formatted } = useProfile();
+  const { data: user, isLoading, error } = useProfile();
   const { customColors } = useTheme();
 
-  console.log("111", customColors.bodyBg);
+  if (isLoading) {
+    return (
+      <div className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Đang tải thông tin...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}>
+        <div className="text-center text-red-600">
+          <p>Có lỗi xảy ra khi tải thông tin user</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -26,24 +45,37 @@ export default function Home() {
         <div className="mb-6">
           <Image
             src={
-              typeof user?.avatarUrl === "string" && user.avatarUrl
-                ? user.avatarUrl
-                : `https://avatar.vercel.sh/${user?.username ?? "default"}.svg`
+              user?.picture && user.picture !== ""
+                ? user.picture
+                : `https://avatar.vercel.sh/${user?.name ?? "default"}.svg`
             }
-            alt={formatted?.name || "User Avatar"}
+            alt={user?.name || "User Avatar"}
             width={96}
             height={96}
             className="w-24 h-24 mx-auto rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-md"
           />
         </div>
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
-          Hello world,{" "}
+          Xin chào,{" "}
           <span className="text-blue-600 dark:text-blue-400">
-            {formatted?.name || "Users111"}
+            {user?.name || "User"}
           </span>
         </h1>
+        <p className="text-gray-600 dark:text-gray-300 mb-4">
+          Email: {user?.email || "N/A"}
+        </p>
+        {user?.phone && (
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            Số điện thoại: {user.phone}
+          </p>
+        )}
+        {user?.birthDay && (
+          <p className="text-gray-600 dark:text-gray-300 mb-8">
+            Ngày sinh: {user.birthDay}
+          </p>
+        )}
         <p className="text-gray-600 dark:text-gray-300 mb-8">
-          I great to see you again. Le get learning!
+          Rất vui được gặp lại bạn. Hãy tiếp tục học tập!
         </p>
       </motion.div>
     </div>
