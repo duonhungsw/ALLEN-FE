@@ -37,12 +37,16 @@ export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
 }) => {
-  const response = await api.post(`${APP_URL}/users/change-password`, data);
+  const response = await api.post(`${APP_URL}/auth/change-password`, data,{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  });
   return response.data;
 };
 
 export const forgotPassword = async (data: { email: string }) => {
-  const response = await api.post(`${APP_URL}/users/forgot-password`, data);
+  const response = await api.post(`${APP_URL}/auth/forgot-password`, data);
   return response.data;
 };
 
@@ -51,7 +55,7 @@ export const resetPassword = async (data: {
   password: string;
 }) => {
   const response = await api.post(
-    `${APP_URL}/users/update-forgot-password`,
+    `${APP_URL}/users/-password`,
     data
   );
   return response.data;
