@@ -32,7 +32,6 @@ export default function LoginPage() {
           }
           const backendData = await sendGoogleUserToBackend({
             idToken: session.idToken as string,
-            signedToken:session.idToken as string
           });
           console.log("Backend response:", backendData);
 

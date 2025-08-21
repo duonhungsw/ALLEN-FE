@@ -5,7 +5,7 @@ import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
 import { Toaster } from "sonner";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/common/NavBar/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
 import SessionProvider from "@/context/SessionProvider";
 
@@ -41,7 +41,7 @@ export default function RootLayout({
               <QueryClientProvider>
                 <AuthHydration />
                 <div className="min-h-screen flex flex-col">
-                  <NavBar />
+                  {/* <NavBar /> */}
                   <main className="flex-1">{children}</main>
                   {/* <Footer /> */}
                 </div>

@@ -1,6 +1,6 @@
 import api from "./index";
 import { APP_URL } from "../constants/apiConstants";
-import axios from "axios";
+
 export interface LoginPayload {
   email: string;
   password: string;
@@ -17,27 +17,15 @@ export interface RegisterPayload {
 export const login = async (payload: LoginPayload) => {
   const response = await api.post(`${APP_URL}/auth/login`, payload);
   return response.data;
-};
+};  
 
-export const sendGoogleUserToBackend = async (payload: { idToken: string,signedToken:string }) => {
+export const sendGoogleUserToBackend = async (payload: { idToken: string }) => {
   try {
     console.log("call api to post data ");
     const res = await api.post(`${APP_URL}/auth/signin-google`, payload);
     return res.data;
   } catch (error: any) {
-    if (error.response) {
-      // Server trả về status code khác 2xx
-      console.error("Backend responded with error:");
-      console.error("Status:", error.response.status);
-      console.error("Data:", error.response.data);
-      console.error("Headers:", error.response.headers);
-    } else if (error.request) {
-      // Request đã gửi đi nhưng không nhận được phản hồi
-      console.error("No response received from backend:", error.request);
-    } else {
-      // Lỗi khi setup request
-      console.error("Error setting up request:", error.message);
-    }
+    console.error("No response received from backend:", error);
     throw error; // vẫn throw để chỗ khác xử lý
   }
 };
