@@ -7,18 +7,45 @@ import { useEffect } from "react";
 import GoogleIcon from "@p/svg/google.svg";
 import { useActivateAccount } from "@/hooks/auth/useActiveAccount";
 import Image from "next/image";
-import { getGoogleLoginUrl } from "@/shared/api/auth.api";
+import { signIn, useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
+import { sendGoogleUserToBackend } from "@/shared/api/auth.api";
 
 export default function LoginPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { mutate: activateAccount } = useActivateAccount();
-
+  const { data: session } = useSession();
   const handleLoginWithGoogle = () => {
-    const googleLoginUrl = getGoogleLoginUrl();
-    window.location.href = googleLoginUrl;
+    signIn("google");
   };
+ 
+  useEffect(() => {
+    console.log("Session data:", session);
+  }, [session]);
+  useEffect(() => {
+    if (session?.idToken) { // 👈 check token thay vì user
+      (async () => {
+        try {
+          if (!session.idToken) {
+            throw new Error("No idToken found in session");
+          }
+          const backendData = await sendGoogleUserToBackend({
+            idToken: session.idToken as string,
+            signedToken:session.idToken as string
+          });
+          console.log("Backend response:", backendData);
+
+          // Nếu backend trả JWT riêng thì lưu lại
+          // localStorage.setItem("accessToken", backendData.token);
+
+          router.push("/dashboard");
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
+  }, [session, router]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
