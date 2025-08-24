@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "home": "Trang chủ"
+  },
+  "auth": {
+    "signIn": "Đăng nhập",
+    "signUp": "Đăng ký",
+    "logout": "Đăng xuất",
+    "profile": "Hồ sơ",
+    "instructor": "Giảng viên",
+    "welcomeBack": "Chào mừng trở lại!",
+    "signInto": "Đăng nhập vào",
+    "loginToAllen": "Đăng nhập vào Allen",
+    "enterCredentials": "Nhập thông tin đăng nhập để truy cập tài khoản",
+    "continueWithGoogle": "Tiếp tục với Google",
+    "or": "HOẶC",
+    "rememberMe": "Ghi nhớ đăng nhập",
+    "forgotPassword": "Quên mật khẩu?",
+    "dontHaveAccount": "Chưa có tài khoản?",
+    "agreeTerms": "Khi đăng nhập, bạn đồng ý với",
+    "termsPrivacy": "Điều khoản & Bảo mật",
+    "forgotPasswordTitle": "Quên Mật Khẩu?",
+    "forgotPasswordSubtitle": "Đừng lo lắng, chúng tôi sẽ giúp bạn",
+    "resetPasswordTitle": "Đặt Lại Mật Khẩu",
+    "resetPasswordSubtitle": "Tạo mật khẩu mới cho tài khoản của bạn",
+    "newPassword": "Mật khẩu mới",
+    "confirmNewPassword": "Xác nhận mật khẩu mới",
+    "resetPassword": {
+      "invalidToken": "Token không hợp lệ",
+      "invalidTokenDesc": "Link reset mật khẩu không hợp lệ hoặc đã hết hạn.",
+      "requestNewLink": "Yêu cầu link reset mới",
+
+      "title": "Đặt Lại Mật Khẩu",
+      "subtitle": "Tạo mật khẩu mới an toàn",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "reEnterPassword": "Nhập lại mật khẩu mới",
+      "enterNewPassword": "Nhập mật khẩu mới",
+      "loginWithNewPass": "Đăng nhập với mật khẩu mới",
+
+      "formTitle": "Đặt Lại Mật Khẩu",
+      "formSubtitle": "Nhập mật khẩu mới của bạn",
+      "passwordRequired": "Mật khẩu là bắt buộc",
+      "passwordMin": "Mật khẩu phải có ít nhất 6 ký tự",
+      "confirmRequired": "Xác nhận mật khẩu là bắt buộc",
+      "confirmNotMatch": "Mật khẩu không khớp",
+
+      "submit": "Đặt Lại Mật Khẩu",
+      "submitting": "Đang đặt lại...",
+      "success": "Mật khẩu đã được đặt lại thành công!",
+
+      "remember": "Nhớ mật khẩu?",
+      "login": "Đăng nhập"
+    }
+  },
+  "common": {
+    "email": "Email",
+    "password": "Mật khẩu",
+    "loading": "Đang tải...",
+    "submit": "Gửi",
+    "vietnamese": "Tiếng Việt",
+    "vietnam": "Tiếng Việt",
+    "english": "Tiếng Anh",
+    "loadingInfo": "Đang tải thông tin...",
+    "hello": "Xin chào",
+    "phone": "Số điện thoại",
+    "birthDay": "Ngày sinh",
+    "welcomeBack": "Rất vui được gặp lại bạn. Hãy tiếp tục học tập!"
+  },
+  "features": {
+    "sendResetLink": "Gửi link reset qua email",
+    "setNewPassword": "Đặt lại mật khẩu mới",
+    "loginWithNewPassword": "Đăng nhập với mật khẩu mới"
+  },
+  "messages": {
+    "loggingIn": "Đang đăng nhập...",
+    "registering": "Đang đăng ký...",
+    "logoutSuccess": "Đăng xuất thành công!",
+    "languageChanged": "Đã chuyển sang"
+  },
+  "validation": {
+    "emailInvalid": "Email không hợp lệ",
+    "passwordMinLength": "Mật khẩu phải từ 6 ký tự",
+    "passwordMismatch": "Mật khẩu xác nhận không khớp",
+    "fieldRequired": "Trường này là bắt buộc"
+  }
+}

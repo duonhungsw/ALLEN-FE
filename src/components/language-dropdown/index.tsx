@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useLocale } from 'next-intl';
 
 type LanguageOption = {
   value: string;
@@ -12,19 +12,20 @@ type TProps = {
 };
 
 const LanguageDropdown = ({ languages, onLanguageChange }: TProps) => {
-  const { i18n } = useTranslation();
+  const locale = useLocale();
 
   const handleLanguageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedLanguage = event.target.value;
-    i18n.changeLanguage(selectedLanguage);
+    document.cookie = `locale=${selectedLanguage}`;
+    window.location.reload();
     onLanguageChange(selectedLanguage);
   };
 
   return (
     <select
-      value={i18n.language}
+      value={locale}
       onChange={handleLanguageChange}
       className="px-3 py-2 border rounded-md text-sm"
     >

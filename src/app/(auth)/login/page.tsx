@@ -7,13 +7,13 @@ import { useEffect } from "react";
 import GoogleIcon from "@p/svg/google.svg";
 import { useActivateAccount } from "@/hooks/auth/useActiveAccount";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { signIn, useSession } from "next-auth/react";
-import { useTranslation } from "react-i18next";
 import { sendGoogleUserToBackend } from "@/shared/api/auth.api";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { mutate: activateAccount } = useActivateAccount();
   const { data: session } = useSession();
   const handleLoginWithGoogle = () => {
@@ -62,9 +62,12 @@ export default function LoginPage() {
       <div className="w-full max-w-4xl bg-white/90 dark:bg-gray-800/90 rounded-3xl shadow-2xl flex flex-col lg:flex-row overflow-hidden backdrop-blur-sm border border-white/20">
         <div className="hidden lg:flex flex-col justify-center items-center bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-12 w-1/2 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}></div>
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            ></div>
           </div>
 
           <motion.div
@@ -80,31 +83,27 @@ export default function LoginPage() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm"
               >
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <svg
+                  className="w-10 h-10 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
                 </svg>
               </motion.div>
             </div>
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-              {t("Welcome-Back")}
+              {t("auth.welcomeBack")}
             </h1>
             <p className="text-xl text-blue-100 leading-relaxed">
-              {t("Sign-into")}
+              {t("auth.signInto")}
             </p>
-            <div className="mt-8 space-y-4">
-              <div className="flex items-center justify-center space-x-3 text-blue-100">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
-                <span className="text-sm">Secure Authentication</span>
-              </div>
-              <div className="flex items-center justify-center space-x-3 text-blue-100">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
-                <span className="text-sm">24/7 Support</span>
-              </div>
-              <div className="flex items-center justify-center space-x-3 text-blue-100">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
-                <span className="text-sm">Advanced Features</span>
-              </div>
-            </div>
           </motion.div>
         </div>
 
@@ -122,7 +121,7 @@ export default function LoginPage() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-3xl font-bold text-gray-800 dark:text-white mb-2"
               >
-                {t("Login-to-Allen")}
+                {t("auth.loginToAllen")}
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: -20 }}
@@ -130,7 +129,7 @@ export default function LoginPage() {
                 transition={{ duration: 0.6, delay: 0.5 }}
                 className="text-gray-600 dark:text-gray-300"
               >
-                Enter your credentials to access your account
+                {t("auth.enterCredentials")}
               </motion.p>
             </div>
 
@@ -149,7 +148,7 @@ export default function LoginPage() {
                 height={20}
                 className="mr-3"
               />
-              {t("Continue with Google")}
+              {t("auth.continueWithGoogle")}
             </motion.button>
 
             <motion.div
@@ -163,7 +162,7 @@ export default function LoginPage() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
-                  OR
+                  {t("auth.or")}
                 </span>
               </div>
             </motion.div>
@@ -187,19 +186,22 @@ export default function LoginPage() {
               className="text-center mt-8 space-y-4"
             >
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                {t("Chưa có tài khoản?")}{" "}
+                {t("auth.dontHaveAccount")}{" "}
                 <button
                   type="button"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
                   onClick={() => router.push("/register")}
                 >
-                  {t("Đăng ký")}
+                  {t("auth.signUp")}
                 </button>
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-500">
-                {t("Khi đăng nhập, bạn đồng ý với")}{" "}
-                <a className="underline hover:text-gray-700 dark:hover:text-gray-300 transition-colors" href="#">
-                  {t("Điều khoản & Bảo mật")}
+                {t("auth.agreeTerms")}{" "}
+                <a
+                  className="underline hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                  href="#"
+                >
+                  {t("auth.termsPrivacy")}
                 </a>
               </div>
             </motion.div>
