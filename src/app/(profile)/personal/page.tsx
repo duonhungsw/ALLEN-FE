@@ -6,12 +6,27 @@ import { useProfile, useUpdateProfile } from "@/hooks/auth/useProfile";
 import ProfileForm from "@/components/profile/ProfileForm";
 import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import ChangePassForm from "@/components/profile/ChangePassForm";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const { data, isLoading, error } = useProfile();
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
   const [activeTab, setActiveTab] = useState("profile");
+  const hasMounted = useHasMounted();
+
+  if (!hasMounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-300">Đang tải thông tin...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleCancel = () => {
     setIsEdit(false);
@@ -43,7 +58,7 @@ const Profile = () => {
       return (
         <div className="p-8 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Đang tải thông tin...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Đang tải thông tin...</p>
         </div>
       );
     }
@@ -56,15 +71,16 @@ const Profile = () => {
       );
     }
 
-    // Sử dụng data trực tiếp từ API response
-    const profileData = data ? {
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      phone: data.phone || "",
-      picture: data.picture || "",
-      birthDay: data.birthDay || "",
-    } : null;
+    const profileData = data
+      ? {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        phone: data.phone || "",
+        picture: data.picture || "",
+        birthDay: data.birthDay || "",
+      }
+      : null;
 
     return (
       <ProfileForm

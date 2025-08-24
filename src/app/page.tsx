@@ -4,17 +4,37 @@ import { useProfile } from "@/hooks/auth/useProfile";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/useTheme";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 export default function Home() {
   const { data: user, isLoading, error } = useProfile();
   const { customColors } = useTheme();
+  const hasMounted = useHasMounted();
+
+  // Chỉ render khi đã mount trên client để tránh hydration mismatch
+  if (!hasMounted) {
+    return (
+      <div className="relative min-h-screen w-full bg-white dark:bg-gray-900 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">
+            Đang tải thông tin...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
-      <div className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}>
+      <div
+        className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}
+      >
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-300">Đang tải thông tin...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">
+            Đang tải thông tin...
+          </p>
         </div>
       </div>
     );
@@ -22,7 +42,9 @@ export default function Home() {
 
   if (error) {
     return (
-      <div className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}>
+      <div
+        className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}
+      >
         <div className="text-center text-red-600">
           <p>Có lỗi xảy ra khi tải thông tin user</p>
         </div>

@@ -6,8 +6,7 @@ import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { logout } from "@/providers/auth/reducer/authSlice";
 import { clearAllAuthData } from "@/shared/store/index";
-import { useTranslation } from "react-i18next";
-import { LANGUAGE_OPTIONS } from "@/configs/i18n";
+import { useTranslations, useLocale } from "next-intl";
 import { toast } from "sonner";
 import { useState, useRef, useEffect } from "react";
 import { useHasMounted } from "@/hooks/useHasMounted";
@@ -43,10 +42,29 @@ export default function NavBar() {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { t, i18n } = useTranslation();
+  const t = useTranslations("common");
+  const tMsg = useTranslations("messages");
+  const tNav = useTranslations("nav");
+  const tAuth = useTranslations("auth");
+
+
+  const locale = useLocale();
+
+  const LANGUAGE_OPTIONS = [
+    {
+      value: "vi",
+      lang: t("vietnam"),
+      flag: "/svg/VietnamFlag.svg",
+    },
+    {
+      value: "en",
+      lang: t("english"),
+      flag: "/svg/EnglandFlag.svg",
+    },
+  ];
 
   const currentLang = LANGUAGE_OPTIONS.find(
-    (opt) => opt.value === i18n.language
+    (opt) => opt.value === locale
   );
 
   const languageDropdownRef = useRef<HTMLDivElement>(null);
@@ -97,17 +115,18 @@ export default function NavBar() {
   const handleLogout = () => {
     dispatch(logout());
     clearAllAuthData();
-    toast.success("Đăng xuất thành công!");
+    toast.success(tMsg("logoutSuccess"));
     router.push("/login");
   };
 
   const handleChangeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
+    document.cookie = `locale=${lang}`;
+    router.refresh();
     setIsLanguageDropdownOpen(false);
     const languageName = LANGUAGE_OPTIONS.find(
       (option) => option.value === lang
     )?.lang;
-    toast.info(`Đã chuyển sang ${languageName}`);
+    toast.info(`${tMsg("languageChanged")} ${languageName}`);
   };
 
   const renderHeaderLogin = () => (
@@ -120,13 +139,12 @@ export default function NavBar() {
         >
           <Link
             href={path}
-            className={`transition-colors font-bold px-3 py-2 rounded-md ${
-              pathname === path
-                ? "text-yellow-300"
-                : "text-white hover:text-gray-300"
-            }`}
+            className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === path
+              ? "text-yellow-300"
+              : "text-white hover:text-gray-300"
+              }`}
           >
-            {path === "/login" ? t("Đăng nhập") : t("Đăng ký")}
+            {path === "/login" ? tAuth("signIn") : tAuth("signUp")}
           </Link>
         </motion.div>
       ))}
@@ -165,13 +183,13 @@ export default function NavBar() {
             </div>
             <Link href="/personal">
               <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                {t("Hồ sơ")}
+                {tAuth("profile")}
               </button>
             </Link>
             {userRole === "instructor" && (
               <Link href="/instructor">
                 <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  {t("Giảng viên")}
+                  {tAuth("instructor")}
                 </button>
               </Link>
             )}
@@ -179,7 +197,7 @@ export default function NavBar() {
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              {t("Đăng xuất")}
+              {tAuth("logout")}
             </button>
           </div>
         )}
@@ -187,7 +205,7 @@ export default function NavBar() {
     );
   };
 
-  const navLinks = [{ href: "/", label: t("Trang chủ") }];
+  const navLinks = [{ href: "/", label: tNav("home") }];
 
   return (
     <div>
@@ -213,11 +231,10 @@ export default function NavBar() {
             >
               <Link href={href}>
                 <button
-                  className={`transition-colors font-bold px-3 py-2 rounded-md ${
-                    pathname === href || pathname.startsWith(href + "/")
-                      ? "text-blue-500 font-bold"
-                      : "text-white hover:text-gray-300"
-                  }`}
+                  className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === href || pathname.startsWith(href + "/")
+                    ? "text-blue-500 font-bold"
+                    : "text-white hover:text-gray-300"
+                    }`}
                 >
                   {label}
                 </button>
@@ -237,8 +254,7 @@ export default function NavBar() {
                 className="inline-block mr-2 "
                 style={{ width: "24px", height: "24px" }}
               />
-              {LANGUAGE_OPTIONS.find((opt) => opt.value === i18n.language)
-                ?.lang || "Tiếng Việt"}
+              {currentLang?.lang || t("vietnamese")}
             </button>
             {isLanguageDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
