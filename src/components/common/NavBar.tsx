@@ -14,6 +14,7 @@ import { getCookie } from "@/utils/cookies";
 import { parseJwt } from "@/utils/jwt";
 import Image from "next/image";
 import DarkModeToggle from "./DarkMode";
+import { signOut } from "next-auth/react";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -113,6 +114,7 @@ export default function NavBar() {
   const userRole = getUserRole(user);
 
   const handleLogout = () => {
+    signOut()
     dispatch(logout());
     clearAllAuthData();
     toast.success(tMsg("logoutSuccess"));
