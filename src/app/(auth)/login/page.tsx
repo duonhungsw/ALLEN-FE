@@ -7,18 +7,46 @@ import { useEffect } from "react";
 import GoogleIcon from "@p/svg/google.svg";
 import { useActivateAccount } from "@/hooks/auth/useActiveAccount";
 import Image from "next/image";
-import { getGoogleLoginUrl } from "@/shared/api/auth.api";
 import { useTranslations } from "next-intl";
+import { signIn, useSession } from "next-auth/react";
+import { sendGoogleUserToBackend } from "@/shared/api/auth.api";
+import { parseJwt } from "@/utils/jwt";
+import { setCookie } from "@/utils/cookies";
+import { setStorageData } from "@/shared/store";
 
 export default function LoginPage() {
   const router = useRouter();
   const t = useTranslations();
   const { mutate: activateAccount } = useActivateAccount();
-
+  const { data: session } = useSession();
   const handleLoginWithGoogle = () => {
-    const googleLoginUrl = getGoogleLoginUrl();
-    window.location.href = googleLoginUrl;
+    signIn("google");
   };
+
+  useEffect(() => {
+    if (session?.idToken) {
+      (async () => {
+        try {
+          if (!session.idToken) {
+            throw new Error("No idToken found in session");
+          }
+          const backendData = await sendGoogleUserToBackend({
+            idToken: session.idToken as string,
+          });
+          console.log("Backend response:", backendData);
+          
+          const userInfo = parseJwt(backendData.accessToken);
+          setStorageData('accessToken', backendData.accessToken);
+          setCookie("user", JSON.stringify(userInfo), 30);
+          setCookie("accessToken", backendData.accessToken, 30);
+          setCookie("refreshToken", backendData.refreshToken, 30);
+          router.push("/");
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
+  }, [session, router]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);

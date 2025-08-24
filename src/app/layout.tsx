@@ -9,6 +9,7 @@ import NavBar from "@/components/common/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import SessionProvider from "@/context/SessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,21 +37,24 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <ThemeProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <ReduxProvider>
-              <QueryClientProvider>
-                <AuthHydration />
-                <div className="min-h-screen flex flex-col">
-                  <NavBar />
-                  <main className="flex-1">{children}</main>
-                  {/* <Footer /> */}
-                </div>
-              </QueryClientProvider>
-            </ReduxProvider>
-            <Toaster richColors position="bottom-right" />
-          </NextIntlClientProvider>
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <ReduxProvider>
+                <QueryClientProvider>
+                  <AuthHydration />
+                  <div className="min-h-screen flex flex-col">
+                    <NavBar />
+                    <main className="flex-1">{children}</main>
+                    {/* <Footer /> */}
+                  </div>
+                </QueryClientProvider>
+              </ReduxProvider>
+              <Toaster richColors position="bottom-right" />
+            </NextIntlClientProvider>
+          </ThemeProvider>
+        </SessionProvider>
+
       </body>
     </html>
   );
