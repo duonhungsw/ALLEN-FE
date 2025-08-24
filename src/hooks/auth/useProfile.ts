@@ -1,9 +1,7 @@
-import { setUser } from "@/providers/auth/reducer/authSlice";
 import { updateUserProfile  ,fetchUserProfile } from "@/shared/api/user.api";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/providers/store";
 import { getStorageData } from "@/shared/store";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -36,10 +34,12 @@ export function formatUserClaims(user: UserClaims): FormattedUser {
 }
 
 export const useProfile = () => {
+  const hasMounted = useHasMounted();
+  
   return useQuery({
     queryKey: ['profile'],
     queryFn: fetchUserProfile,
-    enabled: !!getStorageData('accessToken'),
+    enabled: hasMounted && !!getStorageData('accessToken'),
   });
 };
 

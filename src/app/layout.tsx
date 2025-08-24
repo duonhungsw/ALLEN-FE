@@ -7,6 +7,8 @@ import AuthHydration from "@/context/AuthHydration";
 import { Toaster } from "sonner";
 import NavBar from "@/components/common/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,29 +25,31 @@ export const metadata: Metadata = {
   description: "Allen - Learn Anything",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
         <ThemeProvider>
-          <ReduxProvider>
-            <QueryClientProvider>
-              <AuthHydration />
-              <div className="min-h-screen flex flex-col">
-                <NavBar />
-                <main className="flex-1">{children}</main>
-                {/* <Footer /> */}
-              </div>
-            </QueryClientProvider>
-          </ReduxProvider>
-          <Toaster richColors position="top-right" />
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <ReduxProvider>
+              <QueryClientProvider>
+                <AuthHydration />
+                <div className="min-h-screen flex flex-col">
+                  <NavBar />
+                  <main className="flex-1">{children}</main>
+                  {/* <Footer /> */}
+                </div>
+              </QueryClientProvider>
+            </ReduxProvider>
+            <Toaster richColors position="bottom-right" />
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>
