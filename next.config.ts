@@ -1,7 +1,11 @@
 import path from "path";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
+import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
-const nextConfig = {
+const withNextIntl = createNextIntlPlugin();
+
+const nextConfig: NextConfig = {
   output: "standalone",
 
   typescript: {
@@ -30,4 +34,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

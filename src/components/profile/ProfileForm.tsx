@@ -68,7 +68,6 @@ const ProfileForm = ({
   };
 
   const handleFormSubmit = (values: FormValues) => {
-    // Chỉ gửi các field cần thiết cho API update
     const updateData = {
       name: values.name,
       phone: values.phone,
@@ -100,16 +99,25 @@ const ProfileForm = ({
                 isUploading={isUpdating}
               />
 
-              <div className="mt-4">
-                <p className="text-sm text-gray-600">
-                  {isEdit
-                    ? "Click on your avatar to upload a new photo"
-                    : "Your profile picture"}
-                </p>
-                {isEdit && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Supported formats: JPG, PNG, GIF (Max 5MB)
-                  </p>
+              <div className="mt-6">
+                {isEdit ? (
+                  <div className="space-y-2">
+                    <p className="text-sm text-blue-600 font-medium">
+                      ✨ Chế độ chỉnh sửa - Click vào avatar để thay đổi ảnh
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Định dạng: JPG, PNG, GIF (Tối đa 5MB)
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-600">
+                      Ảnh đại diện của bạn
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Click nút &quot;Edit Profile&quot; để chỉnh sửa
+                    </p>
+                  </div>
                 )}
               </div>
             </div>
@@ -118,6 +126,11 @@ const ProfileForm = ({
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
                 <span className="text-blue-500">👤</span>
                 Personal Information
+                {isEdit && (
+                  <span className="ml-2 text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                    ✏️ Chế độ chỉnh sửa
+                  </span>
+                )}
               </h2>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -125,13 +138,21 @@ const ProfileForm = ({
                   <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                     <span className="text-blue-500">📝</span>
                     Full Name
+                    {isEdit && <span className="text-red-500">*</span>}
                   </label>
                   <input
                     type="text"
                     disabled={!isEdit}
-                    placeholder="Enter your full name"
-                    {...register("name", { required: "Name is required" })}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200 disabled:bg-gray-50 disabled:text-gray-500 placeholder:text-gray-400"
+                    placeholder={
+                      isEdit ? "Nhập tên đầy đủ của bạn" : "Tên đầy đủ"
+                    }
+                    {...register("name", {
+                      required: isEdit ? "Tên là bắt buộc" : false,
+                    })}
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 placeholder:text-gray-400 ${isEdit
+                      ? "border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 hover:border-blue-300 bg-white text-gray-800"
+                      : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                   />
                   {errors.name && (
                     <p className="text-red-500 text-sm flex items-center gap-1">
@@ -151,10 +172,10 @@ const ProfileForm = ({
                     disabled
                     placeholder="your.email@example.com"
                     {...register("email")}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 text-gray-600 cursor-not-allowed"
                   />
                   <p className="text-xs text-gray-500">
-                    Email cannot be changed
+                    Email không thể thay đổi
                   </p>
                 </div>
 
@@ -166,9 +187,14 @@ const ProfileForm = ({
                   <input
                     type="tel"
                     disabled={!isEdit}
-                    placeholder="Enter your phone number"
+                    placeholder={
+                      isEdit ? "Nhập số điện thoại" : "Số điện thoại"
+                    }
                     {...register("phone")}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200 disabled:bg-gray-50 disabled:text-gray-500 placeholder:text-gray-400"
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 placeholder:text-gray-400 ${isEdit
+                      ? "border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 hover:border-blue-300 bg-white text-gray-800"
+                      : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                   />
                 </div>
 
@@ -181,7 +207,10 @@ const ProfileForm = ({
                     type="date"
                     disabled={!isEdit}
                     {...register("birthDay")}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200 disabled:bg-gray-50 disabled:text-gray-500"
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 ${isEdit
+                      ? "border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 hover:border-blue-300 bg-white text-gray-800"
+                      : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                   />
                 </div>
               </div>
@@ -214,7 +243,7 @@ const ProfileForm = ({
                     className="w-full sm:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-medium shadow-lg hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     <span>{isUpdating ? "⏳" : "💾"}</span>
-                    {isUpdating ? "Saving..." : "Save Changes"}
+                    {isUpdating ? "Đang lưu..." : "Lưu thay đổi"}
                   </button>
                 </>
               )}

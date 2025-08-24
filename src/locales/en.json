@@ -1,1 +1,87 @@
-{}
+{
+  "nav": {
+    "home": "Home"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "logout": "Logout",
+    "profile": "Profile",
+    "instructor": "Instructor",
+    "welcomeBack": "Welcome Back!",
+    "signInto": "Sign into",
+    "loginToAllen": "Login to Allen",
+    "enterCredentials": "Enter your credentials to access your account",
+    "continueWithGoogle": "Continue with Google",
+    "or": "OR",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "dontHaveAccount": "Don't have an account?",
+    "agreeTerms": "By logging in, you agree to our",
+    "termsPrivacy": "Terms & Privacy",
+    "forgotPasswordTitle": "Forgot Password?",
+    "forgotPasswordSubtitle": "Don't worry, we'll help you",
+    "resetPasswordTitle": "Reset Password",
+    "resetPasswordSubtitle": "Create a new password for your account",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "resetPassword": {
+      "invalidToken": "Invalid token",
+      "invalidTokenDesc": "The reset password link is invalid or has expired.",
+      "requestNewLink": "Request a new reset link",
+
+      "title": "Reset Password",
+      "subtitle": "Create a secure new password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "reEnterPassword": "Re-enter new password",
+      "enterNewPassword": "Enter your new password",
+      "loginWithNewPass": "Login with new password",
+
+      "formTitle": "Reset Your Password",
+      "formSubtitle": "Enter your new password",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 6 characters",
+      "confirmRequired": "Confirm password is required",
+      "confirmNotMatch": "Passwords do not match",
+
+      "submit": "Reset Password",
+      "submitting": "Resetting...",
+      "success": "Password has been reset successfully!",
+
+      "remember": "Remember your password?",
+      "login": "Login"
+    }
+  },
+  "common": {
+    "email": "Email",
+    "password": "Password",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "vietnamese": "Vietnamese",
+    "vietnam": "Vietnamese",
+    "english": "English",
+    "loadingInfo": "Loading information...",
+    "hello": "Hello",
+    "phone": "Phone",
+    "birthDay": "Birthday",
+    "welcomeBack": "Nice to see you again. Keep learning!"
+  },
+  "features": {
+    "sendResetLink": "Send reset link via email",
+    "setNewPassword": "Set new password",
+    "loginWithNewPassword": "Login with new password"
+  },
+  "messages": {
+    "loggingIn": "Logging in...",
+    "registering": "Registering...",
+    "logoutSuccess": "Logout successful!",
+    "languageChanged": "Switched to"
+  },
+  "validation": {
+    "emailInvalid": "Invalid email",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "passwordMismatch": "Password confirmation does not match",
+    "fieldRequired": "This field is required"
+  }
+}
