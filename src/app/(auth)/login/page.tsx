@@ -24,7 +24,7 @@ export default function LoginPage() {
     console.log("Session data:", session);
   }, [session]);
   useEffect(() => {
-    if (session?.idToken) { // 👈 check token thay vì user
+    if (session?.idToken) {
       (async () => {
         try {
           if (!session.idToken) {
@@ -34,10 +34,6 @@ export default function LoginPage() {
             idToken: session.idToken as string,
           });
           console.log("Backend response:", backendData);
-
-          // Nếu backend trả JWT riêng thì lưu lại
-          // localStorage.setItem("accessToken", backendData.token);
-
           router.push("/dashboard");
         } catch (error) {
           console.error(error);
