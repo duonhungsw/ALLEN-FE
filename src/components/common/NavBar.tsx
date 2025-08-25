@@ -212,7 +212,7 @@ export default function NavBar() {
   return (
     <div>
       <header className="bg-gradient-to-l bg-[#0A092D] text-white px-8 py-6 flex justify-between items-center shadow-lg">
-        <div className="flex items-center space-x-3 mt-4">
+        <div className="flex items-center space-x-3 ">
           <motion.div
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.95 }}
@@ -224,7 +224,7 @@ export default function NavBar() {
           </motion.div>
         </div>
 
-        <nav className="flex items-center space-x-6 mt-4">
+        <nav className="flex items-center space-x-6 ">
           {navLinks.map(({ href, label }) => (
             <motion.div
               key={href}
