@@ -10,15 +10,9 @@ export const useAuth = () => {
   const loading = useSelector(selectAuthLoading);
   const router = useRouter();
 
-  // Check if user has valid tokens
   const hasValidTokens = isAuthenticated();
-  
-  // Redirect to login if no valid tokens
+
   useEffect(() => {
-    console.log("loading",loading);
-    console.log("hasValidTokens",hasValidTokens);
-    console.log("isAuth",isAuth);
-    console.log("router",router);
     
     if (!loading && !hasValidTokens && isAuth) {
       if (typeof window !== "undefined" && window.location.pathname !== "/login") {

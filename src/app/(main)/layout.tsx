@@ -11,19 +11,12 @@ interface HomeLayoutProps {
 }
 
 const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
-  // const { t } = useTranslation();
-  // const { isAuthenticated, user, loading } = useAuth();
   const { loading } = useAuth();
-  // const logoutMutation = useLogout();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // const handleLogout = () => {
-  //   logoutMutation.mutate();
-  // };
 
   if (!mounted) {
     return (
