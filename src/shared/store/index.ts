@@ -38,9 +38,9 @@ export const clearAllAuthData = () => {
   deleteCookie("accessToken");
   deleteCookie("refreshToken");
   deleteCookie("user");
-  // deleteCookie("rememberMe");
-  // deleteCookie("rememberedEmail");
-  // deleteCookie("rememberedPassword");
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("user");
 };
 // Token management functions
 export const getAccessToken = () => getStorageData(TOKEN_KEYS.ACCESS_TOKEN);
