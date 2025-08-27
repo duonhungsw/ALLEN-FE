@@ -46,6 +46,7 @@ const ProfileForm = ({
       email: "",
       phone: "",
       birthDay: "",
+      picture: "",
     },
   });
 
@@ -55,7 +56,7 @@ const ProfileForm = ({
         name: data.name || "",
         email: data.email || "",
         phone: data.phone || "",
-        picture: data.picture,
+        picture: data.picture || "",
         birthDay: data.birthDay
           ? dayjs(data.birthDay).format("YYYY-MM-DD")
           : "",

@@ -6,7 +6,6 @@ import { getCookie } from "@/utils/cookies";
 export const fetchUserProfile = async (): Promise<UserInfo> => {
   const { Id, id } = JSON.parse(getCookie('user') || '{}');
   const userId: string = Id || id;
-  console.log("userId",userId);
   const response = await api.get(`${APP_URL}/users/${userId}`, {
   headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -21,7 +20,6 @@ export const updateUserProfile = async (payload: UserInfo): Promise<UserInfo> =>
   const response = await api.patch(`${APP_URL}/users/${userId}`, payload, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      'Content-Type': 'multipart/form-data',
     },
   });
   return response.data;

@@ -2,9 +2,11 @@ export interface UserInfo {
   id: string;
   name: string;
   email: string;
-  phone: string;
+  phone: string | null;
   picture: string;
-  birthDay: string;
+  birthDay: string | null;
+  isDeleted: boolean;
+  role: string;
 }
 
 export interface AuthState {

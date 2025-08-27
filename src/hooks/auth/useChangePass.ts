@@ -1,4 +1,4 @@
-import { changePassword  , forgotPassword, resetPassword} from '@/shared/api/auth.api';
+import { changePassword, forgotPassword, resetPassword} from '@/shared/api/auth.api';
 import { extractErrorMessage } from '@/utils/ErrorHandle';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from "sonner";
@@ -22,8 +22,9 @@ export const useForgotPassword = () => {
     onSuccess: () => {
       toast.success('Password reset link has been sent to your email');
     },
-    onError: () => {
-      toast.error('Failed to send reset link');
+    onError: (error) => {
+      const msg = extractErrorMessage(error);
+      toast.error(msg);
     },
   });
 };

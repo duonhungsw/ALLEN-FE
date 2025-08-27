@@ -1,7 +1,8 @@
 import { updateUserProfile  ,fetchUserProfile } from "@/shared/api/user.api";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getStorageData } from "@/shared/store";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { getCookie } from "@/utils/cookies";
+import { parseJwt } from "@/utils/jwt";
 
 const JWT_CLAIMS = {
   EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
@@ -35,11 +36,18 @@ export function formatUserClaims(user: UserClaims): FormattedUser {
 
 export const useProfile = () => {
   const hasMounted = useHasMounted();
-  
+  const accessToken = getCookie('accessToken');
+  const userId = accessToken ? parseJwt(accessToken)?.Id || parseJwt(accessToken)?.id : null;
   return useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', userId],
     queryFn: fetchUserProfile,
-    enabled: hasMounted && !!getStorageData('accessToken'),
+    enabled: hasMounted && !!accessToken && !!userId,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: false,
+    refetchOnMount: false,
   });
 };
 
