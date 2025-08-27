@@ -37,6 +37,7 @@ export default function LoginPage() {
           
           const userInfo = parseJwt(backendData.accessToken);
           setStorageData('accessToken', backendData.accessToken);
+          setStorageData('refreshToken', backendData.refreshToken); 
           setCookie("user", JSON.stringify(userInfo), 30);
           setCookie("accessToken", backendData.accessToken, 30);
           setCookie("refreshToken", backendData.refreshToken, 30);

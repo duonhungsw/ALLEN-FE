@@ -83,5 +83,48 @@
     "passwordMinLength": "Mật khẩu phải từ 6 ký tự",
     "passwordMismatch": "Mật khẩu xác nhận không khớp",
     "fieldRequired": "Trường này là bắt buộc"
+  },
+  "Home": {
+    "hero_title_main": "Chinh phục tiếng Anh",
+    "hero_title_highlight": "trôi chảy",
+    "hero_subtitle": "Học tiếng Anh với các bài học tương tác, luyện tập cá nhân hóa và hội thoại thực tế. Hãy cùng hàng triệu người học đạt được sự trôi chảy mỗi ngày.",
+    "btn_free_trial": "Bắt đầu học miễn phí",
+    "btn_level_test": "Làm bài kiểm tra trình độ",
+    "features_title": "Tại sao học với chúng tôi?",
+    "features_subtitle": "Khám phá những tính năng khiến nền tảng của chúng tôi trở thành cách học tiếng Anh hiệu quả nhất.",
+    "feature1_title": "Hội thoại tương tác",
+    "feature1_desc": "Luyện nói với gia sư AI và người bản ngữ. Xây dựng sự tự tin thông qua các cuộc trò chuyện tự nhiên.",
+    "feature2_title": "Học tập cá nhân hóa",
+    "feature2_desc": "Bài học thích ứng theo tốc độ và phong cách học của bạn. Theo dõi tiến trình với phân tích chi tiết.",
+    "feature3_title": "Chương trình học toàn diện",
+    "feature3_desc": "Từ cơ bản đến nâng cao. Bao gồm ngữ pháp, từ vựng, phát âm và bối cảnh văn hóa.",
+    "cta_title": "Sẵn sàng nói tiếng Anh tự tin?",
+    "cta_subtitle": "Tham gia cùng hơn 10 triệu người học đã cải thiện kỹ năng tiếng Anh với phương pháp đã được kiểm chứng.",
+    "cta_button": "Bắt đầu học ngay hôm nay"
+  },
+   "Footer": {
+    "description": "Trao quyền cho người học trên toàn thế giới đạt được sự thành thạo tiếng Anh thông qua công nghệ đổi mới.",
+    "learning": {
+      "title": "Học tập",
+      "courses": "Khóa học",
+      "grammarGuide": "Hướng dẫn ngữ pháp",
+      "vocabulary": "Từ vựng",
+      "pronunciation": "Phát âm"
+    },
+    "practice": {
+      "title": "Luyện tập",
+      "speaking": "Luyện nói",
+      "writing": "Bài tập viết",
+      "listening": "Bài kiểm tra nghe",
+      "reading": "Đọc hiểu"
+    },
+    "support": {
+      "title": "Hỗ trợ",
+      "helpCenter": "Trung tâm trợ giúp",
+      "community": "Diễn đàn cộng đồng",
+      "tutoring": "Gia sư trực tuyến",
+      "contact": "Liên hệ"
+    },
+    "rights": "Đã đăng ký bản quyền."
   }
 }
