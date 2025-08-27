@@ -19,8 +19,15 @@ export const login = async (payload: LoginPayload) => {
   return response.data;
 };
 
-export const getGoogleLoginUrl = () => {
-  return `${APP_URL}/auth/signin-google`;
+export const sendGoogleUserToBackend = async (payload: { idToken: string }) => {
+  try {
+    console.log("call api to post data ");
+    const res = await api.post(`${APP_URL}/auth/signin-google`, payload);
+    return res.data;
+  } catch (error: any) {
+    console.error("No response received from backend:", error);
+    throw error; // vẫn throw để chỗ khác xử lý
+  }
 };
 
 export const logout = async () => {

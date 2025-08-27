@@ -20,6 +20,7 @@ export const useLogin = () => {
       const { remember, email, password } = variables;
       const userInfo = parseJwt(data.accessToken);
       setStorageData('accessToken', data.accessToken);
+      setStorageData('refreshToken', data.refreshToken);
 
       if (remember) {
         setCookie("accessToken", data.accessToken, 30);

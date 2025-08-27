@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/useTheme";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import NavBar from "@/components/common/NavBar";
 
 export default function Home() {
   const { data: user, isLoading, error } = useProfile();
@@ -53,6 +54,8 @@ export default function Home() {
   }
 
   return (
+    <>
+    <NavBar />
     <div
       className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}
     >
@@ -101,5 +104,6 @@ export default function Home() {
         </p>
       </motion.div>
     </div>
+    </>
   );
 }

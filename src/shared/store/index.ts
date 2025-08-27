@@ -1,4 +1,5 @@
 import { deleteCookie } from "@/utils/cookies";
+import { TOKEN_KEYS } from "../constants/apiConstants";
 
 const isClient = typeof window !== "undefined";
 
@@ -40,4 +41,13 @@ export const clearAllAuthData = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("user");
+};
+// Token management functions
+export const getAccessToken = () => getStorageData(TOKEN_KEYS.ACCESS_TOKEN);
+export const getRefreshToken = () => getStorageData(TOKEN_KEYS.REFRESH_TOKEN);
+
+export const isAuthenticated = () => {
+  const accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+  return !!(accessToken && refreshToken);
 };

@@ -8,11 +8,22 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   output: "standalone",
 
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/home",
+  //       destination: "/",
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
+
   typescript: {
     ignoreBuildErrors: true,
   },
 
   images: {
+    domains: ["lh3.googleusercontent.com"],
     remotePatterns: [
       {
         protocol: "https",

@@ -83,5 +83,48 @@
     "passwordMinLength": "Password must be at least 6 characters",
     "passwordMismatch": "Password confirmation does not match",
     "fieldRequired": "This field is required"
+  },
+  "Home": {
+    "hero_title_main": "Master English",
+    "hero_title_highlight": "Fluently",
+    "hero_subtitle": "Learn English with interactive lessons, personalized practice, and real-world conversations. Join millions of learners achieving fluency every day.",
+    "btn_free_trial": "Start Free Trial",
+    "btn_level_test": "Take Level Test",
+    "features_title": "Why Learn With Us?",
+    "features_subtitle": "Discover the features that make our platform the most effective way to learn English.",
+    "feature1_title": "Interactive Conversations",
+    "feature1_desc": "Practice speaking with AI tutors and real native speakers. Build confidence through natural conversations.",
+    "feature2_title": "Personalized Learning",
+    "feature2_desc": "Adaptive lessons that adjust to your pace and learning style. Track progress with detailed analytics.",
+    "feature3_title": "Comprehensive Curriculum",
+    "feature3_desc": "From beginner to advanced levels. Grammar, vocabulary, pronunciation, and cultural context all included.",
+    "cta_title": "Ready to Speak English Confidently?",
+    "cta_subtitle": "Join over 10 million learners who have improved their English skills with our proven method.",
+    "cta_button": "Start Learning Today"
+  },
+  "Footer": {
+    "description": "Empowering learners worldwide to achieve English fluency through innovative technology.",
+    "learning": {
+      "title": "Learning",
+      "courses": "Courses",
+      "grammarGuide": "Grammar Guide",
+      "vocabulary": "Vocabulary",
+      "pronunciation": "Pronunciation"
+    },
+    "practice": {
+      "title": "Practice",
+      "speaking": "Speaking Practice",
+      "writing": "Writing Exercises",
+      "listening": "Listening Tests",
+      "reading": "Reading Comprehension"
+    },
+    "support": {
+      "title": "Support",
+      "helpCenter": "Help Center",
+      "community": "Community Forum",
+      "tutoring": "Live Tutoring",
+      "contact": "Contact Us"
+    },
+    "rights": "All rights reserved."
   }
 }
