@@ -13,7 +13,6 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { useProfile } from "@/hooks/auth/useProfile";
 import Image from "next/image";
 import DarkModeToggle from "./DarkMode";
-import { signOut } from "next-auth/react";
 
 export default function NavBar() {
   const hasMounted = useHasMounted();
@@ -72,7 +71,6 @@ export default function NavBar() {
   }
 
   const handleLogout = () => {
-    signOut()
     dispatch(logout());
     clearAllAuthData();
     toast.success(tMsg("logoutSuccess"));
