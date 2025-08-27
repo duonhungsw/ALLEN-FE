@@ -10,34 +10,14 @@ import { useTranslations, useLocale } from "next-intl";
 import { toast } from "sonner";
 import { useState, useRef, useEffect } from "react";
 import { useHasMounted } from "@/hooks/useHasMounted";
-import { getCookie } from "@/utils/cookies";
-import { parseJwt } from "@/utils/jwt";
+import { useProfile } from "@/hooks/auth/useProfile";
 import Image from "next/image";
 import DarkModeToggle from "./DarkMode";
-
-const JWT_CLAIMS = {
-  EMAIL: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-  NAME: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
-  ROLE: "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-} as const;
-
-interface UserClaims {
-  Id: string;
-  Picture: string;
-  aud: string;
-  exp: number;
-  iss: string;
-  [JWT_CLAIMS.EMAIL]: string;
-  [JWT_CLAIMS.NAME]: string;
-  [JWT_CLAIMS.ROLE]: string;
-  [key: string]: unknown;
-}
 
 export default function NavBar() {
   const hasMounted = useHasMounted();
   const dispatch = useDispatch();
-  const accessToken = getCookie("accessToken");
-  const user: UserClaims | null = accessToken ? parseJwt(accessToken) : null;
+  const { data: user, isLoading } = useProfile();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
@@ -46,7 +26,6 @@ export default function NavBar() {
   const tMsg = useTranslations("messages");
   const tNav = useTranslations("nav");
   const tAuth = useTranslations("auth");
-
 
   const locale = useLocale();
 
@@ -63,9 +42,7 @@ export default function NavBar() {
     },
   ];
 
-  const currentLang = LANGUAGE_OPTIONS.find(
-    (opt) => opt.value === locale
-  );
+  const currentLang = LANGUAGE_OPTIONS.find((opt) => opt.value === locale);
 
   const languageDropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -85,32 +62,13 @@ export default function NavBar() {
     };
   }, [isLanguageDropdownOpen]);
 
-  if (!hasMounted) {
+  if (!hasMounted || isLoading) {
     return (
       <div className="h-screen flex justify-center items-center">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
-
-  const getUserName = (user: UserClaims | null): string => {
-    if (!user) return "User";
-    return user[JWT_CLAIMS.NAME] || "User";
-  };
-
-  const getUserEmail = (user: UserClaims | null): string => {
-    if (!user) return "";
-    return user[JWT_CLAIMS.EMAIL] || "";
-  };
-
-  const getUserRole = (user: UserClaims | null): string => {
-    if (!user) return "";
-    return user[JWT_CLAIMS.ROLE] || "";
-  };
-
-  const userName = getUserName(user);
-  const userEmail = getUserEmail(user);
-  const userRole = getUserRole(user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -139,10 +97,11 @@ export default function NavBar() {
         >
           <Link
             href={path}
-            className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === path
-              ? "text-yellow-300"
-              : "text-white hover:text-gray-300"
-              }`}
+            className={`transition-colors font-bold px-3 py-2 rounded-md ${
+              pathname === path
+                ? "text-yellow-300"
+                : "text-white hover:text-gray-300"
+            }`}
           >
             {path === "/login" ? tAuth("signIn") : tAuth("signUp")}
           </Link>
@@ -166,19 +125,21 @@ export default function NavBar() {
             <motion.span transition={{ duration: 0.2 }} className="ml-1">
               👤
             </motion.span>
-            {userName}
+            {user?.name || "User"}
           </button>
         </motion.div>
 
         {isUserDropdownOpen && (
           <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50">
             <div className="px-4 py-2 border-b border-gray-200">
-              <div className="font-bold text-gray-800">{userName}</div>
-              {userEmail && (
-                <div className="text-xs text-gray-500">{userEmail}</div>
+              <div className="font-bold text-gray-800">
+                {user?.name || "User"}
+              </div>
+              {user?.email && (
+                <div className="text-xs text-gray-500">{user.email}</div>
               )}
-              {userRole && (
-                <div className="text-xs text-gray-400 italic">{userRole}</div>
+              {user?.role && (
+                <div className="text-xs text-gray-400 italic">{user.role}</div>
               )}
             </div>
             <Link href="/personal">
@@ -186,13 +147,14 @@ export default function NavBar() {
                 {tAuth("profile")}
               </button>
             </Link>
-            {userRole === "instructor" && (
-              <Link href="/instructor">
+            {user?.role === "admin" && (
+              <Link href="/admin">
                 <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  {tAuth("instructor")}
+                  {tAuth("admin")}
                 </button>
               </Link>
             )}
+
             <button
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -231,10 +193,11 @@ export default function NavBar() {
             >
               <Link href={href}>
                 <button
-                  className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === href || pathname.startsWith(href + "/")
-                    ? "text-blue-500 font-bold"
-                    : "text-white hover:text-gray-300"
-                    }`}
+                  className={`transition-colors font-bold px-3 py-2 rounded-md ${
+                    pathname === href || pathname.startsWith(href + "/")
+                      ? "text-blue-500 font-bold"
+                      : "text-white hover:text-gray-300"
+                  }`}
                 >
                   {label}
                 </button>
