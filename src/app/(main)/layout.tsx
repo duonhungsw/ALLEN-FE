@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { useAuth } from '@/hooks/auth/useAuth';
-import NavBar from '@/components/common/NavBar';
+// import NavBar from '@/components/common/NavBar';
+import { Sidebar } from '@/components/common/SideBar';
 // import { useLogout } from "@/hooks/auth/useLogout";
 
 interface HomeLayoutProps {
@@ -36,9 +37,12 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col" >
-      <NavBar/>
+      {/* <NavBar/> */}
       <main className="flex-1 bg-gray-50 overflow-y-auto">
-        {children}
+        <div className="flex h-screen bg-slate-50">
+          <Sidebar />
+          <main className="flex-1 overflow-auto">{children}</main>
+        </div>
       </main>
     </div>
   );
