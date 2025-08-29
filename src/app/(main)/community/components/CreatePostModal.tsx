@@ -202,6 +202,9 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
               {selectedImages.map((image, index) => (
                 <div key={index} className="relative">
                   <Image
+                    width={0}
+                    height={0}
+                    sizes="100vw"
                     src={image || "/placeholder.svg"}
                     alt={`Upload ${index + 1}`}
                     className="w-full h-32 object-cover rounded-lg"

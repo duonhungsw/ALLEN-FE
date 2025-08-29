@@ -12,11 +12,35 @@ import { PostCard } from "./components/PostCard"
 import { RankingSidebar } from "./components/RankingSidebar"
 import { Search, TrendingUp } from "lucide-react"
 
+interface Post {
+  id: number
+  author: {
+    name: string
+    avatar: string
+    level: string
+    points: number
+  }
+  content: string
+  images?: string[]
+  timestamp: string
+  likes: number
+  comments: number
+  shares: number
+  category: string
+  privacy: string
+  reactions: {
+    like: number
+    love: number
+    wow: number
+  }
+}
+
 export default function CommunityPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("all")
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+
   const [posts, setPosts] = useState([
     {
       id: 1,
@@ -91,7 +115,7 @@ export default function CommunityPage() {
     },
   ])
 
-  const addNewPost = (newPost: any) => {
+  const addNewPost = (newPost: Post) => {
     setPosts([newPost, ...posts])
   }
 

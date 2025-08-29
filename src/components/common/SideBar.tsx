@@ -20,9 +20,10 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import { getCookie } from "@/utils/cookies"
 import { useLocale, useTranslations } from "next-intl"
 import { toast } from "sonner";
+import { parseJwt } from "@/utils/jwt";
+
 
 const navigation = [
   { name: "Trang chủ", href: "/", icon: Home },
@@ -35,11 +36,16 @@ const navigation = [
   { name: "Cộng đồng", href: "/community", icon: Users },
 ]
 
+interface User {
+  id?: string;
+  name?: string;
+  email?: string;
+  picture?: string;
+  role?: string;
+}
+
 export function Sidebar() {
-  const [user, setUser] = useState<any>(() => {
-    const cookie = getCookie("user");
-    return cookie ? JSON.parse(cookie as string) : {};
-  });
+  const [user, setUser] = useState<User | null>(null);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
@@ -47,6 +53,22 @@ export function Sidebar() {
   const tSidebar = useTranslations("Sidebar");
   const locale = useLocale();
   
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken != null) {
+      const rawUserData = parseJwt(accessToken);
+  
+      const userData: User = {
+        id: rawUserData.Id,
+        name: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'User',
+        email: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || '',
+        picture: rawUserData['Picture'] || '',
+        role: rawUserData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || '',
+      };
+  
+      setUser(userData);
+    }
+  }, []);
 
   const LANGUAGE_OPTIONS = [
     {
@@ -93,7 +115,6 @@ export function Sidebar() {
     toast.info(`${tSidebar("languageChanged")} ${languageName}`);
   };
 
-  
   return (
     <div
       className={cn("bg-slate-900 text-white transition-all duration-300 flex flex-col", collapsed ? "w-[72px]" : "w-64")}
@@ -103,7 +124,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between">
           {!collapsed && (
             <div>
-              <h1 className="text-lg font-bold text-teal-400">EnglishAI</h1>
+              <h1 className="text-lg font-bold text-teal-400">Allen</h1>
               <p className="text-xs text-slate-400">Learning Platform</p>
             </div>
           )}

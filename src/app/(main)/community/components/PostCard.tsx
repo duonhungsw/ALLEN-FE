@@ -421,8 +421,8 @@ const getTopReactions = () => {
                 src={selectedImage || "/placeholder.svg"}
                 alt="Full size"
                 width={0}
-                  height={0}
-                  sizes="100vw"
+                height={0}
+                sizes="100vw"
                 className="w-full h-auto max-h-[80vh] object-contain"
               />
               <Button
