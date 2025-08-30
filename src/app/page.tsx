@@ -12,7 +12,6 @@ export default function Home() {
   const { customColors } = useTheme();
   const hasMounted = useHasMounted();
 
-  // Chỉ render khi đã mount trên client để tránh hydration mismatch
   if (!hasMounted) {
     return (
       <div className="relative min-h-screen w-full bg-white dark:bg-gray-900 flex items-center justify-center p-4">
