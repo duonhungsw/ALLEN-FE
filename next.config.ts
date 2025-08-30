@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ["hebbkx1anhila5yf.public.blob.vercel-storage.com","lh3.googleusercontent.com"],
     remotePatterns: [
       {
         protocol: "https",
