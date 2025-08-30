@@ -11,9 +11,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Main Content */}
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="py-20 px-4 text-center bg-gradient-to-b from-blue-50 to-white">
           <div className="container mx-auto max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
@@ -34,7 +32,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Features Section */}
         <section className="py-20 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-16">
@@ -111,7 +108,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="py-20 px-4 bg-gray-900 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">{tHome("cta_title")}</h2>

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { useAuth } from '@/hooks/auth/useAuth';
+import { useAuth } from "@/hooks/auth/useAuth";
 // import NavBar from '@/components/common/NavBar';
-import { Sidebar } from '@/components/common/SideBar';
+import { Sidebar } from "@/components/common/SideBar";
 // import { useLogout } from "@/hooks/auth/useLogout";
 
 interface HomeLayoutProps {
@@ -36,12 +36,12 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" >
+    <div className="min-h-screen flex flex-col ">
       {/* <NavBar/> */}
-      <main className="flex-1 bg-gray-50 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto">
         <div className="flex h-screen bg-slate-50">
           <Sidebar />
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex-1 overflow-auto bg-[#132024]">{children}</main>
         </div>
       </main>
     </div>
