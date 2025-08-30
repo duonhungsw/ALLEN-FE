@@ -126,5 +126,82 @@
       "contact": "Contact Us"
     },
     "rights": "All rights reserved."
+  },
+  "Sidebar": {
+    "vietnam":"Vietnam",
+    "english":"English",
+    "languageChanged":"Switched to",
+    "vietnamese":"Vietnamese"
+  },
+  "CreatePost": {
+    "title": "Create Post",
+    "placeholder": "What's on your mind?",
+    "privacy": {
+      "public": "Public",
+      "friends": "Friends",
+      "private": "Only me"
+    },
+    "category": {
+      "placeholder": "Choose post topic",
+      "study": "Study",
+      "tips": "Study Tips",
+      "question": "Q&A",
+      "sharing": "Sharing",
+      "motivation": "Motivation"
+    },
+    "addToPost": "Add to your post",
+    "postButton": "Post",
+    "justNow": "Just now"
+  },
+  "FAQSidebar": {
+    "frequentQuestions": "Frequently Asked Questions",
+    "searchPlaceholder": "Search questions...",
+    "views": "views",
+    "categories": "Categories",
+    "all": "All",
+    "categoryNames": {
+      "study": "Study",
+      "tips": "Study Tips",
+      "question": "Q&A",
+      "sharing": "Sharing",
+      "motivation": "Motivation",
+      "grammar": "Grammar",
+      "pronunciation": "Pronunciation",
+      "ielts": "IELTS",
+      "toeic": "TOEIC",
+      "business": "Business English"
+    }
+  },
+  "PostCard": {
+    "points": "points",
+    "comments": "comments",
+    "shares": "shares",
+    "reactions": {
+      "like": "Like",
+      "love": "Love",
+      "wow": "Wow"
+    },
+    "actions": {
+      "comment": "Comment",
+      "share": "Share"
+    },
+    "commentPlaceholder": "Write a comment...",
+    "replyPlaceholder": "Write a reply...",
+    "likeAction": "Like",
+    "replyAction": "Reply",
+    "reactionModalTitle": "People who reacted",
+    "imageCommentPlaceholder": "Comment on this image...",
+    "justNow": "Just now",
+    "you": "You"
+  },
+  "RankingSidebar": {
+    "title": "Leaderboard",
+    "periods": {
+      "week": "Week",
+      "month": "Month",
+      "year": "Year"
+    },
+    "points": "points",
+    "you": "You"
   }
 }
