@@ -126,5 +126,82 @@
       "contact": "Liên hệ"
     },
     "rights": "Đã đăng ký bản quyền."
+  },
+  "Sidebar": {
+    "vietnam":"Tiếng Việt",
+    "english":"Tiếng Anh",
+    "languageChanged":"Đã chuyển sang",
+    "vietnamese":"Tiếng Việt"
+  },
+  "CreatePost": {
+    "title": "Tạo bài viết",
+    "placeholder": "Bạn đang nghĩ gì?",
+    "privacy": {
+      "public": "Công khai",
+      "friends": "Bạn bè",
+      "private": "Chỉ mình tôi"
+    },
+    "category": {
+      "placeholder": "Chọn chủ đề bài viết",
+      "study": "Học tập",
+      "tips": "Mẹo học",
+      "question": "Hỏi đáp",
+      "sharing": "Chia sẻ",
+      "motivation": "Động lực"
+    },
+    "addToPost": "Thêm vào bài viết của bạn",
+    "postButton": "Đăng",
+    "justNow": "Vừa xong"
+  },
+  "FAQSidebar": {
+    "frequentQuestions": "Câu hỏi được quan tâm",
+    "searchPlaceholder": "Tìm câu hỏi...",
+    "views": "lượt xem",
+    "categories": "Thể loại",
+    "all": "Tất cả",
+    "categoryNames": {
+      "study": "Học tập",
+      "tips": "Mẹo học",
+      "question": "Hỏi đáp",
+      "sharing": "Chia sẻ",
+      "motivation": "Động lực",
+      "grammar": "Ngữ pháp",
+      "pronunciation": "Phát âm",
+      "ielts": "IELTS",
+      "toeic": "TOEIC",
+      "business": "Business English"
+    }
+  },
+  "PostCard": {
+    "points": "điểm",
+    "comments": "bình luận",
+    "shares": "chia sẻ",
+    "reactions": {
+      "like": "Thích",
+      "love": "Yêu thích",
+      "wow": "Wow"
+    },
+    "actions": {
+      "comment": "Bình luận",
+      "share": "Chia sẻ"
+    },
+    "commentPlaceholder": "Viết bình luận...",
+    "replyPlaceholder": "Viết trả lời...",
+    "likeAction": "Thích",
+    "replyAction": "Trả lời",
+    "reactionModalTitle": "Người đã thả cảm xúc",
+    "imageCommentPlaceholder": "Bình luận về ảnh này...",
+    "justNow": "Vừa xong",
+    "you": "Bạn"
+  },
+  "RankingSidebar": {
+    "title": "Bảng xếp hạng",
+    "periods": {
+      "week": "Tuần",
+      "month": "Tháng",
+      "year": "Năm"
+    },
+    "points": "điểm",
+    "you": "Bạn"
   }
 }
