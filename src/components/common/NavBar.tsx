@@ -13,6 +13,7 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { useProfile } from "@/hooks/auth/useProfile";
 import Image from "next/image";
 import DarkModeToggle from "./DarkMode";
+import { signOut } from "next-auth/react";
 
 export default function NavBar() {
   const hasMounted = useHasMounted();
@@ -26,9 +27,7 @@ export default function NavBar() {
   const tMsg = useTranslations("messages");
   const tNav = useTranslations("nav");
   const tAuth = useTranslations("auth");
-
   const locale = useLocale();
-
   const LANGUAGE_OPTIONS = [
     {
       value: "vi",
@@ -43,7 +42,6 @@ export default function NavBar() {
   ];
 
   const currentLang = LANGUAGE_OPTIONS.find((opt) => opt.value === locale);
-
   const languageDropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -69,12 +67,16 @@ export default function NavBar() {
       </div>
     );
   }
-
-  const handleLogout = () => {
-    dispatch(logout());
-    clearAllAuthData();
-    toast.success(tMsg("logoutSuccess"));
-    router.push("/login");
+  const handleLogout = async () => {
+    try {
+      await signOut({ redirect: false });
+      dispatch(logout());
+      clearAllAuthData();
+      toast.success(tMsg("logoutSuccess"));
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const handleChangeLanguage = (lang: string) => {
