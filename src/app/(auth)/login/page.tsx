@@ -3,6 +3,7 @@
 import LoginForm from "@/components/login/LoginForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import React, { useRef, ComponentType } from "react";
 import { useEffect } from "react";
 import GoogleIcon from "@p/svg/google.svg";
 import { useActivateAccount } from "@/hooks/auth/useActiveAccount";
@@ -13,6 +14,52 @@ import { sendGoogleUserToBackend } from "@/shared/api/auth.api";
 import { parseJwt } from "@/utils/jwt";
 import { setCookie } from "@/utils/cookies";
 import { setStorageData } from "@/shared/store";
+import * as THREE from "three";
+import CoffeeModel from "../../../models/Coffee";
+import { Canvas, useFrame } from "@react-three/fiber";
+import Triangle from "@/models/Triangle";
+import DodecahedronModel from "@/models/Dodecahedron";
+import BookModel from "@/models/BookModel";
+import StickyNote from "@/models/StickyNote";
+import Pencil1 from "@/models/Pencil1";
+import RuleModel from "@/models/Rule";
+import { OrbitControls } from "@react-three/drei";
+
+interface ModelProps {
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale: [number, number, number];
+  ref?: React.Ref<THREE.Object3D>;
+}
+
+interface RotatingModelProps extends ModelProps {
+  ModelComponent: ComponentType<ModelProps>;
+}
+
+function RotatingModel({
+  ModelComponent,
+  position,
+  rotation,
+  scale,
+}: RotatingModelProps) {
+  const ref = useRef<THREE.Object3D>(null);
+
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.rotation.y += 0.005;
+      ref.current.rotation.x += 0.002;
+    }
+  });
+
+  return (
+    <ModelComponent
+      ref={ref}
+      position={position}
+      rotation={rotation}
+      scale={scale}
+    />
+  );
+}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,11 +80,9 @@ export default function LoginPage() {
           const backendData = await sendGoogleUserToBackend({
             idToken: session.idToken as string,
           });
-          console.log("Backend response:", backendData);
-          
           const userInfo = parseJwt(backendData.accessToken);
-          setStorageData('accessToken', backendData.accessToken);
-          setStorageData('refreshToken', backendData.refreshToken); 
+          setStorageData("accessToken", backendData.accessToken);
+          setStorageData("refreshToken", backendData.refreshToken);
           setCookie("user", JSON.stringify(userInfo), 30);
           setCookie("accessToken", backendData.accessToken, 30);
           setCookie("refreshToken", backendData.refreshToken, 30);
@@ -59,121 +104,153 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 p-4 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+    <div className="relative flex justify-center items-center w-full h-screen bg-[#131F24] to-indigo-900">
+      <div className="absolute inset-0 pointer-events-none">
+        <Canvas>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[5, 5, 5]} intensity={2} />
+          <pointLight position={[-2, 2, 2]} intensity={5} />
+          <RotatingModel
+            ModelComponent={CoffeeModel}
+            position={[-3, 3, -2]}
+            rotation={[1.5, 0.8, -0.5]}
+            scale={[0.004, 0.004, 0.004]}
+          />
+          <RotatingModel
+            ModelComponent={DodecahedronModel}
+            position={[3, 3, -2]}
+            rotation={[2.2, 1.2, -0.8]}
+            scale={[0.005, 0.005, 0.005]}
+          />
+          <RotatingModel
+            ModelComponent={BookModel}
+            position={[4, -3, -1]}
+            rotation={[0.5, 1.5, -0.3]}
+            scale={[0.006, 0.006, 0.006]}
+          />
+          <RotatingModel
+            ModelComponent={StickyNote}
+            position={[-4, -2.5, 0]}
+            rotation={[0.2, 0.6, 0.1]}
+            scale={[0.05, 0.05, 0.05]}
+          />
+          <RotatingModel
+            ModelComponent={Pencil1}
+            position={[5, -1.5, -0.8]}
+            rotation={[0.3, 1.8, -0.6]}
+            scale={[0.004, 0.004, 0.004]}
+          />
+          <RotatingModel
+            ModelComponent={RuleModel}
+            position={[2, -2.5, -1.5]}
+            rotation={[0.4, 1.2, -0.4]}
+            scale={[0.004, 0.004, 0.004]}
+          />
+
+          {/* Thêm các model mới */}
+          <RotatingModel
+            ModelComponent={CoffeeModel}
+            position={[-5, 1, -1.5]}
+            rotation={[0.8, 1.5, -0.3]}
+            scale={[0.003, 0.003, 0.003]}
+          />
+          <RotatingModel
+            ModelComponent={DodecahedronModel}
+            position={[6, 1, -1.5]}
+            rotation={[1.2, 0.8, -0.6]}
+            scale={[0.004, 0.004, 0.004]}
+          />
+          <RotatingModel
+            ModelComponent={BookModel}
+            position={[-6, -1, -2]}
+            rotation={[0.3, 1.8, -0.4]}
+            scale={[0.005, 0.005, 0.005]}
+          />
+          <RotatingModel
+            ModelComponent={StickyNote}
+            position={[7, -1, -2]}
+            rotation={[0.1, 0.9, 0.2]}
+            scale={[0.04, 0.04, 0.04]}
+          />
+          <RotatingModel
+            ModelComponent={Pencil1}
+            position={[-7, 2, -1]}
+            rotation={[0.6, 1.2, -0.5]}
+            scale={[0.003, 0.003, 0.003]}
+          />
+          <RotatingModel
+            ModelComponent={RuleModel}
+            position={[8, 2, -1]}
+            rotation={[0.9, 0.7, -0.3]}
+            scale={[0.003, 0.003, 0.003]}
+          />
+
+          {/* Thêm các model ở góc và giữa */}
+          <RotatingModel
+            ModelComponent={CoffeeModel}
+            position={[-4, 0, -0.5]}
+            rotation={[1.1, 1.3, -0.2]}
+            scale={[0.002, 0.002, 0.002]}
+          />
+          <RotatingModel
+            ModelComponent={DodecahedronModel}
+            position={[4, 0, -0.5]}
+            rotation={[0.7, 1.6, -0.4]}
+            scale={[0.003, 0.003, 0.003]}
+          />
+          <RotatingModel
+            ModelComponent={BookModel}
+            position={[0, -4, -1.5]}
+            rotation={[0.4, 1.1, -0.6]}
+            scale={[0.004, 0.004, 0.004]}
+          />
+          <RotatingModel
+            ModelComponent={StickyNote}
+            position={[-2, 4, -1.8]}
+            rotation={[0.5, 0.8, 0.3]}
+            scale={[0.03, 0.03, 0.03]}
+          />
+          <RotatingModel
+            ModelComponent={Pencil1}
+            position={[2, 4, -1.8]}
+            rotation={[0.8, 1.4, -0.7]}
+            scale={[0.002, 0.002, 0.002]}
+          />
+
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            enableRotate={false}
+          />
+          <RotatingModel
+            ModelComponent={Triangle}
+            position={[0, 2.5, -1]}
+            rotation={[1.8, 1.0, -0.7]}
+            scale={[0.008, 0.008, 0.008]}
+          />
+        </Canvas>
       </div>
-
-      <div className="w-full max-w-4xl bg-white/90 dark:bg-gray-800/90 rounded-3xl shadow-2xl flex flex-col lg:flex-row overflow-hidden backdrop-blur-sm border border-white/20">
-        <div className="hidden lg:flex flex-col justify-center items-center bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-12 w-1/2 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            ></div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-white text-center relative z-10"
-          >
-            <div className="mb-8">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm"
-              >
-                <svg
-                  className="w-10 h-10 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
-              </motion.div>
-            </div>
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-              {t("auth.welcomeBack")}
-            </h1>
-            <p className="text-xl text-blue-100 leading-relaxed">
-              {t("auth.signInto")}
-            </p>
-          </motion.div>
-        </div>
-
-        <div className="flex-1 flex flex-col justify-center items-center p-8 lg:p-12">
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="w-full max-w-md"
-          >
-            <div className="text-center mb-8">
-              <motion.h2
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-3xl font-bold text-gray-800 dark:text-white mb-2"
-              >
-                {t("auth.loginToAllen")}
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="text-gray-600 dark:text-gray-300"
-              >
-                {t("auth.enterCredentials")}
-              </motion.p>
-            </div>
-
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              type="button"
-              onClick={handleLoginWithGoogle}
-              className="flex cursor-pointer text-gray-700 dark:text-gray-200 items-center justify-center w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 py-3 px-6 font-semibold bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200 transform hover:scale-[1.02] shadow-sm hover:shadow-md mb-6"
-            >
-              <Image
-                src={GoogleIcon}
-                alt="Google Icon"
-                width={20}
-                height={20}
-                className="mr-3"
-              />
-              {t("auth.continueWithGoogle")}
-            </motion.button>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="relative my-6"
-            >
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
-                  {t("auth.or")}
-                </span>
-              </div>
-            </motion.div>
-
+      <div className="absolute flex flex-col justify-center items-center p-8 lg:p-12 pointer-events-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 rounded-3xl shadow-lg bg-white/70 w-[500px]">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-white text-center"
+        >
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+            {t("auth.welcomeBack")}
+          </h1>
+          <p className="text-xl text-blue-100 leading-relaxed">
+            {t("auth.signInto")}
+          </p>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="w-full max-w-md"
+        >
+          <div className="relative z-10">
             <AnimatePresence mode="wait">
               <motion.div
                 key="login"
@@ -185,35 +262,69 @@ export default function LoginPage() {
                 <LoginForm />
               </motion.div>
             </AnimatePresence>
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-              className="text-center mt-8 space-y-4"
-            >
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {t("auth.dontHaveAccount")}{" "}
-                <button
-                  type="button"
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
-                  onClick={() => router.push("/register")}
-                >
-                  {t("auth.signUp")}
-                </button>
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-500">
-                {t("auth.agreeTerms")}{" "}
-                <a
-                  className="underline hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                  href="#"
-                >
-                  {t("auth.termsPrivacy")}
-                </a>
-              </div>
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            className="relative my-6"
+          >
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
+                {t("auth.or")}
+              </span>
+            </div>
           </motion.div>
-        </div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            type="button"
+            onClick={handleLoginWithGoogle}
+            className="flex cursor-pointer text-gray-700 dark:text-gray-200 items-center justify-center w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 py-3 px-6 font-semibold bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200 transform hover:scale-[1.02] shadow-sm hover:shadow-md mb-6"
+          >
+            <Image
+              src={GoogleIcon}
+              alt="Google Icon"
+              width={20}
+              height={20}
+              className="mr-3"
+            />
+            {t("auth.continueWithGoogle")}
+          </motion.button>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
+            className="text-center mt-8 space-y-4"
+          >
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {t("auth.dontHaveAccount")}{" "}
+              <button
+                type="button"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
+                onClick={() => router.push("/register")}
+              >
+                {t("auth.signUp")}
+              </button>
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-500">
+              {t("auth.agreeTerms")}{" "}
+              <a
+                className="underline hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                href="#"
+              >
+                {t("auth.termsPrivacy")}
+              </a>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
