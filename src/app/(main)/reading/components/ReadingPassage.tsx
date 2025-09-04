@@ -1,0 +1,52 @@
+import React, { RefObject } from "react"
+import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card"
+import { Exercise } from "@/providers/auth/types/readingType"
+
+interface ReadingPassageProps {
+  exercise: Exercise
+  vocabularyMode: boolean
+  renderTextWithClickableWords: (text: string) => React.ReactNode
+  getFontSizeClass: () => string
+  textRef: RefObject<HTMLDivElement | null>
+  handleTextSelection: () => void
+}
+
+const ReadingPassage: React.FC<ReadingPassageProps> = ({
+  exercise,
+  vocabularyMode,
+  renderTextWithClickableWords,
+  getFontSizeClass,
+  textRef,
+  handleTextSelection,
+}) => (
+  <Card>
+    <CardContent className="p-6">
+      <div className="mb-4">
+        <Image
+          width={0}
+          height={0}
+          sizes="100vw"
+          src={exercise.image || "/placeholder.svg"}
+          alt={exercise.title}
+          className="w-48 h-32 object-cover rounded-lg mb-4"
+        />
+        <h2 className="text-xl font-bold text-slate-900 mb-2">[Recent Tests-Bộ VOL] - {exercise.title}</h2>
+      </div>
+      <div
+        ref={textRef}
+        className={`prose max-w-none text-slate-800 leading-relaxed ${getFontSizeClass()}`}
+        onMouseUp={handleTextSelection}
+      >
+        {exercise.passage.split("\n\n").map((paragraph: string, index: number) => (
+          <p key={index} className="mb-4">
+            <strong className="mr-2">{String.fromCharCode(65 + index)}.</strong>
+            {vocabularyMode ? renderTextWithClickableWords(paragraph) : paragraph}
+          </p>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+)
+
+export default ReadingPassage
