@@ -28,8 +28,8 @@ import { parseJwt } from "@/utils/jwt";
 const navigation = [
   { name: "Trang chủ", href: "/", icon: Home },
   { name: "Lộ trình học", href: "/course", icon: BookOpen },
-  { name: "Luyện nghe", href: "/listening", icon: Headphones },
-  { name: "Luyện nói", href: "/speaking", icon: Mic },
+  { name: "Luyện nghe", href: "/learning/listening", icon: Headphones },
+  { name: "Luyện nói", href: "/learning/speaking", icon: Mic },
   { name: "Luyện đọc", href: "/reading", icon: FileText },
   { name: "Luyện viết", href: "/writing", icon: PenTool },
   { name: "Từ vựng", href: "/vocabulary", icon: Brain },
@@ -119,7 +119,6 @@ export function Sidebar() {
     <div
       className={cn("bg-slate-900 text-white transition-all duration-300 flex flex-col", collapsed ? "w-[72px]" : "w-64")}
     >
-      {/* Header */}
       <div className="p-4 border-b border-slate-700">
         <div className="flex items-center justify-between">
           {!collapsed && (
@@ -139,7 +138,6 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* User Profile */}
       <div className="p-4 border-b border-slate-700">
         <div className="flex items-center space-x-3">
           <Image
