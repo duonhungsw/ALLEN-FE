@@ -23,17 +23,21 @@ import BookModel from "@/models/BookModel";
 import StickyNote from "@/models/StickyNote";
 import Pencil1 from "@/models/Pencil1";
 import RuleModel from "@/models/Rule";
+import Link from "next/link"
 import { OrbitControls } from "@react-three/drei";
 
 interface ModelProps {
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: [number, number, number];
+  ref?: React.Ref<THREE.Group>;
+}
+
+interface RotatingModelProps {
+  ModelComponent: ComponentType<any>;
   position: [number, number, number];
   rotation: [number, number, number];
   scale: [number, number, number];
-  ref?: React.Ref<THREE.Object3D>;
-}
-
-interface RotatingModelProps extends ModelProps {
-  ModelComponent: ComponentType<ModelProps>;
 }
 
 function RotatingModel({
@@ -42,7 +46,7 @@ function RotatingModel({
   rotation,
   scale,
 }: RotatingModelProps) {
-  const ref = useRef<THREE.Object3D>(null);
+  const ref = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (ref.current) {
@@ -110,6 +114,7 @@ export default function LoginPage() {
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 5, 5]} intensity={2} />
           <pointLight position={[-2, 2, 2]} intensity={5} />
+
           <RotatingModel
             ModelComponent={CoffeeModel}
             position={[-3, 3, -2]}
@@ -130,9 +135,9 @@ export default function LoginPage() {
           />
           <RotatingModel
             ModelComponent={StickyNote}
-            position={[-4, -2.5, 0]}
-            rotation={[0.2, 0.6, 0.1]}
-            scale={[0.05, 0.05, 0.05]}
+            position={[-1, 2, 0]}
+            rotation={[0.3, 0.8, 0.2]}
+            scale={[0.02, 0.02, 0.02]}
           />
           <RotatingModel
             ModelComponent={Pencil1}
@@ -147,7 +152,6 @@ export default function LoginPage() {
             scale={[0.004, 0.004, 0.004]}
           />
 
-          {/* Thêm các model mới */}
           <RotatingModel
             ModelComponent={CoffeeModel}
             position={[-5, 1, -1.5]}
@@ -170,7 +174,7 @@ export default function LoginPage() {
             ModelComponent={StickyNote}
             position={[7, -1, -2]}
             rotation={[0.1, 0.9, 0.2]}
-            scale={[0.04, 0.04, 0.04]}
+            scale={[0.02, 0.02, 0.04]}
           />
           <RotatingModel
             ModelComponent={Pencil1}
@@ -185,7 +189,6 @@ export default function LoginPage() {
             scale={[0.003, 0.003, 0.003]}
           />
 
-          {/* Thêm các model ở góc và giữa */}
           <RotatingModel
             ModelComponent={CoffeeModel}
             position={[-4, 0, -0.5]}
@@ -306,13 +309,12 @@ export default function LoginPage() {
           >
             <div className="text-sm text-gray-600 dark:text-gray-400">
               {t("auth.dontHaveAccount")}{" "}
-              <button
-                type="button"
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
-                onClick={() => router.push("/register")}
+              <Link
+                href="/register"
+                className="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
               >
                 {t("auth.signUp")}
-              </button>
+              </Link>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-500">
               {t("auth.agreeTerms")}{" "}

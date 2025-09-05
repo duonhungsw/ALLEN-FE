@@ -3,7 +3,7 @@ import { JSX } from "react";
 type GroupProps = JSX.IntrinsicElements["group"];
 import { Color, MeshStandardMaterial } from "three";
 
-function StickyNote(props: GroupProps) {
+function StickyNote(props: JSX.IntrinsicElements["group"]) {
   const { nodes }: any = useGLTF("/models/tools.glb");
   return (
     <group {...props}>
@@ -28,7 +28,7 @@ function StickyNote(props: GroupProps) {
             color: new Color(0xee4c36a),
           })
         }
-        position={[-10.433, 4.705, 13.086]}
+        position={[-8.433, 4.705, 3.086]}
         scale={1.522}
       />
     </group>
