@@ -1,11 +1,10 @@
 import path from "path";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
-import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   output: "standalone",
 
   // async redirects() {
@@ -36,7 +35,7 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
-      "@": path.resolve(__dirname, "src"),
+      "@": path.resolve(process.cwd(), "src"),
     };
 
     config.plugins.push(new CaseSensitivePathsPlugin());

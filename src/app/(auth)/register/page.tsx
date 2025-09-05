@@ -2,7 +2,6 @@
 
 import RegisterForm from "@/components/register/RegisterForm";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
 import React, { useRef, ComponentType } from "react";
 import GoogleIcon from "@p/svg/google.svg";
 import Image from "next/image";
@@ -10,7 +9,7 @@ import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import * as THREE from "three";
 import CoffeeModel from "../../../models/Coffee";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, } from "@react-three/fiber";
 import Triangle from "@/models/Triangle";
 import DodecahedronModel from "@/models/Dodecahedron";
 import BookModel from "@/models/BookModel";
@@ -18,14 +17,13 @@ import StickyNote from "@/models/StickyNote";
 import Pencil1 from "@/models/Pencil1";
 import RuleModel from "@/models/Rule";
 import { OrbitControls } from "@react-three/drei";
+import Link from "next/link"
 
 interface ModelProps {
   position: [number, number, number];
   rotation: [number, number, number];
   scale: [number, number, number];
-  ref?: React.Ref<THREE.Object3D>;
 }
-
 interface RotatingModelProps extends ModelProps {
   ModelComponent: ComponentType<ModelProps>;
 }
@@ -36,7 +34,7 @@ function RotatingModel({
   rotation,
   scale,
 }: RotatingModelProps) {
-  const ref = useRef<THREE.Object3D>(null);
+  const ref = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (ref.current) {
@@ -56,7 +54,6 @@ function RotatingModel({
 }
 
 export default function RegisterPage() {
-  const router = useRouter();
   const t = useTranslations();
 
   const handleLoginWithGoogle = () => {
@@ -71,28 +68,28 @@ export default function RegisterPage() {
           <directionalLight position={[5, 5, 5]} intensity={2} />
           <pointLight position={[-2, 2, 2]} intensity={5} />
           <RotatingModel
-            ModelComponent={CoffeeModel}
-            position={[-3, 3, -2]}
-            rotation={[1.5, 0.8, -0.5]}
+            ModelComponent={BookModel}
+            position={[-5, 1.5, -1]}
+            rotation={[0, 1, -1.2]}
             scale={[0.004, 0.004, 0.004]}
           />
           <RotatingModel
-            ModelComponent={DodecahedronModel}
-            position={[3, 3, -2]}
-            rotation={[2.2, 1.2, -0.8]}
-            scale={[0.005, 0.005, 0.005]}
+            ModelComponent={BookModel}
+            position={[5, -4.5, -2]}
+            rotation={[0, 1, -1.2]}
+            scale={[0.004, 0.004, 0.004]}
           />
           <RotatingModel
             ModelComponent={BookModel}
-            position={[4, -3, -1]}
-            rotation={[0.5, 1.5, -0.3]}
-            scale={[0.006, 0.006, 0.006]}
+            position={[2, -1.5, -2]}
+            rotation={[0, 1, -1.2]}
+            scale={[0.004, 0.004, 0.004]}
           />
           <RotatingModel
             ModelComponent={StickyNote}
-            position={[-4, -2.5, 0]}
-            rotation={[0.2, 0.6, 0.1]}
-            scale={[0.05, 0.05, 0.05]}
+            position={[-4.5, -3, 0]}
+            rotation={[0.3, 0.8, 0.2]}
+            scale={[0.04, 0.04, 0.04]}
           />
           <RotatingModel
             ModelComponent={Pencil1}
@@ -143,12 +140,11 @@ export default function RegisterPage() {
             rotation={[0.9, 0.7, -0.3]}
             scale={[0.003, 0.003, 0.003]}
           />
-
           <RotatingModel
-            ModelComponent={CoffeeModel}
-            position={[-4, 0, -0.5]}
-            rotation={[1.1, 1.3, -0.2]}
-            scale={[0.002, 0.002, 0.002]}
+            ModelComponent={BookModel}
+            position={[5, -4.5, -2]}
+            rotation={[0, 1, -1.2]}
+            scale={[0.004, 0.004, 0.004]}
           />
           <RotatingModel
             ModelComponent={DodecahedronModel}
@@ -264,13 +260,13 @@ export default function RegisterPage() {
           >
             <div className="text-sm text-gray-600 dark:text-gray-400">
               {t("auth.alreadyHaveAccount")}{" "}
-              <button
+              <Link
+                href="/login"
                 type="button"
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
-                onClick={() => router.push("/login")}
+                className="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
               >
                 {t("auth.signIn")}
-              </button>
+              </Link>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-500">
               {t("auth.agreeTerms")}{" "}
