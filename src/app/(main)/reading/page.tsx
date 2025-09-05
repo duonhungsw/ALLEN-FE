@@ -5,12 +5,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft } from "lucide-react"
-import ExerciseCard from "./components/ExerciseCard"
-import StatsSection from "./components/StatsSection"
-import FiltersSection from "./components/FiltersSection"
-import TipsSection from "./components/TipsSection"
-import { fullArticles, individualPassages, categories, levels } from "./constants/mockData"
-import { filterExercises } from "./utils/filterUtils"
+import ExerciseCard from "../../../components/reading/ExerciseCard"
+import StatsSection from "../../../components/reading/StatsSection"
+import FiltersSection from "../../../components/reading/FiltersSection"
+import TipsSection from "../../../components/reading/TipsSection"
+import { fullArticles, individualPassages, categories, levels } from "../../../shared/constants/reading/mockData"
+import { filterExercises } from "../../../utils/filterUtils"
 
 export default function ReadingPage() {
   const [selectedTab, setSelectedTab] = useState("full")

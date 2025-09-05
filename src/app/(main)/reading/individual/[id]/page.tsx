@@ -1,19 +1,19 @@
 "use client"
 
 import { useState, useRef, use } from "react"
-import IndividualReadingHeader from "../../components/IndividualReadingHeader"
-import IndividualReadingPassage from "../../components/IndividualReadingPassage"
-import IndividualQuestionsPanel from "../../components/IndividualQuestionsPanel"
-import IndividualVocabularyPopup from "../../components/IndividualVocabularyPopup"
-import { useTimer } from "../../hooks/useTimer"
-import { useVocabulary } from "../../hooks/useVocabulary"
-import { useHighlight } from "../../hooks/useHighlight"
-import { individualExercise } from "../../constants/individualMockData"
+import IndividualReadingHeader from "@/components/reading/IndividualReadingHeader"
+import IndividualReadingPassage from "@/components/reading/IndividualReadingPassage"
+import IndividualQuestionsPanel from "@/components/reading/IndividualQuestionsPanel"
+import IndividualVocabularyPopup from "@/components/reading/IndividualVocabularyPopup"
+import { useTimer } from "@/hooks/reading/useTimer"
+import { useVocabulary } from "@/hooks/reading/useVocabulary"
+import { useHighlight } from "@/hooks/reading/useHighlight"
+import { individualExercise } from "@/shared/constants/reading/individualMockData"
 
 export default function IndividualReadingPage({ params }: { params: Promise<{ id: string }> }) {
   const [highlightMode, setHighlightMode] = useState(true)
   const [vocabularyMode, setVocabularyMode] = useState(false)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
+  const [answers, setAnswers] = useState<Record<string, string>>({})
   const textRef = useRef<HTMLDivElement>(null)
 
   // Custom hooks

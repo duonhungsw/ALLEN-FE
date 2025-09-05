@@ -4,8 +4,8 @@ import { Exercise } from "@/providers/auth/types/readingType"
 
 interface QuestionsPanelProps {
   exercise: Exercise
-  answers: Record<number, string>
-  setAnswers: (a: Record<number, string>) => void
+  answers: Record<string, string>
+  setAnswers: (a: Record<string, string>) => void
   showExplanation: number | null
   setShowExplanation: (n: number | null) => void
   completeExercise: () => void

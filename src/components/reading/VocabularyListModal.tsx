@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { mockVocabulary } from "../constants/mockData"
+import { mockVocabulary } from "../../shared/constants/reading/mockData"
 
 interface VocabularyListModalProps {
   open: boolean

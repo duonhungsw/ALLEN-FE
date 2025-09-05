@@ -4,20 +4,20 @@ import type React from "react"
 
 import { useState, useRef, useEffect, use } from "react"
 import { VocabularyPopup, Highlight, VocabularyWord, VocabularyData } from "@/providers/auth/types/readingType"
-import ShowResult from "../../components/ShowResult"
-import QuestionNavigation from "../../components/QuestionNavigation"
-import ReadingHeader from "../../components/ReadingHeader"
-import ReadingPassage from "../../components/ReadingPassage"
-import VocabularyTranslationSection from "../../components/VocabularyTranslationSection"
-import QuestionsPanel from "../../components/QuestionsPanel"
-import FloatingButtons from "../../components/FloatingButtons"
-import VocabularyPopupModal from "../../components/VocabularyPopupModal"
-import HighlightNoteDialog from "../../components/HighlightNoteDialog"
-import VocabularyListModal from "../../components/VocabularyListModal"
-import AIChatModal from "../../components/AIChatModal"
-import SettingsModal from "../../components/SettingsModal"
-import DislikeFeedbackModal from "../../components/DislikeFeedbackModal"
-import { exercise } from "../../constants/mockData"
+import ShowResult from "@/components/reading/ShowResult"
+import QuestionNavigation from "@/components/reading/QuestionNavigation"
+import ReadingHeader from "@/components/reading/ReadingHeader"
+import ReadingPassage from "@/components/reading/ReadingPassage"
+import VocabularyTranslationSection from "@/components/reading/VocabularyTranslationSection"
+import QuestionsPanel from "@/components/reading/QuestionsPanel"
+import FloatingButtons from "@/components/reading/FloatingButtons"
+import VocabularyPopupModal from "@/components/reading/VocabularyPopupModal"
+import HighlightNoteDialog from "@/components/reading/HighlightNoteDialog"
+import VocabularyListModal from "@/components/reading/VocabularyListModal"
+import AIChatModal from "@/components/reading/AIChatModal"
+import SettingsModal from "@/components/reading/SettingsModal"
+import DislikeFeedbackModal from "@/components/reading/DislikeFeedbackModal"
+import { exercise } from "@/shared/constants/reading/mockData"
 
 export default function FullReadingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -32,7 +32,7 @@ export default function FullReadingPage({ params }: { params: Promise<{ id: stri
     visible: false,
   })
   const [currentQuestion, setCurrentQuestion] = useState(1)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
+  const [answers, setAnswers] = useState<Record<string, string>>({})
   const [showResults, setShowResults] = useState(false)
   const [showVocabularyList, setShowVocabularyList] = useState(false)
   const [showAIChat, setShowAIChat] = useState(false)

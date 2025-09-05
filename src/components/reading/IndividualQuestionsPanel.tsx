@@ -3,8 +3,8 @@ import { Question } from "@/providers/auth/types/readingType"
 
 interface IndividualQuestionsPanelProps {
   questions: Question[]
-  answers: Record<number, string>
-  handleAnswerChange: (questionId: number, value: string) => void
+  answers: Record<string, string>
+  handleAnswerChange: (questionId: string, value: string) => void
   onComplete?: () => void
 }
 
@@ -20,7 +20,7 @@ export default function IndividualQuestionsPanel({
         <h3 className="text-lg font-bold text-slate-900">Questions 1-{questions.length}</h3>
 
         {questions.map((question) => {
-          const qid: number = typeof question.id === "number" ? question.id : parseInt(String(question.id), 10)
+          const qid: string = String(question.id)
           return (
             <div key={question.id} className="space-y-3">
               <div className="flex items-start space-x-3">
