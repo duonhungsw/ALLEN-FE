@@ -21,10 +21,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // Tối ưu performance
   swcMinify: true,
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
 
@@ -45,7 +43,6 @@ const nextConfig = {
       "@": path.resolve(process.cwd(), "src"),
     };
 
-    // Chỉ thêm CaseSensitivePathsPlugin trong production
     if (!dev) {
       config.plugins.push(new CaseSensitivePathsPlugin());
     }
@@ -58,7 +55,6 @@ const nextConfig = {
       };
     }
 
-    // Tối ưu bundle size
     config.optimization = {
       ...config.optimization,
       splitChunks: {
