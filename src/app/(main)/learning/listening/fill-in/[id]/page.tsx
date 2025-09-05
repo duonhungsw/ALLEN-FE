@@ -174,11 +174,11 @@ export default function FillInPage({ params }: { params: { id: string } }) {
 
                         <div className="flex space-x-4">
                             <Link href="/learning/listening" className="flex-1">
-                                <Button variant="outline" className="w-full border-gray-600 text-white hover:bg-gray-700">
+                                <Button variant="outline" className="w-full border-gray-600 text-white hover:bg-gray-700 cursor-pointer">
                                     Quay lại danh sách
                                 </Button>
                             </Link>
-                            <Button className="flex-1 text-white border-0 hover:opacity-90" style={{ backgroundColor: '#93D333' }} onClick={() => window.location.reload()}>
+                            <Button className="flex-1 text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }} onClick={() => window.location.reload()}>
                                 Làm lại
                             </Button>
                         </div>
@@ -194,7 +194,7 @@ export default function FillInPage({ params }: { params: { id: string } }) {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         <Link href="/learning/listening">
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700">
+                            <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 cursor-pointer">
                                 <ArrowLeft className="h-4 w-4 mr-2" />
                                 Quay lại
                             </Button>
@@ -231,12 +231,12 @@ export default function FillInPage({ params }: { params: { id: string } }) {
                                     <h3 className="text-lg font-semibold mb-4 text-white">Nghe và điền từ</h3>
 
                                     <div className="flex justify-center space-x-4 mb-6">
-                                        <Button onClick={playAudio} disabled={isPlaying} className="text-white border-0 hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
+                                        <Button onClick={playAudio} disabled={isPlaying} className="text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
                                             {isPlaying ? <Pause className="h-5 w-5 mr-2" /> : <Play className="h-5 w-5 mr-2" />}
                                             {isPlaying ? "Đang phát..." : "Phát âm thanh"}
                                         </Button>
 
-                                        <Button variant="outline" onClick={resetBlank} className="border-gray-600 text-white hover:bg-gray-700">
+                                        <Button variant="outline" onClick={resetBlank} className="border-gray-600 text-white hover:bg-gray-700 cursor-pointer">
                                             <RotateCcw className="h-5 w-5 mr-2" />
                                             Làm lại
                                         </Button>
@@ -271,7 +271,7 @@ export default function FillInPage({ params }: { params: { id: string } }) {
                                             <Button
                                                 onClick={checkAnswer}
                                                 disabled={!userAnswers[currentBlank]?.trim()}
-                                                className="flex-1 text-white border-0 hover:opacity-90"
+                                                className="flex-1 text-white border-0 hover:opacity-90 cursor-pointer"
                                                 style={{ backgroundColor: '#93D333' }}
                                             >
                                                 Kiểm tra
@@ -279,7 +279,7 @@ export default function FillInPage({ params }: { params: { id: string } }) {
                                             <Button
                                                 onClick={() => setShowHint(!showHint)}
                                                 variant="outline"
-                                                className="border-gray-600 text-white hover:bg-gray-700"
+                                                className="border-gray-600 text-white hover:bg-gray-700 cursor-pointer"
                                             >
                                                 <Lightbulb className="h-4 w-4 mr-2" />
                                                 Gợi ý
@@ -317,7 +317,7 @@ export default function FillInPage({ params }: { params: { id: string } }) {
                                                 </div>
                                             </div>
 
-                                            <Button onClick={nextBlank} className="w-full text-white border-0 hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
+                                            <Button onClick={nextBlank} className="w-full text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
                                                 {currentBlank < exercise.blanks.length - 1 ? "Chỗ trống tiếp theo" : "Hoàn thành"}
                                             </Button>
                                         </div>
