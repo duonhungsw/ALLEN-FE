@@ -30,9 +30,9 @@ const navigation = [
   { name: "Lộ trình học", href: "/course", icon: BookOpen },
   { name: "Luyện nghe", href: "/learning/listening", icon: Headphones },
   { name: "Luyện nói", href: "/learning/speaking", icon: Mic },
-  { name: "Luyện đọc", href: "/reading", icon: FileText },
-  { name: "Luyện viết", href: "/writing", icon: PenTool },
-  { name: "Từ vựng", href: "/vocabulary", icon: Brain },
+  { name: "Luyện đọc", href: "/learning/reading", icon: FileText },
+  { name: "Luyện viết", href: "/learning/writing", icon: PenTool },
+  { name: "Từ vựng", href: "/learning/vocabulary", icon: Brain },
   { name: "Cộng đồng", href: "/community", icon: Users },
 ]
 
