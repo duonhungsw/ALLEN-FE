@@ -58,8 +58,6 @@ export default function Home() {
     <div
       className={`relative min-h-screen w-full ${customColors.bodyBg} flex items-center justify-center p-4 transition-colors duration-500`}
     >
-      <div className="absolute top-0 left-0 w-full h-full bg-[url('/grid.svg')] bg-repeat opacity-5 dark:opacity-20"></div>
-
       <motion.div
         initial={{ opacity: 0, y: -20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
