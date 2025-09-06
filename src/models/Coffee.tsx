@@ -1,9 +1,8 @@
 import { useGLTF } from "@react-three/drei";
 import { JSX } from "react";
-type GroupProps = JSX.IntrinsicElements["group"];
 import { Color, MeshStandardMaterial } from "three";
 
-function CoffeeModel(props: GroupProps) {
+function CoffeeModel(props: JSX.IntrinsicElements["group"]) {
   const { nodes }: any = useGLTF("/models/tools.glb");
   return (
     <group {...props}>

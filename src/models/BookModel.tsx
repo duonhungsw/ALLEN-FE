@@ -19,7 +19,7 @@ function BookModel(props: GroupProps) {
           }
           position={[2.731, -60.024, -28.132]}
           rotation={[1.008, -1.426, -0.29]}
-          scale={[0.361, 0.398, 0.659]}
+          scale={[0.161, 0.398, 0.659]}
         />
         <mesh
           castShadow

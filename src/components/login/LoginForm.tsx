@@ -82,11 +82,11 @@ export default function LoginForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors z-10"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors z-10 cursor-pointer"
                 >
                   {!showPassword ? (
                     <svg
-                      className="h-5 w-5"
+                      className="h-5 w-5 cursor-pointer"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -100,7 +100,7 @@ export default function LoginForm() {
                     </svg>
                   ) : (
                     <svg
-                      className="h-5 w-5"
+                      className="h-5 w-5 cursor-pointer"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
