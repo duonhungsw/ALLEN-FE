@@ -5,11 +5,12 @@ import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
 import { Toaster } from "sonner";
-import NavBar from "@/components/common/NavBar";
+// import NavBar from "@/components/common/NavBar";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import SessionProvider from "@/context/SessionProvider";
+import Cursor from "@/models/cursor";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -46,6 +47,7 @@ export default async function RootLayout({
                   <div className="min-h-screen flex flex-col">
                     {/* <NavBar /> */}
                     <main className="flex-1">{children}</main>
+                    <Cursor />
                     {/* <Footer /> */}
                   </div>
                 </QueryClientProvider>

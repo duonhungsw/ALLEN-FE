@@ -1,12 +1,13 @@
 import { useGLTF } from "@react-three/drei";
-import { JSX } from "react";
-type GroupProps = JSX.IntrinsicElements["group"];
+import { forwardRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
+import * as THREE from "three";
 
-function BookModel(props: GroupProps) {
+const BookModel = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>((props, ref) => {
   const { nodes }: any = useGLTF("/models/tools.glb");
+  
   return (
-    <group {...props}>
+    <group ref={ref} {...props}>
       <group position={[0, 0, 0]} scale={[1.847, 3.361, 3.073]}>
         <mesh
           castShadow
@@ -62,6 +63,8 @@ function BookModel(props: GroupProps) {
       </group>
     </group>
   );
-}
+});
+
+BookModel.displayName = "BookModel";
 
 export default BookModel;
