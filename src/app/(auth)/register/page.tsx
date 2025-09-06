@@ -19,13 +19,11 @@ import RuleModel from "@/models/Rule";
 import { OrbitControls } from "@react-three/drei";
 import Link from "next/link"
 
-interface ModelProps {
+interface RotatingModelProps {
+  ModelComponent: any;
   position: [number, number, number];
   rotation: [number, number, number];
   scale: [number, number, number];
-}
-interface RotatingModelProps extends ModelProps {
-  ModelComponent: ComponentType<ModelProps>;
 }
 
 function RotatingModel({
@@ -62,34 +60,37 @@ export default function RegisterPage() {
 
   return (
     <div className="relative flex justify-center items-center w-full h-screen bg-[#131F24] to-indigo-900">
+      <div className="absolute inset-0 bg-white/5 pointer-events-none"></div>
+
       <div className="absolute inset-0 pointer-events-none">
         <Canvas>
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 5, 5]} intensity={2} />
           <pointLight position={[-2, 2, 2]} intensity={5} />
+
           <RotatingModel
-            ModelComponent={BookModel}
-            position={[-5, 1.5, -1]}
-            rotation={[0, 1, -1.2]}
+            ModelComponent={CoffeeModel}
+            position={[-5, 3, -2]}
+            rotation={[1.5, 0.8, -0.5]}
             scale={[0.004, 0.004, 0.004]}
           />
           <RotatingModel
-            ModelComponent={BookModel}
-            position={[5, -4.5, -2]}
-            rotation={[0, 1, -1.2]}
-            scale={[0.004, 0.004, 0.004]}
+            ModelComponent={DodecahedronModel}
+            position={[3, -3, -2]}
+            rotation={[2.2, 1.2, -0.8]}
+            scale={[0.005, 0.005, 0.005]}
           />
           <RotatingModel
             ModelComponent={BookModel}
-            position={[2, -1.5, -2]}
-            rotation={[0, 1, -1.2]}
-            scale={[0.004, 0.004, 0.004]}
+            position={[6, -3, -1]}
+            rotation={[0.5, 1.5, -0.3]}
+            scale={[0.002, 0.002, 0.004]}
           />
           <RotatingModel
             ModelComponent={StickyNote}
-            position={[-4.5, -3, 0]}
+            position={[-6, 0, 0]}
             rotation={[0.3, 0.8, 0.2]}
-            scale={[0.04, 0.04, 0.04]}
+            scale={[0.009, 0.009, 0.009]}
           />
           <RotatingModel
             ModelComponent={Pencil1}
@@ -99,7 +100,7 @@ export default function RegisterPage() {
           />
           <RotatingModel
             ModelComponent={RuleModel}
-            position={[2, -2.5, -1.5]}
+            position={[4, -2.5, -1.5]}
             rotation={[0.4, 1.2, -0.4]}
             scale={[0.004, 0.004, 0.004]}
           />
@@ -118,19 +119,25 @@ export default function RegisterPage() {
           />
           <RotatingModel
             ModelComponent={BookModel}
-            position={[-6, -1, -2]}
-            rotation={[0.3, 1.8, -0.4]}
+            position={[-7, -3, -2]}
+            rotation={[0.03, 2.8, -1.9]}
             scale={[0.005, 0.005, 0.005]}
           />
           <RotatingModel
             ModelComponent={StickyNote}
-            position={[7, -1, -2]}
-            rotation={[0.1, 0.9, 0.2]}
-            scale={[0.04, 0.04, 0.04]}
+            position={[5, -1, -2]}
+            rotation={[0.1, 0.2, 0.2]}
+            scale={[0.01, 0.009, 0.009]}
           />
           <RotatingModel
             ModelComponent={Pencil1}
             position={[-7, 2, -1]}
+            rotation={[0.6, 1.2, -0.5]}
+            scale={[0.003, 0.003, 0.003]}
+          />
+            <RotatingModel
+            ModelComponent={Pencil1}
+            position={[7, 2, -1]}
             rotation={[0.6, 1.2, -0.5]}
             scale={[0.003, 0.003, 0.003]}
           />
@@ -140,11 +147,12 @@ export default function RegisterPage() {
             rotation={[0.9, 0.7, -0.3]}
             scale={[0.003, 0.003, 0.003]}
           />
+
           <RotatingModel
-            ModelComponent={BookModel}
-            position={[5, -4.5, -2]}
-            rotation={[0, 1, -1.2]}
-            scale={[0.004, 0.004, 0.004]}
+            ModelComponent={CoffeeModel}
+            position={[-4, 0, -4.5]}
+            rotation={[1.1, 1.3, -0.2]}
+            scale={[0.01, 0.01, 0.01]}
           />
           <RotatingModel
             ModelComponent={DodecahedronModel}
@@ -154,13 +162,13 @@ export default function RegisterPage() {
           />
           <RotatingModel
             ModelComponent={BookModel}
-            position={[0, -4, -1.5]}
+            position={[8, 4, -1.5]}
             rotation={[0.4, 1.1, -0.6]}
             scale={[0.004, 0.004, 0.004]}
           />
           <RotatingModel
             ModelComponent={StickyNote}
-            position={[-2, 4, -1.8]}
+            position={[-5, 4, -1.8]}
             rotation={[0.5, 0.8, 0.3]}
             scale={[0.03, 0.03, 0.03]}
           />
@@ -178,23 +186,23 @@ export default function RegisterPage() {
           />
           <RotatingModel
             ModelComponent={Triangle}
-            position={[0, 2.5, -1]}
+            position={[5, 2.5, -1]}
             rotation={[1.8, 1.0, -0.7]}
             scale={[0.008, 0.008, 0.008]}
           />
         </Canvas>
       </div>
-      <div className="absolute flex flex-col justify-center items-center p-8 lg:p-12 pointer-events-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 rounded-3xl shadow-lg bg-white/70 w-[500px]">
+      <div className="absolute flex flex-col justify-center items-center p-8 lg:p-12 pointer-events-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 rounded-3xl shadow-lg bg-white/70 w-[500px] h-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-white text-center"
         >
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r to-indigo-900 ">
             {t("auth.createAccount")}
           </h1>
-          <p className="text-xl text-blue-100 leading-relaxed">
+          <p className="text-xl leading-relaxed bg-white/5 pointer-events-none">
             {t("auth.joinAllen")}
           </p>
         </motion.div>

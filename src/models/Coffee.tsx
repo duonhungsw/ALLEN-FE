@@ -1,11 +1,12 @@
 import { useGLTF } from "@react-three/drei";
-import { JSX } from "react";
+import { forwardRef } from "react";
+import * as THREE from "three";
 import { Color, MeshStandardMaterial } from "three";
 
-function CoffeeModel(props: JSX.IntrinsicElements["group"]) {
+const CoffeeModel = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>((props, ref) => {
   const { nodes }: any = useGLTF("/models/tools.glb");
   return (
-    <group {...props}>
+    <group ref={ref} {...props}>
       <group scale={1.355}>
         <mesh
           castShadow
@@ -48,6 +49,7 @@ function CoffeeModel(props: JSX.IntrinsicElements["group"]) {
       </group>
     </group>
   );
-}
+});
 
+CoffeeModel.displayName = "CoffeeModel"; 
 export default CoffeeModel;

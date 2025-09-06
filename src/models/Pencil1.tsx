@@ -1,12 +1,13 @@
 import { useGLTF } from "@react-three/drei";
 import { JSX } from "react";
-type GroupProps = JSX.IntrinsicElements["group"];
+import { forwardRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
+import * as THREE from "three";
 
-function Pencil1(props: GroupProps) {
+const Pencil1 = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>((props, ref) => {
   const { nodes }: any = useGLTF("/models/tools.glb");
   return (
-    <group {...props}>
+    <group ref={ref} {...props}>
       <mesh
         castShadow
         receiveShadow
@@ -62,6 +63,8 @@ function Pencil1(props: GroupProps) {
       />
     </group>
   );
-}
+});
+
+Pencil1.displayName = "Pencil1";
 
 export default Pencil1;

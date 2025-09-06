@@ -1,12 +1,13 @@
 import { useGLTF } from "@react-three/drei";
-import { JSX } from "react";
-type GroupProps = JSX.IntrinsicElements["group"];
+import { forwardRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
+import * as THREE from "three";
 
-function Triangle(props: GroupProps) {
+const Triangle = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>((props, ref) => {
   const { nodes }: any = useGLTF("/models/tools.glb");
+  
   return (
-    <group {...props}>
+    <group ref={ref} {...props}>
       <mesh
         castShadow
         receiveShadow
@@ -22,6 +23,8 @@ function Triangle(props: GroupProps) {
       />
     </group>
   );
-}
+});
+
+Triangle.displayName = "Triangle";
 
 export default Triangle;
