@@ -1,12 +1,13 @@
 import { useGLTF } from "@react-three/drei";
-import { JSX } from "react";
-type GroupProps = JSX.IntrinsicElements["group"];
+import { forwardRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
+import * as THREE from "three";
 
-function StickyNote(props: JSX.IntrinsicElements["group"]) {
+const StickyNote = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>((props, ref) => {
   const { nodes }: any = useGLTF("/models/tools.glb");
+  
   return (
-    <group {...props}>
+    <group ref={ref} {...props}>
       <mesh
         castShadow
         receiveShadow
@@ -25,7 +26,7 @@ function StickyNote(props: JSX.IntrinsicElements["group"]) {
         geometry={nodes.body.geometry}
         material={
           new MeshStandardMaterial({
-            color: new Color(0xee4c36a),
+            color: new Color(0xe4c36a),  // ← Sửa lỗi typo: 0xee4c36a → 0xe4c36a
           })
         }
         position={[-8.433, 4.705, 3.086]}
@@ -33,6 +34,8 @@ function StickyNote(props: JSX.IntrinsicElements["group"]) {
       />
     </group>
   );
-}
+});
+
+StickyNote.displayName = "StickyNote";
 
 export default StickyNote;

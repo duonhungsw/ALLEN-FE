@@ -1,12 +1,13 @@
 import { useGLTF } from "@react-three/drei";
 import { JSX } from "react";
-type GroupProps = JSX.IntrinsicElements["group"];
+import { forwardRef } from "react";
+import * as THREE from "three";
 import { Color, MeshStandardMaterial } from "three";
 
-function DodecahedronModel(props: GroupProps) {
+const DodecahedronModel = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>((props, ref) => {
   const { nodes }: any = useGLTF("/models/tools.glb");
   return (
-    <group {...props}>
+    <group ref={ref} {...props}>
       <mesh
         castShadow
         receiveShadow
@@ -19,6 +20,7 @@ function DodecahedronModel(props: GroupProps) {
       />
     </group>
   );
-}
+});
 
+DodecahedronModel.displayName = "DodecahedronModel";
 export default DodecahedronModel;
