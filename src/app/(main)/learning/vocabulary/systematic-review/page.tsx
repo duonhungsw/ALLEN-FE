@@ -9,8 +9,22 @@ import { Loader2, ArrowLeft, Brain, Target, TrendingUp, BookOpen } from "lucide-
 
 export default function SystematicReviewPage() {
   const [isGenerating, setIsGenerating] = useState(false)
-  const [studyPlan, setStudyPlan] = useState<any>(null)
-  const [userProfile, setUserProfile] = useState({
+  const [studyPlan, setStudyPlan] = useState<{
+    overview: string;
+    weeklyFocus: string;
+    dailyPlans: {
+      day: number;
+      theme: string;
+      activities: {
+        activity: string;
+        duration: string;
+        description: string;
+        priority: string;
+      }[];
+    }[];
+    tips: string[];
+  } | null>(null)
+  const [userProfile] = useState({
     level: "Intermediate",
     weakAreas: ["Pronunciation", "Advanced Grammar"],
     strengths: ["Basic Vocabulary", "Reading Comprehension"],
@@ -22,37 +36,6 @@ export default function SystematicReviewPage() {
     setIsGenerating(true)
 
     try {
-      // Simulate API call to Gemini
-      const prompt = `
-        Create a personalized English learning study plan for a user with the following profile:
-        - Level: ${userProfile.level}
-        - Weak areas: ${userProfile.weakAreas.join(", ")}
-        - Strengths: ${userProfile.strengths.join(", ")}
-        - Available study time: ${userProfile.studyTime} minutes per day
-        - Goals: ${userProfile.goals.join(", ")}
-        
-        Please provide a structured 7-day study plan with specific activities, focus areas, and time allocation.
-        Format the response as JSON with the following structure:
-        {
-          "overview": "Brief overview of the plan",
-          "weeklyFocus": "Main focus for this week",
-          "dailyPlans": [
-            {
-              "day": 1,
-              "theme": "Day theme",
-              "activities": [
-                {
-                  "activity": "Activity name",
-                  "duration": "Duration in minutes",
-                  "description": "What to do",
-                  "priority": "high/medium/low"
-                }
-              ]
-            }
-          ],
-          "tips": ["Tip 1", "Tip 2", "Tip 3"]
-        }
-      `
 
       // Mock response (in real implementation, this would call Gemini API)
       await new Promise((resolve) => setTimeout(resolve, 2000)) // Simulate API delay
@@ -269,64 +252,64 @@ export default function SystematicReviewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
       <div className="container mx-auto px-6 py-8 max-w-6xl">
         {/* Header */}
         <div className="flex items-center mb-6">
           <Link href="/vocabulary">
-            <Button variant="ghost" size="sm" className="mr-4">
+            <Button variant="ghost" size="sm" className="mr-4 text-white hover:bg-gray-700">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Quay lại
             </Button>
           </Link>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-slate-900">Ôn tập có hệ thống</h1>
-            <p className="text-slate-600">Kế hoạch học tập cá nhân hóa được tạo bởi AI</p>
+            <h1 className="text-2xl font-bold text-white">Ôn tập có hệ thống</h1>
+            <p className="text-gray-300">Kế hoạch học tập cá nhân hóa được tạo bởi AI</p>
           </div>
         </div>
 
         {!studyPlan ? (
           <div className="space-y-6">
             {/* User Profile */}
-            <Card>
+            <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Brain className="h-5 w-5 mr-2 text-purple-600" />
+                <CardTitle className="flex items-center text-white">
+                  <Brain className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
                   Hồ sơ học tập của bạn
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold mb-2">Trình độ hiện tại</h4>
+                    <h4 className="font-semibold mb-2 text-white">Trình độ hiện tại</h4>
                     <Badge className="bg-blue-500">{userProfile.level}</Badge>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Thời gian học mỗi ngày</h4>
-                    <p className="text-slate-600">{userProfile.studyTime} phút</p>
+                    <h4 className="font-semibold mb-2 text-white">Thời gian học mỗi ngày</h4>
+                    <p className="text-gray-300">{userProfile.studyTime} phút</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Điểm yếu cần cải thiện</h4>
+                    <h4 className="font-semibold mb-2 text-white">Điểm yếu cần cải thiện</h4>
                     <div className="flex flex-wrap gap-2">
                       {userProfile.weakAreas.map((area, index) => (
-                        <Badge key={index} variant="outline" className="text-red-600 border-red-600">
+                        <Badge key={index} variant="outline" className="text-red-400 border-red-500">
                           {area}
                         </Badge>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Điểm mạnh</h4>
+                    <h4 className="font-semibold mb-2 text-white">Điểm mạnh</h4>
                     <div className="flex flex-wrap gap-2">
                       {userProfile.strengths.map((strength, index) => (
-                        <Badge key={index} variant="outline" className="text-green-600 border-green-600">
+                        <Badge key={index} variant="outline" className="text-green-400 border-green-500">
                           {strength}
                         </Badge>
                       ))}
                     </div>
                   </div>
                   <div className="md:col-span-2">
-                    <h4 className="font-semibold mb-2">Mục tiêu học tập</h4>
+                    <h4 className="font-semibold mb-2 text-white">Mục tiêu học tập</h4>
                     <div className="flex flex-wrap gap-2">
                       {userProfile.goals.map((goal, index) => (
                         <Badge key={index} className="bg-purple-500">
@@ -340,22 +323,23 @@ export default function SystematicReviewPage() {
             </Card>
 
             {/* Generate Plan */}
-            <Card>
+            <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
               <CardContent className="p-8 text-center">
                 <div className="space-y-4">
-                  <div className="mx-auto w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                  <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
                     <Brain className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold">Tạo kế hoạch học tập cá nhân</h3>
-                  <p className="text-slate-600 max-w-md mx-auto">
+                  <h3 className="text-xl font-semibold text-white">Tạo kế hoạch học tập cá nhân</h3>
+                  <p className="text-gray-300 max-w-md mx-auto">
                     AI sẽ phân tích hồ sơ của bạn và tạo ra kế hoạch học tập 7 ngày phù hợp với trình độ và mục tiêu của
                     bạn.
                   </p>
                   <Button
                     onClick={generateStudyPlan}
                     disabled={isGenerating}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    className="text-white"
                     size="lg"
+                    style={{ backgroundColor: '#93D333' }}
                   >
                     {isGenerating ? (
                       <>
@@ -377,21 +361,21 @@ export default function SystematicReviewPage() {
           /* Study Plan Display */
           <div className="space-y-6">
             {/* Plan Overview */}
-            <Card>
+            <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <TrendingUp className="h-5 w-5 mr-2 text-green-600" />
+                <CardTitle className="flex items-center text-white">
+                  <TrendingUp className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
                   Kế hoạch học tập 7 ngày
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-semibold mb-2">Tổng quan</h4>
-                    <p className="text-slate-700">{studyPlan.overview}</p>
+                    <h4 className="font-semibold mb-2 text-white">Tổng quan</h4>
+                    <p className="text-gray-300">{studyPlan.overview}</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Trọng tâm tuần này</h4>
+                    <h4 className="font-semibold mb-2 text-white">Trọng tâm tuần này</h4>
                     <Badge className="bg-blue-500 text-lg px-3 py-1">{studyPlan.weeklyFocus}</Badge>
                   </div>
                 </div>
@@ -400,16 +384,16 @@ export default function SystematicReviewPage() {
 
             {/* Daily Plans */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {studyPlan.dailyPlans.map((day: any, index: number) => (
-                <Card key={index}>
+              {studyPlan.dailyPlans.map((day, index: number) => (
+                <Card key={index} style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
+                    <CardTitle className="flex items-center justify-between text-white">
                       <span>
                         Ngày {day.day}: {day.theme}
                       </span>
-                      <Badge variant="outline">
+                      <Badge variant="outline" className="border-gray-600 text-gray-300">
                         {day.activities.reduce(
-                          (total: number, activity: any) => total + Number.parseInt(activity.duration),
+                          (total: number, activity) => total + Number.parseInt(activity.duration),
                           0,
                         )}{" "}
                         phút
@@ -418,20 +402,20 @@ export default function SystematicReviewPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {day.activities.map((activity: any, actIndex: number) => (
-                        <div key={actIndex} className="border rounded-lg p-3">
+                      {day.activities.map((activity, actIndex: number) => (
+                        <div key={actIndex} className="border rounded-lg p-3" style={{ backgroundColor: '#2a3a3f', borderColor: '#93D333' }}>
                           <div className="flex items-start justify-between mb-2">
-                            <h5 className="font-medium">{activity.activity}</h5>
+                            <h5 className="font-medium text-white">{activity.activity}</h5>
                             <div className="flex items-center space-x-2">
-                              <Badge className={getPriorityColor(activity.priority)} size="sm">
+                              <Badge className={getPriorityColor(activity.priority)}>
                                 {getPriorityText(activity.priority)}
                               </Badge>
-                              <Badge variant="outline" size="sm">
+                              <Badge variant="outline" className="border-gray-600 text-gray-300">
                                 {activity.duration}
                               </Badge>
                             </div>
                           </div>
-                          <p className="text-sm text-slate-600">{activity.description}</p>
+                          <p className="text-sm text-gray-300">{activity.description}</p>
                         </div>
                       ))}
                     </div>
@@ -441,21 +425,21 @@ export default function SystematicReviewPage() {
             </div>
 
             {/* Tips */}
-            <Card>
+            <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <BookOpen className="h-5 w-5 mr-2 text-yellow-600" />
+                <CardTitle className="flex items-center text-white">
+                  <BookOpen className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
                   Mẹo học tập hiệu quả
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {studyPlan.tips.map((tip: string, index: number) => (
-                    <div key={index} className="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg">
-                      <div className="flex-shrink-0 w-6 h-6 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                    <div key={index} className="flex items-start space-x-3 p-3 rounded-lg" style={{ backgroundColor: '#2a3a3f' }}>
+                      <div className="flex-shrink-0 w-6 h-6 text-white rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#93D333' }}>
                         {index + 1}
                       </div>
-                      <p className="text-sm text-slate-700">{tip}</p>
+                      <p className="text-sm text-gray-300">{tip}</p>
                     </div>
                   ))}
                 </div>
@@ -464,10 +448,10 @@ export default function SystematicReviewPage() {
 
             {/* Actions */}
             <div className="flex justify-center space-x-4">
-              <Button onClick={() => setStudyPlan(null)} variant="outline">
+              <Button onClick={() => setStudyPlan(null)} variant="outline" className="text-white border-gray-600 hover:bg-gray-700">
                 Tạo kế hoạch mới
               </Button>
-              <Button className="bg-teal-600 hover:bg-teal-700">Bắt đầu học theo kế hoạch</Button>
+              <Button className="text-white" style={{ backgroundColor: '#93D333' }}>Bắt đầu học theo kế hoạch</Button>
             </div>
           </div>
         )}
