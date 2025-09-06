@@ -19,15 +19,15 @@ export default function IndividualReadingPassage({
 }: IndividualReadingPassageProps) {
   return (
     <div className="flex-1 p-6">
-      <Card>
+      <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
         <CardContent className="p-6">
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-slate-900 mb-2">{title}</h2>
+            <h2 className="text-xl font-bold text-white mb-2">{title}</h2>
           </div>
 
           <div
             ref={textRef}
-            className="prose max-w-none text-slate-800 leading-relaxed"
+            className="prose max-w-none text-gray-200 leading-relaxed"
             onMouseUp={handleTextSelection}
           >
             {passage.split("\n\n").map((paragraph, index) => (

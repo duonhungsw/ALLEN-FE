@@ -15,20 +15,20 @@ export default function IndividualQuestionsPanel({
   onComplete,
 }: IndividualQuestionsPanelProps) {
   return (
-    <div className="w-96 bg-white border-l border-slate-200 p-6 overflow-y-auto">
+    <div className="w-96 p-6 overflow-y-auto" style={{ backgroundColor: '#1a2a2f', borderLeft: '1px solid #93D333' }}>
       <div className="space-y-6">
-        <h3 className="text-lg font-bold text-slate-900">Questions 1-{questions.length}</h3>
+        <h3 className="text-lg font-bold text-white">Questions 1-{questions.length}</h3>
 
         {questions.map((question) => {
           const qid: string = String(question.id)
           return (
             <div key={question.id} className="space-y-3">
               <div className="flex items-start space-x-3">
-                <div className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+                <div className="text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1" style={{ backgroundColor: '#93D333' }}>
                   {question.id}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900 mb-3">{question.question}</p>
+                  <p className="text-sm font-medium text-white mb-3">{question.question}</p>
 
                   {question.type === "multiple-choice" && (
                     <div className="space-y-2">
@@ -40,9 +40,9 @@ export default function IndividualQuestionsPanel({
                             value={option}
                             checked={answers[qid] === option}
                             onChange={(e) => handleAnswerChange(qid, e.target.value)}
-                            className="text-blue-600"
+                            className="text-[#93D333]"
                           />
-                          <span className="text-sm text-slate-700">{option}</span>
+                          <span className="text-sm text-gray-200">{option}</span>
                         </label>
                       ))}
                     </div>
@@ -58,9 +58,9 @@ export default function IndividualQuestionsPanel({
                             value={option}
                             checked={answers[qid] === option}
                             onChange={(e) => handleAnswerChange(qid, e.target.value)}
-                            className="text-blue-600"
+                            className="text-[#93D333]"
                           />
-                          <span className="text-sm text-slate-700">{option}</span>
+                          <span className="text-sm text-gray-200">{option}</span>
                         </label>
                       ))}
                     </div>
@@ -74,7 +74,8 @@ export default function IndividualQuestionsPanel({
 
       <div className="mt-8 text-right">
         <Button 
-          className="bg-teal-600 hover:bg-teal-700"
+          className="text-white"
+          style={{ backgroundColor: '#93D333' }}
           onClick={onComplete}
         >
           Hoàn thành

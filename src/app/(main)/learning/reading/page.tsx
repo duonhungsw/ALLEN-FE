@@ -28,18 +28,18 @@ export default function ReadingPage() {
   const filteredIndividualPassages = filterExercises(individualPassages, searchTerm, selectedCategory, selectedLevel)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center mb-6">
           <Link href="/">
-            <Button variant="ghost" size="sm" className="mr-4">
+            <Button variant="ghost" size="sm" className="mr-4 text-white hover:bg-gray-700">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Quay lại
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Luyện Đọc</h1>
-            <p className="text-gray-600">Nâng cao kỹ năng đọc hiểu tiếng Anh</p>
+            <h1 className="text-3xl font-bold text-white">Luyện Đọc</h1>
+            <p className="text-gray-300">Nâng cao kỹ năng đọc hiểu tiếng Anh</p>
           </div>
         </div>
         <StatsSection 
@@ -58,14 +58,24 @@ export default function ReadingPage() {
           levels={levels}
         />
         <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="full">Bài đầy đủ</TabsTrigger>
-            <TabsTrigger value="individual">Bài lẻ</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 border-0" style={{ backgroundColor: '#1a2a2f' }}>
+            <TabsTrigger 
+              value="full" 
+              className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
+            >
+              Bài đầy đủ
+            </TabsTrigger>
+            <TabsTrigger 
+              value="individual" 
+              className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
+            >
+              Bài lẻ
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="full" className="mt-6">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-2">Bài đọc đầy đủ</h2>
-              <p className="text-gray-600">Các bài đọc IELTS hoàn chỉnh với nhiều dạng câu hỏi</p>
+              <h2 className="text-xl font-semibold mb-2 text-white">Bài đọc đầy đủ</h2>
+              <p className="text-gray-300">Các bài đọc IELTS hoàn chỉnh với nhiều dạng câu hỏi</p>
             </div>
             <div className="grid grid-cols-1 gap-6">
               {filteredFullArticles.map((exercise) => (
@@ -75,8 +85,8 @@ export default function ReadingPage() {
           </TabsContent>
           <TabsContent value="individual" className="mt-6">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-2">Bài đọc lẻ</h2>
-              <p className="text-gray-600">Các đoạn văn ngắn tập trung vào kỹ năng cụ thể</p>
+              <h2 className="text-xl font-semibold mb-2 text-white">Bài đọc lẻ</h2>
+              <p className="text-gray-300">Các đoạn văn ngắn tập trung vào kỹ năng cụ thể</p>
             </div>
             <div className="grid grid-cols-1 gap-6">
               {filteredIndividualPassages.map((exercise) => (

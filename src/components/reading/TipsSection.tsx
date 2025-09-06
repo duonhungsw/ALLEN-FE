@@ -3,18 +3,18 @@ import { BookOpen, Target } from "lucide-react"
 
 export default function TipsSection() {
   return (
-    <Card className="mt-8">
+    <Card className="mt-8" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <CardHeader>
-        <CardTitle>Mẹo luyện đọc hiệu quả</CardTitle>
+        <CardTitle className="text-white">Mẹo luyện đọc hiệu quả</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold mb-3 flex items-center">
-              <BookOpen className="h-5 w-5 mr-2 text-blue-500" />
+            <h4 className="font-semibold mb-3 flex items-center text-white">
+              <BookOpen className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
               Bài đầy đủ
             </h4>
-            <ul className="text-sm text-gray-600 space-y-2">
+            <ul className="text-sm text-gray-300 space-y-2">
               <li>• Đọc lướt toàn bộ bài trước khi làm câu hỏi</li>
               <li>• Sử dụng chế độ highlight để đánh dấu thông tin quan trọng</li>
               <li>• Tra từ vựng khi cần thiết</li>
@@ -22,11 +22,11 @@ export default function TipsSection() {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-3 flex items-center">
-              <Target className="h-5 w-5 mr-2 text-green-500" />
+            <h4 className="font-semibold mb-3 flex items-center text-white">
+              <Target className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
               Bài lẻ
             </h4>
-            <ul className="text-sm text-gray-600 space-y-2">
+            <ul className="text-sm text-gray-300 space-y-2">
               <li>• Tập trung vào kỹ năng cụ thể</li>
               <li>• Đọc kỹ và hiểu sâu nội dung</li>
               <li>• Luyện tập thường xuyên</li>

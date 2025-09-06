@@ -21,32 +21,33 @@ const DislikeFeedbackModal: React.FC<DislikeFeedbackModalProps> = ({
   submitDislikeFeedback,
 }) => (
   <Dialog open={open} onOpenChange={setShowDislikeModal}>
-    <DialogContent>
+    <DialogContent style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <DialogHeader>
-        <DialogTitle>Góp ý cải thiện</DialogTitle>
+        <DialogTitle className="text-white">Góp ý cải thiện</DialogTitle>
       </DialogHeader>
       {!feedbackSubmitted ? (
         <div className="space-y-4">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-300">
             Hãy cho chúng tôi biết vấn đề với bản dịch này để cải thiện chất lượng:
           </p>
           <Textarea
             placeholder="Nhập góp ý của bạn..."
             value={dislikeFeedback}
             onChange={(e) => setDislikeFeedback(e.target.value)}
+            className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
           />
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setShowDislikeModal(false)}>
+            <Button variant="outline" onClick={() => setShowDislikeModal(false)} className="text-gray-300 border-gray-500 hover:bg-gray-700">
               Hủy
             </Button>
-            <Button onClick={submitDislikeFeedback}>Gửi góp ý</Button>
+            <Button onClick={submitDislikeFeedback} className="text-white" style={{ backgroundColor: '#93D333' }}>Gửi góp ý</Button>
           </div>
         </div>
       ) : (
         <div className="text-center py-8">
-          <div className="text-green-600 text-4xl mb-4">✓</div>
-          <p className="text-lg font-semibold">Cảm ơn đã góp ý!</p>
-          <p className="text-sm text-gray-600">Chúng tôi sẽ cải thiện chất lượng dịch thuật.</p>
+          <div className="text-4xl mb-4" style={{ color: '#93D333' }}>✓</div>
+          <p className="text-lg font-semibold text-white">Cảm ơn đã góp ý!</p>
+          <p className="text-sm text-gray-300">Chúng tôi sẽ cải thiện chất lượng dịch thuật.</p>
         </div>
       )}
     </DialogContent>

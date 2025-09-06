@@ -71,8 +71,8 @@ const ShowResult = ({ setShowResults, timeSpent }: ShowResultProps) => {
   // Use passed timeSpent or fallback to mock data
   const displayTime = timeSpent ? formatTime(timeSpent) : "00:07:18"
   return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-2xl">
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#141F23' }}>
+        <Card className="w-full max-w-2xl" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
           <CardContent className="p-8">
             <div className="text-center mb-8">
               <div className="w-32 h-32 mx-auto mb-6 relative">
@@ -85,22 +85,22 @@ const ShowResult = ({ setShowResults, timeSpent }: ShowResultProps) => {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <h2 className="text-2xl font-bold text-purple-600 mb-2">
+              <h2 className="text-2xl font-bold mb-2" style={{ color: '#93D333' }}>
                 Hãi khó bạn nhỉ, bình tĩnh cùng luyện tập với YouPass nhé!
               </h2>
             </div>
 
             <div className="grid grid-cols-2 gap-8 mb-8">
               <div className="text-center">
-                <h3 className="text-lg font-semibold mb-4">Kết quả làm bài</h3>
+                <h3 className="text-lg font-semibold mb-4 text-white">Kết quả làm bài</h3>
                 <div className="relative w-32 h-32 mx-auto mb-4">
                   <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="64" cy="64" r="56" stroke="#e5e7eb" strokeWidth="8" fill="none" />
+                    <circle cx="64" cy="64" r="56" stroke="#2a3a3f" strokeWidth="8" fill="none" />
                     <circle
                       cx="64"
                       cy="64"
                       r="56"
-                      stroke="#ef4444"
+                      stroke="#93D333"
                       strokeWidth="8"
                       fill="none"
                       strokeDasharray={`${(mockSummaryStats.correctAnswers / mockSummaryStats.totalQuestions) * 351.86} 351.86`}
@@ -108,53 +108,53 @@ const ShowResult = ({ setShowResults, timeSpent }: ShowResultProps) => {
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-2xl font-bold">{mockSummaryStats.correctAnswers}/{mockSummaryStats.totalQuestions}</span>
-                    <span className="text-sm text-gray-600">câu đúng</span>
+                    <span className="text-2xl font-bold text-white">{mockSummaryStats.correctAnswers}/{mockSummaryStats.totalQuestions}</span>
+                    <span className="text-sm text-gray-300">câu đúng</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="text-right">
-                  <span className="text-sm text-gray-600">Thời gian làm bài</span>
-                  <div className="text-2xl font-bold">{displayTime}</div>
+                  <span className="text-sm text-gray-300">Thời gian làm bài</span>
+                  <div className="text-2xl font-bold text-white">{displayTime}</div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                      <span className="text-sm">Đúng</span>
+                      <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: '#93D333' }}></div>
+                      <span className="text-sm text-gray-300">Đúng</span>
                     </div>
-                    <span className="font-bold">{mockSummaryStats.correctAnswers} câu</span>
+                    <span className="font-bold text-white">{mockSummaryStats.correctAnswers} câu</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
-                      <span className="text-sm">Sai</span>
+                      <span className="text-sm text-gray-300">Sai</span>
                     </div>
-                    <span className="font-bold">{mockSummaryStats.incorrectAnswers} câu</span>
+                    <span className="font-bold text-white">{mockSummaryStats.incorrectAnswers} câu</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
-                      <span className="text-sm">Bỏ qua</span>
+                      <span className="text-sm text-gray-300">Bỏ qua</span>
                     </div>
-                    <span className="font-bold">{mockSummaryStats.skippedAnswers} câu</span>
+                    <span className="font-bold text-white">{mockSummaryStats.skippedAnswers} câu</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-green-50 border-2 border-dashed border-green-300 rounded-lg p-4 mb-6">
+            <div className="rounded-lg p-4 mb-6" style={{ backgroundColor: '#2a3a3f', border: '2px dashed #93D333' }}>
               <div className="flex items-center justify-between">
-                <span className="text-green-800">
+                <span className="text-gray-200">
                   Bạn có muốn để xuất bài tập này đến các bạn khác cùng level với bạn không?
                 </span>
                 <div className="flex space-x-2">
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">
                     <ThumbsUp className="h-4 w-4" />
                   </Button>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">
                     <ThumbsDown className="h-4 w-4" />
                   </Button>
                 </div>
@@ -162,26 +162,26 @@ const ShowResult = ({ setShowResults, timeSpent }: ShowResultProps) => {
             </div>
 
             <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-4">Bảng dữ liệu chi tiết</h3>
-              <div className="rounded-md border">
+              <h3 className="text-lg font-semibold mb-4 text-white">Bảng dữ liệu chi tiết</h3>
+              <div className="rounded-md border" style={{ borderColor: '#93D333' }}>
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-left">Loại câu hỏi</TableHead>
-                      <TableHead className="text-center">Số câu hỏi</TableHead>
-                      <TableHead className="text-center bg-green-100">Đúng</TableHead>
-                      <TableHead className="text-center bg-red-100">Sai</TableHead>
-                      <TableHead className="text-center bg-gray-100">Bỏ qua</TableHead>
+                    <TableRow style={{ backgroundColor: '#2a3a3f' }}>
+                      <TableHead className="text-left text-white">Loại câu hỏi</TableHead>
+                      <TableHead className="text-center text-white">Số câu hỏi</TableHead>
+                      <TableHead className="text-center text-white" style={{ backgroundColor: '#2a3a3f' }}>Đúng</TableHead>
+                      <TableHead className="text-center text-white" style={{ backgroundColor: '#2a3a3f' }}>Sai</TableHead>
+                      <TableHead className="text-center text-white" style={{ backgroundColor: '#2a3a3f' }}>Bỏ qua</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {mockQuestionResults.map((result, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{result.type}</TableCell>
-                        <TableCell className="text-center">{result.total}</TableCell>
-                        <TableCell className="text-center text-green-600 font-bold">{result.correct}</TableCell>
-                        <TableCell className="text-center text-red-600 font-bold">{result.incorrect}</TableCell>
-                        <TableCell className="text-center text-gray-600 font-bold">{result.skipped}</TableCell>
+                      <TableRow key={index} style={{ backgroundColor: index % 2 === 0 ? '#1a2a2f' : '#2a3a3f' }}>
+                        <TableCell className="font-medium text-gray-200">{result.type}</TableCell>
+                        <TableCell className="text-center text-gray-200">{result.total}</TableCell>
+                        <TableCell className="text-center font-bold" style={{ color: '#93D333' }}>{result.correct}</TableCell>
+                        <TableCell className="text-center text-red-400 font-bold">{result.incorrect}</TableCell>
+                        <TableCell className="text-center text-gray-400 font-bold">{result.skipped}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -190,8 +190,8 @@ const ShowResult = ({ setShowResults, timeSpent }: ShowResultProps) => {
             </div>
 
             <div className="flex space-x-4">
-              <Button className="flex-1 bg-orange-500 hover:bg-orange-600">Xem giải thích chi tiết</Button>
-                <Button variant="outline" className="flex-1 w-full bg-transparent" onClick={() => setShowResults(false)}>
+              <Button className="flex-1 text-white" style={{ backgroundColor: '#93D333' }}>Xem giải thích chi tiết</Button>
+                <Button variant="outline" className="flex-1 w-full text-gray-300 border-gray-500 hover:bg-gray-700" onClick={() => setShowResults(false)}>
                   Quay lại danh sách
                 </Button>
             </div>

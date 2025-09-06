@@ -14,35 +14,35 @@ export default function StatsSection({
 }: StatsSectionProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <Card>
+      <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
         <CardContent className="p-6">
           <div className="flex items-center">
-            <BookOpen className="h-8 w-8 text-blue-500 mr-3" />
+            <BookOpen className="h-8 w-8 mr-3" style={{ color: '#93D333' }} />
             <div>
-              <p className="text-2xl font-bold">{completedExercises}</p>
-              <p className="text-sm text-gray-600">Bài đã hoàn thành</p>
+              <p className="text-2xl font-bold text-white">{completedExercises}</p>
+              <p className="text-sm text-gray-300">Bài đã hoàn thành</p>
             </div>
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
         <CardContent className="p-6">
           <div className="flex items-center">
-            <Target className="h-8 w-8 text-green-500 mr-3" />
+            <Target className="h-8 w-8 mr-3" style={{ color: '#93D333' }} />
             <div>
-              <p className="text-2xl font-bold">{averageAccuracy}%</p>
-              <p className="text-sm text-gray-600">Độ chính xác trung bình</p>
+              <p className="text-2xl font-bold text-white">{averageAccuracy}%</p>
+              <p className="text-sm text-gray-300">Độ chính xác trung bình</p>
             </div>
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
         <CardContent className="p-6">
           <div className="flex items-center">
-            <Clock className="h-8 w-8 text-purple-500 mr-3" />
+            <Clock className="h-8 w-8 mr-3" style={{ color: '#93D333' }} />
             <div>
-              <p className="text-2xl font-bold">{totalMinutes}</p>
-              <p className="text-sm text-gray-600">Phút luyện tập</p>
+              <p className="text-2xl font-bold text-white">{totalMinutes}</p>
+              <p className="text-sm text-gray-300">Phút luyện tập</p>
             </div>
           </div>
         </CardContent>

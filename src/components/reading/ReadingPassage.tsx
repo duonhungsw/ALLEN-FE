@@ -20,7 +20,7 @@ const ReadingPassage: React.FC<ReadingPassageProps> = ({
   textRef,
   handleTextSelection,
 }) => (
-  <Card>
+  <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
     <CardContent className="p-6">
       <div className="mb-4">
         <Image
@@ -31,16 +31,16 @@ const ReadingPassage: React.FC<ReadingPassageProps> = ({
           alt={exercise.title}
           className="w-48 h-32 object-cover rounded-lg mb-4"
         />
-        <h2 className="text-xl font-bold text-slate-900 mb-2">[Recent Tests-Bộ VOL] - {exercise.title}</h2>
+        <h2 className="text-xl font-bold text-white mb-2">[Recent Tests-Bộ VOL] - {exercise.title}</h2>
       </div>
       <div
         ref={textRef}
-        className={`prose max-w-none text-slate-800 leading-relaxed ${getFontSizeClass()}`}
+        className={`prose max-w-none text-gray-200 leading-relaxed ${getFontSizeClass()}`}
         onMouseUp={handleTextSelection}
       >
         {exercise.passage.split("\n\n").map((paragraph: string, index: number) => (
           <p key={index} className="mb-4">
-            <strong className="mr-2">{String.fromCharCode(65 + index)}.</strong>
+            <strong className="mr-2 text-white">{String.fromCharCode(65 + index)}.</strong>
             {vocabularyMode ? renderTextWithClickableWords(paragraph) : paragraph}
           </p>
         ))}

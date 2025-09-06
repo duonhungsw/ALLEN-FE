@@ -10,13 +10,15 @@ interface FloatingButtonsProps {
 const FloatingButtons: React.FC<FloatingButtonsProps> = ({ setShowVocabularyList, setShowAIChat }) => (
   <div className="fixed bottom-6 right-6 space-y-3">
     <Button
-      className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg"
+      className="w-14 h-14 rounded-full text-white shadow-lg"
+      style={{ backgroundColor: '#93D333' }}
       onClick={() => setShowVocabularyList(true)}
     >
       <BookOpen className="h-6 w-6" />
     </Button>
     <Button
-      className="w-14 h-14 rounded-full bg-green-600 hover:bg-green-700 shadow-lg"
+      className="w-14 h-14 rounded-full text-white shadow-lg"
+      style={{ backgroundColor: '#93D333' }}
       onClick={() => setShowAIChat(true)}
     >
       <MessageCircle className="h-6 w-6" />

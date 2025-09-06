@@ -20,11 +20,11 @@ export default function IndividualReadingHeader({
   formatTime,
 }: IndividualReadingHeaderProps) {
   return (
-    <div className="bg-white border-b border-slate-200 px-6 py-4">
+    <div className="px-6 py-4" style={{ backgroundColor: '#1a2a2f', borderBottom: '1px solid #93D333' }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <Link href="/reading">
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700">
               <X className="h-4 w-4" />
             </Button>
           </Link>
@@ -37,7 +37,8 @@ export default function IndividualReadingHeader({
                 setHighlightMode(!highlightMode)
                 if (vocabularyMode) setVocabularyMode(false)
               }}
-              className="bg-orange-100 text-orange-700 border-orange-300 hover:bg-orange-200"
+              className={highlightMode ? "text-white" : "text-gray-300 border-gray-500 hover:bg-gray-700"}
+              style={{ backgroundColor: highlightMode ? '#93D333' : 'transparent' }}
             >
               🖍️ Chế độ Highlight
             </Button>
@@ -49,20 +50,21 @@ export default function IndividualReadingHeader({
                 setVocabularyMode(!vocabularyMode)
                 if (highlightMode) setHighlightMode(false)
               }}
-              className="bg-orange-100 text-orange-700 border-orange-300 hover:bg-orange-200"
+              className={vocabularyMode ? "text-white" : "text-gray-300 border-gray-500 hover:bg-gray-700"}
+              style={{ backgroundColor: vocabularyMode ? '#93D333' : 'transparent' }}
             >
               📚 Chế độ tra từ vựng
             </Button>
           </div>
 
-          <div className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm">
+          <div className="px-3 py-1 rounded-full text-sm text-white" style={{ backgroundColor: '#2a3a3f' }}>
             Tra từ vựng ở tab này ban nhé! 🔥
           </div>
         </div>
 
         <div className="flex items-center space-x-4">
-          <div className="bg-green-500 text-white px-3 py-1 rounded-full font-mono">⏱️ {formatTime(timer)}</div>
-          <Button variant="ghost" size="sm">
+          <div className="text-white px-3 py-1 rounded-full font-mono" style={{ backgroundColor: '#93D333' }}>⏱️ {formatTime(timer)}</div>
+          <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700">
             <Settings className="h-4 w-4" />
             Cài đặt
           </Button>

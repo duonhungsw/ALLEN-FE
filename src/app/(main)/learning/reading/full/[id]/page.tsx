@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect, use } from "react"
+import { useState, useRef, useEffect } from "react"
 import { VocabularyPopup, Highlight, VocabularyWord, VocabularyData } from "@/providers/auth/types/readingType"
 import ShowResult from "@/components/reading/ShowResult"
 import QuestionNavigation from "@/components/reading/QuestionNavigation"
@@ -19,8 +19,8 @@ import SettingsModal from "@/components/reading/SettingsModal"
 import DislikeFeedbackModal from "@/components/reading/DislikeFeedbackModal"
 import { exercise } from "@/shared/constants/reading/mockData"
 
-export default function FullReadingPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function FullReadingPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const [highlightMode, setHighlightMode] = useState(true)
   const [vocabularyMode, setVocabularyMode] = useState(false)
   const [timer, setTimer] = useState(0)
@@ -263,7 +263,7 @@ export default function FullReadingPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className={`min-h-screen ${eyeProtection ? "bg-amber-50" : "bg-slate-50"}`}>
+    <div className={`min-h-screen ${eyeProtection ? "bg-amber-50" : ""}`} style={{ backgroundColor: eyeProtection ? '#fef3c7' : '#141F23' }}>
       {/* Header */}
       <ReadingHeader
         highlightMode={highlightMode}

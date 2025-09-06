@@ -25,37 +25,37 @@ export default function FiltersSection({
   levels,
 }: FiltersSectionProps) {
   return (
-    <Card className="mb-6">
+    <Card className="mb-6" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <CardContent className="p-4">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center space-x-2">
-            <Search className="h-4 w-4 text-gray-500" />
+            <Search className="h-4 w-4" style={{ color: '#93D333' }} />
             <Input
               placeholder="Tìm kiếm bài đọc..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-64"
+              className="w-64 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
             />
           </div>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48 bg-gray-700 border-gray-600 text-white">
               <SelectValue placeholder="Chọn chủ đề" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-gray-700 border-gray-600">
               {categories.map((category) => (
-                <SelectItem key={category} value={category}>
+                <SelectItem key={category} value={category} className="text-white hover:bg-gray-600">
                   {category === "all" ? "Tất cả chủ đề" : category}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48 bg-gray-700 border-gray-600 text-white">
               <SelectValue placeholder="Chọn cấp độ" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-gray-700 border-gray-600">
               {levels.map((level) => (
-                <SelectItem key={level} value={level}>
+                <SelectItem key={level} value={level} className="text-white hover:bg-gray-600">
                   {level === "all" ? "Tất cả cấp độ" : level}
                 </SelectItem>
               ))}

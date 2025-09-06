@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, use } from "react"
+import { useState, useRef } from "react"
 import IndividualReadingHeader from "@/components/reading/IndividualReadingHeader"
 import IndividualReadingPassage from "@/components/reading/IndividualReadingPassage"
 import IndividualQuestionsPanel from "@/components/reading/IndividualQuestionsPanel"
@@ -10,7 +10,7 @@ import { useVocabulary } from "@/hooks/reading/useVocabulary"
 import { useHighlight } from "@/hooks/reading/useHighlight"
 import { individualExercise } from "@/shared/constants/reading/individualMockData"
 
-export default function IndividualReadingPage({ params }: { params: Promise<{ id: string }> }) {
+export default function IndividualReadingPage({ params }: { params: { id: string } }) {
   const [highlightMode, setHighlightMode] = useState(true)
   const [vocabularyMode, setVocabularyMode] = useState(false)
   const [answers, setAnswers] = useState<Record<string, string>>({})
@@ -22,7 +22,7 @@ export default function IndividualReadingPage({ params }: { params: Promise<{ id
   const { handleTextSelection } = useHighlight()
 
   // Use mock data from constants
-  const { id } = use(params)
+  const { id } = params
   const exercise = { ...individualExercise, id }
 
   // Event handlers
@@ -53,7 +53,7 @@ export default function IndividualReadingPage({ params }: { params: Promise<{ id
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
       {/* Header */}
       <IndividualReadingHeader
         highlightMode={highlightMode}
