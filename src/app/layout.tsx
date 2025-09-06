@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import "./globals_shadcn.css";
 import QueryClientProvider from "@/context/QueryClientProvider";
 import ReduxProvider from "@/context/ReduxProvider";
 import AuthHydration from "@/context/AuthHydration";
