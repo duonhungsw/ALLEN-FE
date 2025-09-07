@@ -5,6 +5,7 @@ import { Star, Trophy, BookOpen, Zap, Lock } from "lucide-react";
 
 interface LessonMapProps {
   learningUnits: LearningUnit[];
+  onNodeClick?: (moduleType: string, moduleItemId: string, nodeTitle: string) => void;
 }
 
 interface LessonNodeData {
@@ -106,7 +107,7 @@ function generateLessonNodes(learningUnits: LearningUnit[]): LessonNodeData[] {
   return nodes;
 }
 
-export function LessonMap({ learningUnits }: LessonMapProps) {
+export function LessonMap({ learningUnits, onNodeClick }: LessonMapProps) {
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [selectedStep, setSelectedStep] = useState<any | null>(null);
 
@@ -169,7 +170,6 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
         </div>
       </div>
 
-      {/* Lesson Nodes */}
       {lessonNodes.map((node) => (
         <>
           <motion.div
@@ -209,6 +209,13 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
                           ...step,
                           stepIndex: index + 1,
                         });
+                        if (onNodeClick) {
+                          onNodeClick(
+                            'UnitStep',
+                            step.id,
+                            step.title
+                          );
+                        }
                       }}
                       className="cursor-pointer relative"
                       style={{

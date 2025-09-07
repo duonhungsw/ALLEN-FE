@@ -84,3 +84,20 @@ export const filterExercises: FilterFunction<Exercise> = (exercises, { searchTer
         return matchesSearch && matchesLevel
     })
 }
+
+export interface Question {
+    id: string;
+    moduleType: string;
+    questionType: string;
+    moduleItemId: string;
+    chart: string | null;
+    prompt: string;
+    options: string;
+    correctAnswer: string;
+    contentUrl: string | null;
+}
+
+export interface QuestionResponse {
+    data: Question[];
+    totalCount: number;
+}
