@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ArrowLeft, Settings, CheckCircle, XCircle, RotateCcw } from "lucide-react"
 
 export default function QuizPage() {
@@ -231,7 +229,7 @@ export default function QuizPage() {
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="word-count" className="text-white">Số lượng từ</Label>
+                  <label htmlFor="word-count" className="text-white block text-sm font-medium mb-2">Số lượng từ</label>
                   <Select value={wordCount} onValueChange={setWordCount}>
                     <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                       <SelectValue />
@@ -246,7 +244,7 @@ export default function QuizPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="difficulty" className="text-white">Mức độ</Label>
+                  <label htmlFor="difficulty" className="text-white block text-sm font-medium mb-2">Mức độ</label>
                   <Select value={difficulty} onValueChange={setDifficulty}>
                     <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                       <SelectValue />
@@ -321,14 +319,22 @@ export default function QuizPage() {
                   <h2 className="text-4xl font-bold text-white mb-4">{quizQuestions[currentQuestion]?.word}</h2>
                 </div>
 
-                <RadioGroup value={selectedAnswer} onValueChange={handleAnswerSelect} disabled={showResult}>
+                <div className="space-y-3">
                   {quizQuestions[currentQuestion]?.options.map((option: string, index: number) => (
                     <div key={index} className="flex items-center space-x-2">
-                      <RadioGroupItem value={option} id={`option-${index}`} className="text-white" />
-                      <Label
+                      <input
+                        type="radio"
+                        id={`option-${index}`}
+                        name="quiz-answer"
+                        value={option}
+                        checked={selectedAnswer === option}
+                        onChange={(e) => handleAnswerSelect(e.target.value)}
+                        disabled={showResult}
+                        className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500"
+                      />
+                      <label
                         htmlFor={`option-${index}`}
-                        className={`flex-1 p-3 rounded-lg border cursor-pointer transition-colors ${
-                          showResult
+                        className={`flex-1 p-3 rounded-lg border cursor-pointer transition-colors ${showResult
                             ? option === quizQuestions[currentQuestion].correctAnswer
                               ? "bg-green-900 border-green-500 text-green-300"
                               : selectedAnswer === option && option !== quizQuestions[currentQuestion].correctAnswer
@@ -337,7 +343,7 @@ export default function QuizPage() {
                             : selectedAnswer === option
                               ? "bg-gray-600 border-gray-500 text-white"
                               : "bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600"
-                        }`}
+                          }`}
                       >
                         {option}
                         {showResult && option === quizQuestions[currentQuestion].correctAnswer && (
@@ -348,18 +354,17 @@ export default function QuizPage() {
                           option !== quizQuestions[currentQuestion].correctAnswer && (
                             <XCircle className="h-4 w-4 text-red-400 ml-2 inline" />
                           )}
-                      </Label>
+                      </label>
                     </div>
                   ))}
-                </RadioGroup>
+                </div>
 
                 {showResult && (
                   <div
-                    className={`p-4 rounded-lg ${
-                      selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                    className={`p-4 rounded-lg ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                         ? "bg-green-900 text-green-300"
                         : "bg-red-900 text-red-300"
-                    }`}
+                      }`}
                   >
                     {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                       ? "🎉 Chính xác! Tuyệt vời!"
