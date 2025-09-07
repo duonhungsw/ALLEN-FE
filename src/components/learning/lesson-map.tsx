@@ -49,8 +49,8 @@ function generateLessonNodes(learningUnits: LearningUnit[]): LessonNodeData[] {
         unit.skillType === "Reading"
           ? BookOpen
           : unit.skillType === "Speaking"
-          ? Zap
-          : Star,
+            ? Zap
+            : Star,
       label: unit.title,
       position: { top: `${currentTop}%`, left: "50%" },
       unit,
@@ -192,9 +192,8 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
                   className="cursor-pointer relative"
                 >
                   <div
-                    className={`w-16 h-16 rounded-full flex items-center justify-center border-2 border-slate-500 shadow-md ${
-                      node.colorClass || "bg-slate-600"
-                    }`}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center border-2 border-slate-500 shadow-md ${node.colorClass || "bg-slate-600"
+                      }`}
                   >
                     <node.icon className="w-8 h-8 text-white" />
                   </div>
@@ -217,8 +216,8 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
                           index === 2
                             ? "170px"
                             : index % 2 === 0
-                            ? "6px"
-                            : "100px",
+                              ? "6px"
+                              : "100px",
                       }}
                     >
                       <div className="w-18 h-18 rounded-full flex items-center justify-center border-3 shadow-md bg-blue-500 border-[#37464F]">
