@@ -55,5 +55,5 @@ jobs:
         with:
           token: ${{ github.token }}
           state: success
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          environment_url: ${{ steps.vercel.outputs.preview_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          environment-url: ${{ steps.vercel.outputs.preview_url }}
