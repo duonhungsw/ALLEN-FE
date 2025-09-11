@@ -28,7 +28,7 @@ export default function ReadingPage() {
   const filteredIndividualPassages = filterExercises(individualPassages, searchTerm, selectedCategory, selectedLevel)
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
+    <div className="min-h-screen " >
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center mb-6">
           <Link href="/">
