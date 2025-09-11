@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { LessonMap } from "@/components/learning/lesson-map";
 import { DailyMission } from "@/components/learning/daily-mission";
 import { Card, CardContent } from "@/components/learning/ui/card";
 import { Gem, Crown, Heart } from "lucide-react";
 import { useLearningUnits } from "@/hooks/learning/useLearningUnits";
+import QuestionPopup from "@/components/learning/QuestionPopup";
 
 const TopBarStats = () => (
   <div className="flex items-center space-x-4 mb-6">
@@ -27,14 +28,30 @@ const TopBarStats = () => (
 export default function LearningDashboard() {
   const { data: learningUnits, isLoading, error } = useLearningUnits();
 
-  // Debug logging
-  console.log("🎯 Learning Dashboard State:", {
-    isLoading,
-    error,
-    learningUnits,
-    dataLength: learningUnits?.data?.length || 0,
-    hasData: !!learningUnits?.data,
+  const [popupState, setPopupState] = useState({
+    isOpen: false,
+    moduleType: '',
+    moduleItemId: '',
+    nodeTitle: ''
   });
+
+  const handleNodeClick = (moduleType: string, moduleItemId: string, nodeTitle: string) => {
+    setPopupState({
+      isOpen: true,
+      moduleType,
+      moduleItemId,
+      nodeTitle
+    });
+  };
+
+  const handleClosePopup = () => {
+    setPopupState({
+      isOpen: false,
+      moduleType: '',
+      moduleItemId: '',
+      nodeTitle: ''
+    });
+  };
 
   return (
     <div className="bg-[#132024] min-h-screen text-white flex-1">
@@ -65,13 +82,24 @@ export default function LearningDashboard() {
                     </button>
                   </div>
                 ) : (
-                  <LessonMap learningUnits={learningUnits?.data || []} />
+                  <LessonMap
+                    learningUnits={learningUnits?.data || []}
+                    onNodeClick={handleNodeClick}
+                  />
                 )}
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
+
+      <QuestionPopup
+        isOpen={popupState.isOpen}
+        onClose={handleClosePopup}
+        moduleType={popupState.moduleType}
+        moduleItemId={popupState.moduleItemId}
+        nodeTitle={popupState.nodeTitle}
+      />
     </div>
   );
 }

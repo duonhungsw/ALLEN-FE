@@ -5,6 +5,7 @@ import { Star, Trophy, BookOpen, Zap, Lock } from "lucide-react";
 
 interface LessonMapProps {
   learningUnits: LearningUnit[];
+  onNodeClick?: (moduleType: string, moduleItemId: string, nodeTitle: string) => void;
 }
 
 interface LessonNodeData {
@@ -49,8 +50,8 @@ function generateLessonNodes(learningUnits: LearningUnit[]): LessonNodeData[] {
         unit.skillType === "Reading"
           ? BookOpen
           : unit.skillType === "Speaking"
-          ? Zap
-          : Star,
+            ? Zap
+            : Star,
       label: unit.title,
       position: { top: `${currentTop}%`, left: "50%" },
       unit,
@@ -106,7 +107,7 @@ function generateLessonNodes(learningUnits: LearningUnit[]): LessonNodeData[] {
   return nodes;
 }
 
-export function LessonMap({ learningUnits }: LessonMapProps) {
+export function LessonMap({ learningUnits, onNodeClick }: LessonMapProps) {
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [selectedStep, setSelectedStep] = useState<any | null>(null);
 
@@ -169,7 +170,6 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
         </div>
       </div>
 
-      {/* Lesson Nodes */}
       {lessonNodes.map((node) => (
         <>
           <motion.div
@@ -192,9 +192,8 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
                   className="cursor-pointer relative"
                 >
                   <div
-                    className={`w-16 h-16 rounded-full flex items-center justify-center border-2 border-slate-500 shadow-md ${
-                      node.colorClass || "bg-slate-600"
-                    }`}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center border-2 border-slate-500 shadow-md ${node.colorClass || "bg-slate-600"
+                      }`}
                   >
                     <node.icon className="w-8 h-8 text-white" />
                   </div>
@@ -210,6 +209,13 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
                           ...step,
                           stepIndex: index + 1,
                         });
+                        if (onNodeClick) {
+                          onNodeClick(
+                            'UnitStep',
+                            step.id,
+                            step.title
+                          );
+                        }
                       }}
                       className="cursor-pointer relative"
                       style={{
@@ -217,8 +223,8 @@ export function LessonMap({ learningUnits }: LessonMapProps) {
                           index === 2
                             ? "170px"
                             : index % 2 === 0
-                            ? "6px"
-                            : "100px",
+                              ? "6px"
+                              : "100px",
                       }}
                     >
                       <div className="w-18 h-18 rounded-full flex items-center justify-center border-3 shadow-md bg-blue-500 border-[#37464F]">
