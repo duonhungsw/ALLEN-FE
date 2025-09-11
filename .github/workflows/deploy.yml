@@ -13,6 +13,17 @@
 #       - name: Checkout repo
 #         uses: actions/checkout@v3
 
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18  # Hoặc phiên bản bạn đang dùng
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Run Next.js build (show errors in GitHub logs)
+#         run: npm run build
+
 #       - name: Install Vercel CLI
 #         run: npm install -g vercel
 
@@ -22,37 +33,48 @@
 #           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 #           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 #         run: vercel --prod --token $VERCEL_TOKEN --confirm --scope $VERCEL_ORG_ID
-
-name: Deploy to Vercel
+name: CI/CD Vercel
 
 on:
+  pull_request:
+    branches:
+      - develop
+      - main
   push:
     branches:
-      - main  # hoặc branch bạn muốn trigger
+      - main
 
 jobs:
-  deploy:
+  preview:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 18  # Hoặc phiên bản bạn đang dùng
+          node-version: 18
+      - run: npm ci
+      - run: npm run build
+      - run: npm install -g vercel
+      - name: Deploy to Vercel (Preview)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel --token $VERCEL_TOKEN --confirm --scope $VERCEL_ORG_ID
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Next.js build (show errors in GitHub logs)
-        run: npm run build
-
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-
-      - name: Deploy to Vercel
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run build
+      - run: npm install -g vercel
+      - name: Deploy to Vercel (Production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
