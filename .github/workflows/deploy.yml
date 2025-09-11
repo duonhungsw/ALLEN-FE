@@ -1,38 +1,3 @@
-# name: Deploy to Vercel
-
-# on:
-#   push:
-#     branches:
-#       - main  # hoặc branch bạn muốn trigger
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout repo
-#         uses: actions/checkout@v3
-
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18  # Hoặc phiên bản bạn đang dùng
-
-#       - name: Install dependencies
-#         run: npm ci
-
-#       - name: Run Next.js build (show errors in GitHub logs)
-#         run: npm run build
-
-#       - name: Install Vercel CLI
-#         run: npm install -g vercel
-
-#       - name: Deploy to Vercel
-#         env:
-#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-#         run: vercel --prod --token $VERCEL_TOKEN --confirm --scope $VERCEL_ORG_ID
 name: CI/CD Vercel
 
 on:
@@ -48,35 +13,95 @@ jobs:
   preview:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci
-      - run: npm run build
-      - run: npm install -g vercel
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Next.js build
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Create GitHub Deployment
+        id: deployment
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ github.token }}
+          environment: preview
+          ref: ${{ github.head_ref }}
+
       - name: Deploy to Vercel (Preview)
+        id: vercel
+        run: |
+          url=$(vercel --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --confirm)
+          echo "preview_url=$url" >> $GITHUB_OUTPUT
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel --token $VERCEL_TOKEN --confirm --scope $VERCEL_ORG_ID
+
+      - name: Set Deployment Status
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          state: success
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          environment_url: ${{ steps.vercel.outputs.preview_url }}
 
   production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci
-      - run: npm run build
-      - run: npm install -g vercel
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Next.js build
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Create GitHub Deployment
+        id: deployment
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ github.token }}
+          environment: production
+          ref: ${{ github.sha }}
+
       - name: Deploy to Vercel (Production)
+        id: vercel
+        run: |
+          url=$(vercel --prod --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --confirm)
+          echo "prod_url=$url" >> $GITHUB_OUTPUT
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel --prod --token $VERCEL_TOKEN --confirm --scope $VERCEL_ORG_ID
+
+      - name: Set Deployment Status
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          state: success
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          environment_url: ${{ steps.vercel.outputs.prod_url }}
