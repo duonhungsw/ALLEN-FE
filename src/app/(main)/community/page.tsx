@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -11,130 +11,51 @@ import { FAQSidebar } from "@/components/community/FAQSidebar"
 import { PostCard } from "@/components/community/PostCard"
 import { RankingSidebar } from "@/components/community/RankingSidebar"
 import { Search, TrendingUp } from "lucide-react"
-
-interface Post {
-  id: number
-  author: {
-    name: string
-    avatar: string
-    level: string
-    points: number
-  }
-  content: string
-  images?: string[]
-  timestamp: string
-  likes: number
-  comments: number
-  shares: number
-  category: string
-  privacy: string
-  reactions: {
-    like: number
-    love: number
-    wow: number
-  }
-}
+import { useCommunity } from "@/hooks/auth/useCommunity"
+import { ApiPost } from "@/types/posType"
+import { Privacy } from "@/types/emunType"
 
 export default function CommunityPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("all")
   const [searchTerm, setSearchTerm] = useState("")
+  const [searchQuery, setSearchQuery] = useState("")
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
-  const [posts, setPosts] = useState([
+  const { data: postsPaging } = useCommunity(
     {
-      id: 1,
-      author: {
-        name: "Minh Anh",
-        avatar: "/placeholder.svg?height=40&width=40",
-        level: "Intermediate",
-        points: 1250,
-      },
-      content:
-        "Mình vừa hoàn thành khóa học Business English! Cảm thấy tự tin hơn rất nhiều khi nói chuyện với khách hàng nước ngoài. Cảm ơn các bạn đã động viên mình trong suốt quá trình học 💪",
-      images: ["/placeholder.svg?height=300&width=400&text=Certificate"],
-      timestamp: "2 giờ trước",
-      likes: 24,
-      comments: 8,
-      shares: 3,
-      category: "Học tập",
-      privacy: "public",
-      reactions: {
-        like: 15,
-        love: 6,
-        wow: 3,
-      },
+      page: 0,
+      size: 10,
+      search: searchQuery || undefined,
+      privacy: Privacy.Public,
     },
     {
-      id: 2,
-      author: {
-        name: "Thu Hà",
-        avatar: "/placeholder.svg?height=40&width=40",
-        level: "Advanced",
-        points: 2100,
-      },
-      content:
-        "Chia sẻ một tip nhỏ: Khi học từ vựng mới, hãy tạo câu ví dụ của riêng mình thay vì chỉ học thuộc lòng định nghĩa. Cách này giúp mình nhớ lâu hơn rất nhiều! 📚✨",
-      images: [
-        "/placeholder.svg?height=200&width=300&text=Vocabulary+Tips",
-        "/placeholder.svg?height=200&width=300&text=Example+Sentences",
-      ],
-      timestamp: "5 giờ trước",
-      likes: 38,
-      comments: 12,
-      shares: 8,
-      category: "Mẹo học",
-      privacy: "public",
-      reactions: {
-        like: 20,
-        love: 12,
-        wow: 6,
-      },
-    },
-    {
-      id: 3,
-      author: {
-        name: "Hoàng Nam",
-        avatar: "/placeholder.svg?height=40&width=40",
-        level: "Beginner",
-        points: 450,
-      },
-      content:
-        "Mình đang gặp khó khăn với phát âm âm 'th'. Có ai có mẹo gì không ạ? Mình đã thử nhiều cách rồi nhưng vẫn chưa chuẩn 😅",
-      timestamp: "1 ngày trước",
-      likes: 12,
-      comments: 15,
-      shares: 2,
-      category: "Hỏi đáp",
-      privacy: "public",
-      reactions: {
-        like: 8,
-        love: 2,
-        wow: 2,
-      },
-    },
-  ])
+      retry: 2,
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 5000),
+    }
+  )
+  
 
-  const addNewPost = (newPost: Post) => {
+  const [posts, setPosts] = useState<ApiPost[]>([])
+
+  const handleSearchPost = () => {
+    const value = searchInputRef.current ? searchInputRef.current.value : searchTerm
+    setSearchTerm(value)
+    setSearchQuery(value)
+  }
+
+  useEffect(() => {
+    if (postsPaging?.data) {
+      setPosts(postsPaging.data as ApiPost[])
+    }
+  }, [postsPaging])
+
+  const addNewPost = (newPost: ApiPost) => {
     setPosts([newPost, ...posts])
   }
 
-  const filteredPosts = posts.filter((post) => {
-    const matchesFilter =
-      selectedFilter === "all" ||
-      (selectedFilter === "favorites" && post.likes > 20) ||
-      (selectedFilter === "following" && ["Minh Anh", "Thu Hà"].includes(post.author.name))
-
-    const matchesSearch =
-      searchTerm === "" ||
-      post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.author.name.toLowerCase().includes(searchTerm.toLowerCase())
-
-    const matchesCategory = !selectedCategory || post.category === selectedCategory
-
-    return matchesFilter && matchesSearch && matchesCategory
-  })
-
+if(postsPaging){
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
       <div className="container mx-auto px-4 py-6">
@@ -151,11 +72,15 @@ export default function CommunityPage() {
               <h1 className="text-2xl font-bold text-white">Cộng đồng</h1>
               <div className="flex items-center space-x-3">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400"
+                  onClick={handleSearchPost}
+                  />
                   <Input
                     placeholder="Tìm kiếm bài viết..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleSearchPost() }}
+                    ref={searchInputRef}
                     className="pl-10 w-64 bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400"
                   />
                 </div>
@@ -184,7 +109,7 @@ export default function CommunityPage() {
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
                   <Avatar>
-                    <AvatarImage src="/placeholder.svg?height=40&width=40" />
+                    <AvatarImage src="/" />
                     <AvatarFallback>MA</AvatarFallback>
                   </Avatar>
                   <Button
@@ -200,7 +125,7 @@ export default function CommunityPage() {
 
             {/* Posts */}
             <div className="space-y-4">
-              {filteredPosts.map((post) => (
+              {postsPaging.data.map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}
             </div>
@@ -220,4 +145,5 @@ export default function CommunityPage() {
       />
     </div>
   )
+}
 }

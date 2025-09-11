@@ -11,34 +11,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { X, ImageIcon, Users, Smile, MapPin, Gift, MoreHorizontal, Globe, Lock, UserCheck } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
-
-interface Post {
-  id: number
-  author: {
-    name: string
-    avatar: string
-    level: string
-    points: number
-  }
-  content: string
-  images: string[]
-  timestamp: string
-  likes: number
-  comments: number
-  shares: number
-  category: string
-  privacy: string
-  reactions: {
-    like: number
-    love: number
-    wow: number
-  }
-}
+import { ApiPost } from "@/types/posType"
 
 interface CreatePostModalProps {
   isOpen: boolean
   onClose: () => void
-  onPostCreated: (post: Post) => void
+  onPostCreated: (post: ApiPost) => void
 }
 
 export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostModalProps) {
@@ -64,30 +42,31 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
   const handlePost = () => {
     if (!content.trim() && selectedImages.length === 0) return
 
-    const newPost = {
-      id: Date.now(),
-      author: {
-        name: "Minh Anh",
-        avatar: "/placeholder.svg?height=40&width=40",
-        level: "Intermediate",
-        points: 1250,
-      },
-      content,
-      images: selectedImages,
-      timestamp: tCreatePost("justNow"),
-      likes: 0,
-      comments: 0,
-      shares: 0,
-      category: category || tCreatePost("category.sharing"),
-      privacy,
-      reactions: {
-        like: 0,
-        love: 0,
-        wow: 0,
-      },
-    }
+    // const newPost = {
+    //   id: Date.now(),
+    //   author: {
+    //     name: "Minh Anh",
+    //     avatar: "/placeholder.svg?height=40&width=40",
+    //     level: "Intermediate",
+    //     points: 1250,
+    //   },
+    //   content,
+    //   images: selectedImages,
+    //   timestamp: tCreatePost("justNow"),
+    //   likes: 0,
+    //   comments: 0,
+    //   shares: 0,
+    //   category: category || tCreatePost("category.sharing"),
+    //   privacy,
+    //   reactions: {
+    //     like: 0,
+    //     love: 0,
+    //     wow: 0,
+    //   },
+    // }
 
-    onPostCreated(newPost)
+    // Ensure the id is a string to match CommunityPost type
+    // onPostCreated({ ...newPost, id: String(newPost.id) })
     onClose()
     setContent("")
     setSelectedImages([])
@@ -109,12 +88,12 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
 
   const getPrivacyLabel = (privacyType: string) => {
     switch (privacyType) {
-      case "public":
+      case "Public":
         return tCreatePost("privacy.public")
-      case "friends":
+      case "Friends":
         return tCreatePost("privacy.friends")
-      case "private":
-        return tCreatePost("privacy.private")
+      case "OnlyMe":
+        return tCreatePost("privacy.OnlyMe")
       default:
         return tCreatePost("privacy.public")
     }

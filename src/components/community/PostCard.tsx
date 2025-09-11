@@ -10,80 +10,73 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Heart, MessageCircle, Share, MoreHorizontal, ThumbsUp, Laugh, Send, X } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
-
-interface Comment {
-  id: number
-  author: {
-    name: string
-    avatar: string
-  }
-  content: string
-  timestamp: string
-  likes: number
-  replies?: Comment[]
-  reactions: {
-    like: number
-    love: number
-    wow: number
-  }
-}
-
-interface Post {
-  id: number
-  author: {
-    name: string
-    avatar: string
-    level: string
-    points: number
-  }
-  content: string
-  images?: string[]
-  timestamp: string
-  likes: number
-  comments: number
-  shares: number
-  category: string
-  privacy: string
-  reactions: {
-    like: number
-    love: number
-    wow: number
-  }
-}
+import { Comment, ApiPost } from "@/types/posType"
+import { level } from "@/types/emunType"
+import { useFetchComment, useFetchReplyComment } from "@/hooks/auth/useCommunity"
 
 interface PostCardProps {
-  post: Post
+  post: ApiPost
 }
 
 export function PostCard({ post: initialPost }: PostCardProps) {
-  const [post, setPost] = useState(initialPost)
+  const [post, setPost] = useState({
+    ...initialPost,
+    userName: "",
+    userAvatar: "",
+  })
   const [showComments, setShowComments] = useState(false)
   const [newComment, setNewComment] = useState("")
   const [userReaction, setUserReaction] = useState<string | null>(null)
   const [showReactionModal, setShowReactionModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const tPostCard = useTranslations("PostCard")
-  const [comments, setComments] = useState<Comment[]>([
-    {
-      id: 1,
-      author: { name: "Thu Hà", avatar: "/placeholder.svg?height=32&width=32" },
-      content: "Chúc mừng bạn! Mình cũng đang học khóa này, rất hữu ích 👏",
-      timestamp: "1 giờ trước",
-      likes: 3,
-      reactions: { like: 2, love: 1, wow: 0 },
-      replies: [
-        {
-          id: 11,
-          author: { name: "Minh Anh", avatar: "/placeholder.svg?height=32&width=32" },
-          content: "Cảm ơn bạn! Chúc bạn học tốt nhé 😊",
-          timestamp: "30 phút trước",
-          likes: 1,
-          reactions: { like: 1, love: 0, wow: 0 },
-        },
-      ],
-    },
-  ])
-  const [replyingTo, setReplyingTo] = useState<number | null>(null)
+  // const [comment, setComment] = useState<any[]>([])
+  const { data: comments, mutate: fetchComment, isLoading, error } = useFetchComment();
+  const { data: commentsReply, mutate: fetchCommentReply, isLoadingReply, errorReply } = useFetchReplyComment();
+  const [isOpenReply, setIsOpenReply] = useState(false)
+  
+  //   {
+  //     id: "1",
+  //     author: { name: "Thu Hà", avatar: "/placeholder.svg?height=32&width=32" },
+  //     content: "Chúc mừng bạn! Mình cũng đang học khóa này, rất hữu ích 👏",
+  //     timestamp: "1 giờ trước",
+  //     likes: 3,
+  //     reactions: { like: 2, love: 1, wow: 0 },
+  //     replies: [
+  //       {
+  //         id: "11",
+  //         author: { name: "Minh Anh", avatar: "/placeholder.svg?height=32&width=32" },
+  //         content: "Cảm ơn bạn! Chúc bạn học tốt nhé 😊",
+  //         timestamp: "30 phút trước",
+  //         likes: 1,
+  //         reactions: { like: 1, love: 0, wow: 0 },
+  //       },
+  //     ],
+  //   },
+  // ])
+
+
+  // Gọi API khi cần (ví dụ khi bấm nút hoặc khi mount)
+  const handleFetchComment = () => {
+    if(!showComments){
+      console.log(post.id);
+      fetchComment(post.id);
+      console.log(comments);
+    }
+    setShowComments(!showComments)
+  };
+
+  const handleFetchReply = (id: string) => {
+    console.log(isOpenReply);
+    if(!isOpenReply){
+      console.log(id);
+      fetchCommentReply(id);
+      console.log(commentsReply);
+    }
+  setIsOpenReply(!isOpenReply)
+  }
+
+  const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [replyContent, setReplyContent] = useState("")
 
   const reactions = [
@@ -96,70 +89,64 @@ export function PostCard({ post: initialPost }: PostCardProps) {
     const wasReacted = userReaction === type
     const newReaction = wasReacted ? null : type
 
-    setPost((prev) => ({
-      ...prev,
-      reactions: {
-        ...prev.reactions,
-        [type]: wasReacted
-          ? prev.reactions[type as keyof typeof prev.reactions] - 1
-          : prev.reactions[type as keyof typeof prev.reactions] + 1,
-        ...(userReaction && userReaction !== type
-          ? {
-              [userReaction]: prev.reactions[userReaction as keyof typeof prev.reactions] - 1,
-            }
-          : {}),
-      },
-    }))
-
     setUserReaction(newReaction)
   }
 
-  const handleComment = () => {
-    if (!newComment.trim()) return
+  // const handleComment = () => {
+  //   if (!newComment.trim()) return
 
-    const comment: Comment = {
-      id: Date.now(),
-      author: { name: tPostCard("you"), avatar: "/placeholder.svg?height=32&width=32" },
-      content: newComment,
-      timestamp: tPostCard("justNow"),
-      likes: 0,
-      reactions: { like: 0, love: 0, wow: 0 },
-    }
+  //   const comment: Comment = {
+  //     id: Date.now().toString(),
+  //     author: { name: tPostCard("you"), avatar: "/placeholder.svg?height=32&width=32" },
+  //     content: newComment,
+  //     timestamp: tPostCard("justNow"),
+  //     likes: 0,
+  //     reactions: { like: 0, love: 0, wow: 0 },
+  //   }
 
-    setComments([...comments, comment])
-    setPost((prev) => ({ ...prev, comments: prev.comments + 1 }))
-    setNewComment("")
-  }
+  //   setComments([...comments, comment])
+  //   setPost((prev) => ({
+  //     ...prev,
+  //     // comments: (prev.comments ?? 0) + 1,
+  //   }))
+  //   setNewComment("")
+  // }
 
-  const handleReply = (commentId: number) => {
-    if (!replyContent.trim()) return
+  // const handleReply = (commentId: string) => {
+  //   if (!replyContent.trim()) return
 
-    const reply: Comment = {
-      id: Date.now(),
-      author: { name: tPostCard("you"), avatar: "/placeholder.svg?height=32&width=32" },
-      content: replyContent,
-      timestamp: tPostCard("justNow"),
-      likes: 0,
-      reactions: { like: 0, love: 0, wow: 0 },
-    }
+  //   const reply: Comment = {
+  //     id: Date.now().toString(),
+  //     author: { name: tPostCard("you"), avatar: "/placeholder.svg?height=32&width=32" },
+  //     content: replyContent,
+  //     timestamp: tPostCard("justNow"),
+  //     likes: 0,
+  //     reactions: { like: 0, love: 0, wow: 0 },
+  //   }
 
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === commentId ? { ...comment, replies: [...(comment.replies || []), reply] } : comment,
-      ),
-    )
+    // setComments((prev) =>
+    //   prev.map((comment) =>
+    //     comment.id === commentId ? { ...comment, replies: [...(comment.replies || []), reply] } : comment,
+    //   ),
+    // )
 
-    setReplyingTo(null)
-    setReplyContent("")
-  }
+  //   setReplyingTo(null)
+  //   setReplyContent("")
+  // }
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case "Beginner":
+      case "A1":
         return "bg-green-500"
-      case "Intermediate":
+      case "A2":
+        return "bg-green-500"
+      case "B1":
         return "bg-blue-500"
-      case "Advanced":
+      case "B2":
+        return "bg-blue-500"
+      case "C1":
+        return "bg-purple-500"
+      case "C2":
         return "bg-purple-500"
       default:
         return "bg-gray-500"
@@ -167,7 +154,8 @@ export function PostCard({ post: initialPost }: PostCardProps) {
   }
 
 const getTopReactions = () => {
-  const reactionEntries = Object.entries(post.reactions)
+  const safeReactions = post.reactions || { like: 0, love: 0, wow: 0 }
+  const reactionEntries = Object.entries(safeReactions)
     .filter(([, count]) => count > 0)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 3)
@@ -177,29 +165,40 @@ const getTopReactions = () => {
     return { type, count, emoji: reaction?.emoji || "👍" }
   })
 }
-  const totalReactions = Object.values(post.reactions).reduce((sum, count) => sum + count, 0)
+  const totalReactions = Object.values(post.reactions || { like: 0, love: 0, wow: 0 }).reduce((sum, count) => sum + count, 0)
+
 
   return (
     <>
+   
       <Card className="hover:shadow-md transition-shadow border-0" style={{ backgroundColor: '#1a2a2f' }}>
         <CardContent className="p-6">
           {/* Post Header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-3">
               <Avatar>
-                <AvatarImage src={post.author.avatar || "/placeholder.svg"} />
-                <AvatarFallback>{post.author.name[0]}</AvatarFallback>
+                <AvatarImage src={(post.userAvatar || "/placeholder.svg") as string} />
+                <AvatarFallback>{post.userName[0] || "U"}</AvatarFallback>
               </Avatar>
               <div>
                 <div className="flex items-center space-x-2">
-                  <h3 className="font-semibold text-white">{post.author.name}</h3>
-                  <Badge className={getLevelColor(post.author.level)}>{post.author.level}</Badge>
-                  <Badge variant="outline" className="border-[#93D333] text-gray-300">{post.category}</Badge>
+                  <h3 className="font-semibold text-white">{post.userName || "User"}</h3>
+                  <Badge 
+                  className={getLevelColor(level.A1)}
+                  >
+                    {level.A1}
+                    </Badge>
+                  <Badge variant="outline" className="border-[#93D333] text-gray-300">
+                    {/* {post.category} */}category
+                    </Badge>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-gray-400">
-                  <span>{post.timestamp}</span>
+                  <span>{post.createdAt}</span>
                   <span>•</span>
-                  <span>{post.author.points} {tPostCard("points")}</span>
+                  <span>
+                    {/* {post.author?.points || 0}  */}
+                    {tPostCard("points")}
+                    </span>
                 </div>
               </div>
             </div>
@@ -214,21 +213,21 @@ const getTopReactions = () => {
           </div>
 
           {/* Post Images */}
-          {post.images && post.images.length > 0 && (
+          {post.medias && post.medias.length > 0 && (
             <div className="mb-4">
-              {post.images.length === 1 ? (
+              {post.medias.length === 1 ? (
                 <Image
-                  src={post.images[0] || "/placeholder.svg"}
+                  src={post.medias[0] || "/placeholder.svg"}
                   alt="Post image"
                   width={0}
                   height={0}
                   sizes="100vw"
                   className="w-full rounded-lg max-h-96 object-cover cursor-pointer"
-                  onClick={() => setSelectedImage(post.images![0])}
+                  onClick={() => setSelectedImage(post.medias![0])}
                 />
               ) : (
                 <div className="grid grid-cols-2 gap-2">
-                  {post.images.map((image, index) => (
+                  {post.medias.map((image, index) => (
                     <Image
                       key={index}
                       src={image || "/placeholder.svg"}
@@ -262,8 +261,12 @@ const getTopReactions = () => {
               )}
             </div>
             <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>{post.comments} {tPostCard("comments")}</span>
-              <span>{post.shares} {tPostCard("shares")}</span>
+              <span>
+                {/* {post.comments}  */}
+                {tPostCard("comments")}</span>
+              <span>
+                {/* {post.shares}  */}
+                {tPostCard("shares")}</span>
             </div>
           </div>
 
@@ -290,7 +293,8 @@ const getTopReactions = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setShowComments(!showComments)}
+                onClick={() => handleFetchComment()}
+                // onClick={() => setShowComments(!showComments)}
                 className="text-gray-300 hover:bg-white/10"
               >
                 <MessageCircle className="h-4 w-4 mr-1" />
@@ -304,8 +308,15 @@ const getTopReactions = () => {
           </div>
 
           {/* Comments Section */}
+
           {showComments && (
             <div className="mt-4 pt-4 border-t" style={{ borderColor: '#334048' }}>
+              {isLoading && <div>Đang tải bình luận...</div>}
+              {error && <div className="text-red-500">Lỗi: {error.message}</div>}
+              {/* Hiển thị khi không có bình luận */}
+              {comments?.data && Array.isArray(comments.data) && comments.data.length === 0 && (
+                <div>Chưa có bình luận nào.</div>
+              )}
               <div className="flex items-center space-x-3 mb-4">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="/placeholder.svg?height=32&width=32" />
@@ -317,71 +328,71 @@ const getTopReactions = () => {
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     className="flex-1 bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400"
-                    onKeyPress={(e) => e.key === "Enter" && handleComment()}
+                    // onKeyPress={(e) => e.key === "Enter" && handleComment()}
                   />
-                  <Button size="sm" onClick={handleComment} disabled={!newComment.trim()} className="text-white hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
+                  {/* <Button size="sm" onClick={handleComment} disabled={!newComment.trim()} className="text-white hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
                     <Send className="h-4 w-4" />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
 
               {/* Comments List */}
               <div className="space-y-4">
-                {comments.map((comment) => (
+                {comments?.data && Array.isArray(comments.data) && comments.data.length > 0 && comments.data.map((comment: Comment) => (
                   <div key={comment.id} className="space-y-2">
                     <div className="flex items-start space-x-3">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={comment.author.avatar || "/placeholder.svg"} />
-                        <AvatarFallback>{comment.author.name[0]}</AvatarFallback>
+                        <AvatarImage src={comment.userAvatar || "/placeholder.svg"} />
+                        <AvatarFallback>{comment.userName?.[0] || 'U'}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
                         <div className="rounded-lg p-3" style={{ backgroundColor: '#0f1619' }}>
-                          <h5 className="font-semibold text-sm text-white">{comment.author.name}</h5>
+                          <h5 className="font-semibold text-sm text-white">{comment.userName}</h5>
                           <p className="text-sm text-gray-300">{comment.content}</p>
                         </div>
                         <div className="flex items-center space-x-4 mt-1 text-xs text-gray-400">
-                          <span>{comment.timestamp}</span>
+                          <span>{comment.createdAt}</span>
                           <Button variant="ghost" size="sm" className="h-auto p-0 text-xs text-gray-300 hover:bg-white/10">
-                            {tPostCard("likeAction")} ({comment.likes})
+                            {tPostCard("likeAction")} ({comment.totalReaction})
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
                             className="h-auto p-0 text-xs text-gray-300 hover:bg-white/10"
-                            onClick={() => setReplyingTo(comment.id)}
+                            onClick={() => handleFetchReply(comment.id)}
                           >
                             {tPostCard("replyAction")}
                           </Button>
                         </div>
                       </div>
                     </div>
-
+                    <div className={isOpenReply ? "hidden":""}>
                     {/* Replies */}
-                    {comment.replies && comment.replies.length > 0 && (
+                    {commentsReply && commentsReply.data.length > 0 && (
                       <div className="ml-11 space-y-2">
-                        {comment.replies.map((reply) => (
+                        {commentsReply.data.map((reply: Comment) => (
                           <div key={reply.id} className="flex items-start space-x-3">
                             <Avatar className="h-6 w-6">
-                              <AvatarImage src={reply.author.avatar || "/placeholder.svg"} />
-                              <AvatarFallback>{reply.author.name[0]}</AvatarFallback>
+                              <AvatarImage src={reply.userAvatar || "/placeholder.svg"} />
+                              <AvatarFallback>{reply.userName[0]}</AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
                               <div className="rounded-lg p-2" style={{ backgroundColor: '#0f1619' }}>
-                                <h5 className="font-semibold text-xs text-white">{reply.author.name}</h5>
+                                <h5 className="font-semibold text-xs text-white">{reply.userName}</h5>
                                 <p className="text-xs text-gray-300">{reply.content}</p>
                               </div>
                               <div className="flex items-center space-x-4 mt-1 text-xs text-gray-400">
-                                <span>{reply.timestamp}</span>
+                                <span>{reply.createdAt}</span>
                                 <Button variant="ghost" size="sm" className="h-auto p-0 text-xs text-gray-300 hover:bg-white/10">
-                                  {tPostCard("likeAction")} ({reply.likes})
+                                  {tPostCard("likeAction")} ({reply.replyCount})
                                 </Button>
                               </div>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    )}
-
+                        ))} 
+                       </div> 
+                  )} 
+                  </div>
                     {/* Reply Input */}
                     {replyingTo === comment.id && (
                       <div className="ml-11 flex items-center space-x-2">
@@ -394,11 +405,11 @@ const getTopReactions = () => {
                           value={replyContent}
                           onChange={(e) => setReplyContent(e.target.value)}
                           className="flex-1 h-8 text-sm bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400"
-                          onKeyPress={(e) => e.key === "Enter" && handleReply(comment.id)}
+                          // onKeyPress={(e) => e.key === "Enter" && handleReply(comment.id)}
                         />
-                        <Button size="sm" onClick={() => handleReply(comment.id)} disabled={!replyContent.trim()} className="text-white hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
+                        {/* <Button size="sm" onClick={() => handleReply(comment.id)} disabled={!replyContent.trim()} className="text-white hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
                           <Send className="h-3 w-3" />
-                        </Button>
+                        </Button> */}
                         <Button size="sm" variant="ghost" className="text-gray-300 hover:bg-white/10" onClick={() => setReplyingTo(null)}>
                           <X className="h-3 w-3" />
                         </Button>
@@ -409,6 +420,7 @@ const getTopReactions = () => {
               </div>
             </div>
           )}
+          
         </CardContent>
       </Card>
 

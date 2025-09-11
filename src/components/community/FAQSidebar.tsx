@@ -9,7 +9,7 @@ import { useState } from "react"
 import { useTranslations } from "next-intl"
 
 interface FAQ {
-  id: number
+  id: string
   question: string
   views: number
   category: string
@@ -31,11 +31,11 @@ export function FAQSidebar({ onCategorySelect, selectedCategory }: FAQSidebarPro
   const tFAQSidebar = useTranslations("FAQSidebar");
 
   const faqs: FAQ[] = [
-    { id: 1, question: "DÙNG APP LỖI PHẢI LÀM SAO?", views: 847, category: tFAQSidebar("categoryNames.question") },
-    { id: 2, question: "Cách học từ vựng hiệu quả nhất?", views: 339, category: tFAQSidebar("categoryNames.tips") },
-    { id: 3, question: "Có ai ăn trưa chưa", views: 208, category: tFAQSidebar("categoryNames.sharing") },
-    { id: 4, question: "Có ai vào zoom nữa ko", views: 156, category: tFAQSidebar("categoryNames.study") },
-    { id: 5, question: "Buồn nhất là khi", views: 98, category: tFAQSidebar("categoryNames.motivation") },
+    { id: "1", question: "DÙNG APP LỖI PHẢI LÀM SAO?", views: 847, category: tFAQSidebar("categoryNames.question") },
+    { id: "2", question: "Cách học từ vựng hiệu quả nhất?", views: 339, category: tFAQSidebar("categoryNames.tips") },
+    { id: "3", question: "Có ai ăn trưa chưa", views: 208, category: tFAQSidebar("categoryNames.sharing") },
+    { id: "4", question: "Có ai vào zoom nữa ko", views: 156, category: tFAQSidebar("categoryNames.study") },
+    { id: "5", question: "Buồn nhất là khi", views: 98, category: tFAQSidebar("categoryNames.motivation") },
   ]
 
   const categories: Category[] = [
