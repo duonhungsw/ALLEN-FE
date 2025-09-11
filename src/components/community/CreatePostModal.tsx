@@ -122,11 +122,11 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg border-0" style={{ backgroundColor: '#1a2a2f' }}>
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle>{tCreatePost("title")}</DialogTitle>
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <DialogTitle className="text-white">{tCreatePost("title")}</DialogTitle>
+            <Button variant="ghost" size="sm" onClick={onClose} className="text-gray-300 hover:bg-white/10">
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -140,17 +140,17 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
               <AvatarFallback>MA</AvatarFallback>
             </Avatar>
             <div>
-              <h4 className="font-semibold">Minh Anh</h4>
+              <h4 className="font-semibold text-white">Minh Anh</h4>
               <Select value={privacy} onValueChange={setPrivacy}>
-                <SelectTrigger className="w-auto h-auto p-1 border-none bg-slate-100">
+                <SelectTrigger className="w-auto h-auto p-1 bg-[#1a2a2f] text-gray-300 border-[#93D333]">
                   <SelectValue>
                     <div className="flex items-center space-x-1">
                       {getPrivacyIcon(privacy)}
-                      <span className="text-sm">{getPrivacyLabel(privacy)}</span>
+                      <span className="text-sm text-gray-300">{getPrivacyLabel(privacy)}</span>
                     </div>
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#1a2a2f] text-gray-300 border border-[#93D333]">
                   <SelectItem value="public">
                     <div className="flex items-center space-x-2">
                       <Globe className="h-4 w-4" />
@@ -176,10 +176,10 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
 
           {/* Category Selection */}
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-[#1a2a2f] text-gray-300 border-[#93D333]">
               <SelectValue placeholder={tCreatePost("category.placeholder")} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#1a2a2f] text-gray-300 border border-[#93D333]">
               <SelectItem value="study">{tCreatePost("category.study")}</SelectItem>
               <SelectItem value="tips">{tCreatePost("category.tips")}</SelectItem>
               <SelectItem value="question">{tCreatePost("category.question")}</SelectItem>
@@ -193,7 +193,7 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
             placeholder={tCreatePost("placeholder")}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="min-h-[120px] border-none resize-none text-lg placeholder:text-slate-400"
+            className="min-h-[120px] border border-[#93D333] bg-[#1a2a2f] resize-none text-lg text-white placeholder:text-gray-400"
           />
 
           {/* Selected Images */}
@@ -223,13 +223,13 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
           )}
 
           {/* Add to Post */}
-          <div className="border rounded-lg p-3">
+          <div className="border rounded-lg p-3" style={{ borderColor: '#93D333' }}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">{tCreatePost("addToPost")}</span>
+              <span className="text-sm font-medium text-white">{tCreatePost("addToPost")}</span>
             </div>
             <div className="flex items-center space-x-2">
               <label htmlFor="image-upload">
-                <Button variant="ghost" size="sm" className="text-green-600 hover:bg-green-50" asChild>
+                <Button variant="ghost" size="sm" className="text-green-400 hover:bg-white/10" asChild>
                   <div>
                     <ImageIcon className="h-5 w-5" />
                   </div>
@@ -243,19 +243,19 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
                 className="hidden"
                 onChange={handleImageUpload}
               />
-              <Button variant="ghost" size="sm" className="text-blue-600 hover:bg-blue-50">
+              <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-white/10">
                 <Users className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="text-yellow-600 hover:bg-yellow-50">
+              <Button variant="ghost" size="sm" className="text-yellow-400 hover:bg-white/10">
                 <Smile className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="text-red-600 hover:bg-red-50">
+              <Button variant="ghost" size="sm" className="text-red-400 hover:bg-white/10">
                 <MapPin className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="text-purple-600 hover:bg-purple-50">
+              <Button variant="ghost" size="sm" className="text-purple-400 hover:bg-white/10">
                 <Gift className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="text-slate-600 hover:bg-slate-50">
+              <Button variant="ghost" size="sm" className="text-gray-400 hover:bg-white/10">
                 <MoreHorizontal className="h-5 w-5" />
               </Button>
             </div>
@@ -265,7 +265,8 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
           <Button
             onClick={handlePost}
             disabled={!content.trim() && selectedImages.length === 0}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full text-white hover:opacity-90"
+            style={{ backgroundColor: '#93D333' }}
           >
             {tCreatePost("postButton")}
           </Button>

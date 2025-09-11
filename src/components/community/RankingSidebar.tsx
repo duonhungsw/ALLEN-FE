@@ -34,23 +34,23 @@ export function RankingSidebar() {
   }
 
   return (
-    <Card>
+    <Card className="border-0" style={{ backgroundColor: '#1a2a2f' }}>
       <CardHeader>
-        <CardTitle className="flex items-center text-lg">
-          <Trophy className="h-5 w-5 mr-2 text-yellow-600" />
+        <CardTitle className="flex items-center text-lg text-white">
+          <Trophy className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
           {tRanking("title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="week" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="week" className="text-xs">
+          <TabsList className="grid w-full grid-cols-3 border-0" style={{ backgroundColor: '#1a2a2f' }}>
+            <TabsTrigger value="week" className="text-xs data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">
               {tRanking("periods.week")}
             </TabsTrigger>
-            <TabsTrigger value="month" className="text-xs">
+            <TabsTrigger value="month" className="text-xs data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">
               {tRanking("periods.month")}
             </TabsTrigger>
-            <TabsTrigger value="year" className="text-xs">
+            <TabsTrigger value="year" className="text-xs data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">
               {tRanking("periods.year")}
             </TabsTrigger>
           </TabsList>
@@ -64,7 +64,7 @@ export function RankingSidebar() {
                       {user.badge ? (
                         <span className="text-lg">{user.badge}</span>
                       ) : (
-                        <span className="text-sm font-bold text-slate-600">{user.rank}</span>
+                        <span className="text-sm font-bold text-gray-400">{user.rank}</span>
                       )}
                     </div>
                     <Avatar className="h-8 w-8">
@@ -72,8 +72,8 @@ export function RankingSidebar() {
                       <AvatarFallback>{user.name[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{user.name}</p>
-                      <p className="text-xs text-slate-500">{user.points.toLocaleString()} {tRanking("points")}</p>
+                      <p className="text-sm font-medium truncate text-white">{user.name}</p>
+                      <p className="text-xs text-gray-400">{user.points.toLocaleString()} {tRanking("points")}</p>
                     </div>
                   </div>
                 ))}
@@ -83,9 +83,9 @@ export function RankingSidebar() {
         </Tabs>
 
         {/* Current User Rank */}
-        <div className="mt-6 p-3 bg-teal-50 rounded-lg border border-teal-200">
+        <div className="mt-6 p-3 rounded-lg border" style={{ borderColor: '#93D333', backgroundColor: '#0f1619' }}>
           <div className="flex items-center space-x-3">
-            <div className="flex items-center justify-center w-8 h-8 bg-teal-600 text-white rounded-full text-sm font-bold">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold text-white" style={{ backgroundColor: '#93D333' }}>
               15
             </div>
             <Avatar className="h-8 w-8">
@@ -93,8 +93,8 @@ export function RankingSidebar() {
               <AvatarFallback>MA</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <p className="text-sm font-medium">{tRanking("you")}</p>
-              <p className="text-xs text-slate-600">1,250 {tRanking("points")}</p>
+              <p className="text-sm font-medium text-white">{tRanking("you")}</p>
+              <p className="text-xs text-gray-400">1,250 {tRanking("points")}</p>
             </div>
           </div>
         </div>

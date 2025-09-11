@@ -61,19 +61,19 @@ export function FAQSidebar({ onCategorySelect, selectedCategory }: FAQSidebarPro
   return (
     <div className="space-y-4">
       {/* FAQ Section */}
-      <Card>
+      <Card className="border-0" style={{ backgroundColor: '#1a2a2f' }}>
         <CardHeader>
-          <CardTitle className="flex items-center text-lg">
-            <HelpCircle className="h-5 w-5 mr-2 text-blue-600" />
+          <CardTitle className="flex items-center text-lg text-white">
+            <HelpCircle className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
             {tFAQSidebar("frequentQuestions")}
           </CardTitle>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
               placeholder={tFAQSidebar("searchPlaceholder")}
               value={searchFAQ}
               onChange={(e) => setSearchFAQ(e.target.value)}
-              className="pl-10"
+              className="pl-10 bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400"
             />
           </div>
         </CardHeader>
@@ -82,15 +82,15 @@ export function FAQSidebar({ onCategorySelect, selectedCategory }: FAQSidebarPro
             <Button
               key={faq.id}
               variant="ghost"
-              className="w-full justify-start text-left h-auto p-2 hover:bg-slate-100"
+              className="w-full justify-start text-left h-auto p-2 text-gray-300 hover:bg-white/10"
               onClick={() => handleFAQClick(faq)}
             >
               <div className="w-full">
                 <div className="flex items-start space-x-2">
-                  <span className="text-sm font-medium text-slate-600">{index + 1}.</span>
+                  <span className="text-sm font-medium text-gray-400">{index + 1}.</span>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-slate-900 line-clamp-2">{faq.question}</p>
-                    <p className="text-xs text-slate-500 mt-1">{faq.views} {tFAQSidebar("views")}</p>
+                    <p className="text-sm font-medium text-white line-clamp-2">{faq.question}</p>
+                    <p className="text-xs text-gray-400 mt-1">{faq.views} {tFAQSidebar("views")}</p>
                   </div>
                 </div>
               </div>
@@ -100,17 +100,17 @@ export function FAQSidebar({ onCategorySelect, selectedCategory }: FAQSidebarPro
       </Card>
 
       {/* Categories Section */}
-      <Card>
+      <Card className="border-0" style={{ backgroundColor: '#1a2a2f' }}>
         <CardHeader>
-          <CardTitle className="flex items-center text-lg">
-            <Hash className="h-5 w-5 mr-2 text-green-600" />
+          <CardTitle className="flex items-center text-lg text-white">
+            <Hash className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
             {tFAQSidebar("categories")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <Button
             variant={selectedCategory === null ? "default" : "ghost"}
-            className="w-full justify-between text-left h-auto p-2 hover:bg-slate-100"
+            className="w-full justify-between text-left h-auto p-2 hover:bg-white/10 text-gray-300"
             onClick={() => onCategorySelect(null)}
           >
             <div className="flex items-center space-x-2">
@@ -122,14 +122,14 @@ export function FAQSidebar({ onCategorySelect, selectedCategory }: FAQSidebarPro
             <Button
               key={category.name}
               variant={selectedCategory === category.name ? "default" : "ghost"}
-              className="w-full justify-between text-left h-auto p-2 hover:bg-slate-100"
+              className="w-full justify-between text-left h-auto p-2 hover:bg-white/10 text-gray-300"
               onClick={() => onCategorySelect(category.name)}
             >
               <div className="flex items-center space-x-2">
                 <span>{category.icon}</span>
                 <span className="text-sm">{category.name}</span>
               </div>
-              <Badge variant="secondary" className="text-xs">
+              <Badge variant="outline" className="text-xs border-[#93D333] text-gray-300">
                 {category.count}
               </Badge>
             </Button>

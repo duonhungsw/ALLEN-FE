@@ -181,7 +181,7 @@ const getTopReactions = () => {
 
   return (
     <>
-      <Card className="hover:shadow-md transition-shadow">
+      <Card className="hover:shadow-md transition-shadow border-0" style={{ backgroundColor: '#1a2a2f' }}>
         <CardContent className="p-6">
           {/* Post Header */}
           <div className="flex items-start justify-between mb-4">
@@ -192,25 +192,25 @@ const getTopReactions = () => {
               </Avatar>
               <div>
                 <div className="flex items-center space-x-2">
-                  <h3 className="font-semibold">{post.author.name}</h3>
+                  <h3 className="font-semibold text-white">{post.author.name}</h3>
                   <Badge className={getLevelColor(post.author.level)}>{post.author.level}</Badge>
-                  <Badge variant="outline">{post.category}</Badge>
+                  <Badge variant="outline" className="border-[#93D333] text-gray-300">{post.category}</Badge>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-slate-500">
+                <div className="flex items-center space-x-2 text-sm text-gray-400">
                   <span>{post.timestamp}</span>
                   <span>•</span>
                   <span>{post.author.points} {tPostCard("points")}</span>
                 </div>
               </div>
             </div>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-white/10">
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Post Content */}
           <div className="mb-4">
-            <p className="text-slate-800 leading-relaxed whitespace-pre-wrap">{post.content}</p>
+            <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">{post.content}</p>
           </div>
 
           {/* Post Images */}
@@ -246,22 +246,22 @@ const getTopReactions = () => {
           )}
 
           {/* Reactions Summary */}
-          <div className="flex items-center justify-between py-3 border-t border-b border-slate-100">
+          <div className="flex items-center justify-between py-3 border-t border-b" style={{ borderColor: '#334048' }}>
             <div className="flex items-center space-x-2">
               {getTopReactions().length > 0 && (
-                <Button variant="ghost" size="sm" className="p-1 h-auto" onClick={() => setShowReactionModal(true)}>
+                <Button variant="ghost" size="sm" className="p-1 h-auto text-gray-300 hover:bg-white/10" onClick={() => setShowReactionModal(true)}>
                   <div className="flex items-center space-x-1">
                     {getTopReactions().map((reaction) => (
                       <span key={reaction.type} className="text-lg">
                         {reaction.emoji}
                       </span>
                     ))}
-                    <span className="text-sm text-slate-600 ml-1">{totalReactions}</span>
+                    <span className="text-sm text-gray-400 ml-1">{totalReactions}</span>
                   </div>
                 </Button>
               )}
             </div>
-            <div className="flex items-center space-x-4 text-sm text-slate-500">
+            <div className="flex items-center space-x-4 text-sm text-gray-400">
               <span>{post.comments} {tPostCard("comments")}</span>
               <span>{post.shares} {tPostCard("shares")}</span>
             </div>
@@ -278,7 +278,7 @@ const getTopReactions = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleReaction(reaction.type)}
-                    className={`${userReaction === reaction.type ? reaction.color : "text-slate-500"} hover:bg-slate-100`}
+                    className={`${userReaction === reaction.type ? reaction.color : "text-gray-300"} hover:bg-white/10`}
                   >
                     <Icon className="h-4 w-4 mr-1" />
                     {tPostCard(`reactions.${reaction.type}`)}
@@ -291,12 +291,12 @@ const getTopReactions = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowComments(!showComments)}
-                className="text-slate-500 hover:bg-slate-100"
+                className="text-gray-300 hover:bg-white/10"
               >
                 <MessageCircle className="h-4 w-4 mr-1" />
                 {tPostCard("actions.comment")}
               </Button>
-              <Button variant="ghost" size="sm" className="text-slate-500 hover:bg-slate-100">
+              <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-white/10">
                 <Share className="h-4 w-4 mr-1" />
                 {tPostCard("actions.share")}
               </Button>
@@ -305,7 +305,7 @@ const getTopReactions = () => {
 
           {/* Comments Section */}
           {showComments && (
-            <div className="mt-4 pt-4 border-t border-slate-100">
+            <div className="mt-4 pt-4 border-t" style={{ borderColor: '#334048' }}>
               <div className="flex items-center space-x-3 mb-4">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="/placeholder.svg?height=32&width=32" />
@@ -316,10 +316,10 @@ const getTopReactions = () => {
                     placeholder={tPostCard("commentPlaceholder")}
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    className="flex-1"
+                    className="flex-1 bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400"
                     onKeyPress={(e) => e.key === "Enter" && handleComment()}
                   />
-                  <Button size="sm" onClick={handleComment} disabled={!newComment.trim()}>
+                  <Button size="sm" onClick={handleComment} disabled={!newComment.trim()} className="text-white hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
@@ -335,19 +335,19 @@ const getTopReactions = () => {
                         <AvatarFallback>{comment.author.name[0]}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <div className="bg-slate-100 rounded-lg p-3">
-                          <h5 className="font-semibold text-sm">{comment.author.name}</h5>
-                          <p className="text-sm">{comment.content}</p>
+                        <div className="rounded-lg p-3" style={{ backgroundColor: '#0f1619' }}>
+                          <h5 className="font-semibold text-sm text-white">{comment.author.name}</h5>
+                          <p className="text-sm text-gray-300">{comment.content}</p>
                         </div>
-                        <div className="flex items-center space-x-4 mt-1 text-xs text-slate-500">
+                        <div className="flex items-center space-x-4 mt-1 text-xs text-gray-400">
                           <span>{comment.timestamp}</span>
-                          <Button variant="ghost" size="sm" className="h-auto p-0 text-xs">
+                          <Button variant="ghost" size="sm" className="h-auto p-0 text-xs text-gray-300 hover:bg-white/10">
                             {tPostCard("likeAction")} ({comment.likes})
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-auto p-0 text-xs"
+                            className="h-auto p-0 text-xs text-gray-300 hover:bg-white/10"
                             onClick={() => setReplyingTo(comment.id)}
                           >
                             {tPostCard("replyAction")}
@@ -366,13 +366,13 @@ const getTopReactions = () => {
                               <AvatarFallback>{reply.author.name[0]}</AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
-                              <div className="bg-slate-100 rounded-lg p-2">
-                                <h5 className="font-semibold text-xs">{reply.author.name}</h5>
-                                <p className="text-xs">{reply.content}</p>
+                              <div className="rounded-lg p-2" style={{ backgroundColor: '#0f1619' }}>
+                                <h5 className="font-semibold text-xs text-white">{reply.author.name}</h5>
+                                <p className="text-xs text-gray-300">{reply.content}</p>
                               </div>
-                              <div className="flex items-center space-x-4 mt-1 text-xs text-slate-500">
+                              <div className="flex items-center space-x-4 mt-1 text-xs text-gray-400">
                                 <span>{reply.timestamp}</span>
-                                <Button variant="ghost" size="sm" className="h-auto p-0 text-xs">
+                                <Button variant="ghost" size="sm" className="h-auto p-0 text-xs text-gray-300 hover:bg-white/10">
                                   {tPostCard("likeAction")} ({reply.likes})
                                 </Button>
                               </div>
@@ -393,13 +393,13 @@ const getTopReactions = () => {
                           placeholder={tPostCard("replyPlaceholder")}
                           value={replyContent}
                           onChange={(e) => setReplyContent(e.target.value)}
-                          className="flex-1 h-8 text-sm"
+                          className="flex-1 h-8 text-sm bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400"
                           onKeyPress={(e) => e.key === "Enter" && handleReply(comment.id)}
                         />
-                        <Button size="sm" onClick={() => handleReply(comment.id)} disabled={!replyContent.trim()}>
+                        <Button size="sm" onClick={() => handleReply(comment.id)} disabled={!replyContent.trim()} className="text-white hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
                           <Send className="h-3 w-3" />
                         </Button>
-                        <Button size="sm" variant="ghost" onClick={() => setReplyingTo(null)}>
+                        <Button size="sm" variant="ghost" className="text-gray-300 hover:bg-white/10" onClick={() => setReplyingTo(null)}>
                           <X className="h-3 w-3" />
                         </Button>
                       </div>
@@ -415,7 +415,7 @@ const getTopReactions = () => {
       {/* Image Modal */}
       {selectedImage && (
         <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] p-0">
+          <DialogContent className="max-w-4xl max-h-[90vh] p-0 border-0" style={{ backgroundColor: '#1a2a2f' }}>
             <div className="relative">
               <Image
                 src={selectedImage || "/placeholder.svg"}
@@ -442,8 +442,8 @@ const getTopReactions = () => {
                   <AvatarImage src="/placeholder.svg?height=32&width=32" />
                   <AvatarFallback>B</AvatarFallback>
                 </Avatar>
-                <Input placeholder={tPostCard("imageCommentPlaceholder")} className="flex-1" />
-                <Button size="sm">
+                <Input placeholder={tPostCard("imageCommentPlaceholder")} className="flex-1 bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400" />
+                <Button size="sm" className="text-white hover:opacity-90" style={{ backgroundColor: '#93D333' }}>
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
@@ -455,16 +455,16 @@ const getTopReactions = () => {
       {/* Reaction Modal */}
       {showReactionModal && (
         <Dialog open={showReactionModal} onOpenChange={setShowReactionModal}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md border-0" style={{ backgroundColor: '#1a2a2f' }}>
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">{tPostCard("reactionModalTitle")}</h3>
+              <h3 className="text-lg font-semibold text-white">{tPostCard("reactionModalTitle")}</h3>
               {getTopReactions().map((reaction) => (
-                <div key={reaction.type} className="flex items-center justify-between p-2 border rounded">
-                  <div className="flex items-center space-x-2">
+                <div key={reaction.type} className="flex items-center justify-between p-2 rounded border" style={{ borderColor: '#93D333' }}>
+                  <div className="flex items-center space-x-2 text-gray-300">
                     <span className="text-xl">{reaction.emoji}</span>
                     <span className="capitalize">{reaction.type}</span>
                   </div>
-                  <Badge>{reaction.count}</Badge>
+                  <Badge className="border-[#93D333]" variant="outline">{reaction.count}</Badge>
                 </div>
               ))}
             </div>

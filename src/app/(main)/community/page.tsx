@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CreatePostModal } from "./components/CreatePostModal"
-import { FAQSidebar } from "./components/FAQSidebar"
-import { PostCard } from "./components/PostCard"
-import { RankingSidebar } from "./components/RankingSidebar"
+import { CreatePostModal } from "@/components/community/CreatePostModal"
+import { FAQSidebar } from "@/components/community/FAQSidebar"
+import { PostCard } from "@/components/community/PostCard"
+import { RankingSidebar } from "@/components/community/RankingSidebar"
 import { Search, TrendingUp } from "lucide-react"
 
 interface Post {
@@ -136,7 +136,7 @@ export default function CommunityPage() {
   })
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar - FAQ & Categories */}
@@ -148,7 +148,7 @@ export default function CommunityPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-slate-900">Cộng đồng</h1>
+              <h1 className="text-2xl font-bold text-white">Cộng đồng</h1>
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -156,21 +156,21 @@ export default function CommunityPage() {
                     placeholder="Tìm kiếm bài viết..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-64"
+                    className="pl-10 w-64 bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400"
                   />
                 </div>
               </div>
             </div>
 
             {/* Filters */}
-            <Card>
+            <Card className="border-0" style={{ backgroundColor: '#1a2a2f' }}>
               <CardContent className="p-4">
                 <Tabs value={selectedFilter} onValueChange={setSelectedFilter}>
-                  <TabsList className="grid w-full grid-cols-4">
-                    <TabsTrigger value="all">Tất cả</TabsTrigger>
-                    <TabsTrigger value="favorites">Yêu thích</TabsTrigger>
-                    <TabsTrigger value="following">Quan tâm</TabsTrigger>
-                    <TabsTrigger value="trending">
+                  <TabsList className="grid w-full grid-cols-4 border-0" style={{ backgroundColor: '#1a2a2f' }}>
+                    <TabsTrigger value="all" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">Tất cả</TabsTrigger>
+                    <TabsTrigger value="favorites" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">Yêu thích</TabsTrigger>
+                    <TabsTrigger value="following" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">Quan tâm</TabsTrigger>
+                    <TabsTrigger value="trending" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">
                       <TrendingUp className="h-4 w-4 mr-1" />
                       Xu hướng
                     </TabsTrigger>
@@ -180,7 +180,7 @@ export default function CommunityPage() {
             </Card>
 
             {/* Create Post */}
-            <Card>
+            <Card className="border-0" style={{ backgroundColor: '#1a2a2f' }}>
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
                   <Avatar>
@@ -189,7 +189,7 @@ export default function CommunityPage() {
                   </Avatar>
                   <Button
                     variant="outline"
-                    className="flex-1 justify-start text-slate-500 bg-slate-100 hover:bg-slate-200"
+                    className="flex-1 justify-start text-gray-300 border-[#93D333] bg-[#1a2a2f] hover:opacity-90"
                     onClick={() => setIsCreatePostOpen(true)}
                   >
                     Bạn đang nghĩ gì?
