@@ -52,12 +52,12 @@ export function Sidebar() {
   const router = useRouter();
   const tSidebar = useTranslations("Sidebar");
   const locale = useLocale();
-  
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken != null) {
       const rawUserData = parseJwt(accessToken);
-  
+
       const userData: User = {
         id: rawUserData.Id,
         name: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'User',
@@ -65,7 +65,7 @@ export function Sidebar() {
         picture: rawUserData['Picture'] || '',
         role: rawUserData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || '',
       };
-  
+
       setUser(userData);
     }
   }, []);
@@ -82,7 +82,7 @@ export function Sidebar() {
       flag: "/svg/EnglandFlag.svg",
     },
   ];
-  
+
   const currentLang = LANGUAGE_OPTIONS.find(
     (opt) => opt.value === locale
   );
@@ -117,28 +117,29 @@ export function Sidebar() {
 
   return (
     <div
-      className={cn("bg-slate-900 text-white transition-all duration-300 flex flex-col", collapsed ? "w-[72px]" : "w-64")}
+      className={cn("text-white transition-all duration-300 flex flex-col", collapsed ? "w-[72px]" : "w-64")}
+      style={{ backgroundColor: '#142F50' }}
     >
-      <div className="p-4 border-b border-slate-700">
+      <div className="p-4 border-b" style={{ borderColor: '#1e3a5f' }}>
         <div className="flex items-center justify-between">
           {!collapsed && (
             <div>
-              <h1 className="text-lg font-bold text-teal-400">Allen</h1>
-              <p className="text-xs text-slate-400">Learning Platform</p>
+              <h1 className="text-lg font-bold" style={{ color: '#F3713B' }}>Allen</h1>
+              <p className="text-xs text-gray-300">Learning Platform</p>
             </div>
           )}
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setCollapsed(!collapsed)}
-            className="text-slate-400 hover:text-white hover:bg-slate-800"
+            className="text-gray-300 hover:text-white hover:bg-gray-600"
           >
             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </Button>
         </div>
       </div>
 
-      <div className="p-4 border-b border-slate-700">
+      <div className="p-4 border-b" style={{ borderColor: '#1e3a5f' }}>
         <div className="flex items-center space-x-3">
           <Image
             src={
@@ -149,16 +150,16 @@ export function Sidebar() {
             alt={user?.name || "User Avatar"}
             width={40}
             height={40}
-            className="w-10 h-10 mx-auto rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-md"
+            className="w-10 h-10 mx-auto rounded-full object-cover border-2 border-gray-300 shadow-md"
           />
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user?.name || "User"}</p>
+              <p className="text-sm font-medium truncate text-white">{user?.name || "User"}</p>
               <div className="flex items-center space-x-2">
-                <Badge variant="secondary" className="bg-teal-600 text-white text-xs">
+                <Badge variant="secondary" className="text-white text-xs" style={{ backgroundColor: '#F3713B' }}>
                   {user?.email || "N/A"}
                 </Badge>
-                <span className="text-xs text-slate-400">Level 12</span>
+                <span className="text-xs text-gray-300">Level 12</span>
               </div>
             </div>
           )}
@@ -178,11 +179,18 @@ export function Sidebar() {
                   <Button
                     variant="ghost"
                     className={cn(
-                      "w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800",
-                      isActive && "bg-teal-600 text-white hover:bg-teal-700",
+                      "w-full justify-start text-white hover:text-white hover:bg-gray-600 relative",
+                      isActive && "text-white hover:text-white",
                       collapsed && "px-2",
                     )}
+                    style={isActive ? { backgroundColor: '#1e3a5f' } : {}}
                   >
+                    {isActive && (
+                      <div
+                        className="absolute left-0 top-0 bottom-0 w-1"
+                        style={{ backgroundColor: '#F3713B' }}
+                      />
+                    )}
                     <Icon className={cn("h-5 w-5", !collapsed && "mr-3")} />
                     {!collapsed && item.name}
                   </Button>
@@ -194,12 +202,12 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-slate-700">
+      <div className="p-4 border-t" style={{ borderColor: '#1e3a5f' }}>
         <Link href="/settings">
           <Button
             variant="ghost"
             className={cn(
-              "w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800",
+              "w-full justify-start text-white hover:text-white hover:bg-gray-600",
               collapsed && "px-2",
             )}
           >
@@ -208,41 +216,41 @@ export function Sidebar() {
           </Button>
         </Link>
         <div className="relative" ref={languageDropdownRef}>
-            <button
-              onClick={() => setIsLanguageDropdownOpen((v) => !v)}
-              className="transition-colors font-bold flex gap-2 items-center px-3 py-2 rounded-md -slate-300 hover:text-white hover:bg-slate-800"
-            >
-              <Image
-                src={currentLang?.flag || "/default-flag.png"}
-                alt={currentLang?.lang || "flag"}
-                width={16}
-                height={16}
-                className="inline-block mr-4 "
-                style={{ width: "16px", height: "16px" }}
-              />
-              {!collapsed && currentLang?.lang }
-            </button>
-            {isLanguageDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 bottom-0">
-                {LANGUAGE_OPTIONS.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleChangeLanguage(option.value)}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                  >
-                    <Image
-                      src={option.flag}
-                      alt={option.lang}
-                      width={16}
-                      height={16}
-                      className="inline-block mr-2"
-                    />
-                    {option.lang}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <button
+            onClick={() => setIsLanguageDropdownOpen((v) => !v)}
+            className="transition-colors font-bold flex gap-2 items-center px-3 py-2 rounded-md text-white hover:text-white hover:bg-gray-600"
+          >
+            <Image
+              src={currentLang?.flag || "/default-flag.png"}
+              alt={currentLang?.lang || "flag"}
+              width={16}
+              height={16}
+              className="inline-block mr-4 "
+              style={{ width: "16px", height: "16px" }}
+            />
+            {!collapsed && currentLang?.lang}
+          </button>
+          {isLanguageDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 bottom-0 border" style={{ borderColor: '#E5E7EB' }}>
+              {LANGUAGE_OPTIONS.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handleChangeLanguage(option.value)}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                >
+                  <Image
+                    src={option.flag}
+                    alt={option.lang}
+                    width={16}
+                    height={16}
+                    className="inline-block mr-2"
+                  />
+                  {option.lang}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
