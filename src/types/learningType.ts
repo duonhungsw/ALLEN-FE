@@ -47,6 +47,10 @@ export interface FilterOptions {
 export type FilterFunction<T> = (items: T[], options: FilterOptions) => T[]
 
 export const filterCategories: FilterFunction<Category> = (categories, { searchTerm, selectedLevel }) => {
+    if (!categories || !Array.isArray(categories)) {
+        return []
+    }
+    
     return categories.filter((category) => {
         const matchesSearch =
             searchTerm === "" ||
@@ -60,6 +64,10 @@ export const filterCategories: FilterFunction<Category> = (categories, { searchT
 }
 
 export const filterTopics: FilterFunction<Topic> = (topics, { searchTerm, selectedLevel }) => {
+    if (!topics || !Array.isArray(topics)) {
+        return []
+    }
+    
     return topics.filter((topic) => {
         const matchesSearch =
             searchTerm === "" ||
@@ -73,6 +81,10 @@ export const filterTopics: FilterFunction<Topic> = (topics, { searchTerm, select
 }
 
 export const filterExercises: FilterFunction<Exercise> = (exercises, { searchTerm, selectedLevel }) => {
+    if (!exercises || !Array.isArray(exercises)) {
+        return []
+    }
+    
     return exercises.filter((exercise) => {
         const matchesSearch =
             searchTerm === "" ||

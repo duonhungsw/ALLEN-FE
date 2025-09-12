@@ -117,52 +117,52 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
         const accuracy = Math.round((correctCount / results.length) * 100)
 
         return (
-            <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#141F23' }}>
-                <Card className="w-full max-w-2xl border-0" style={{ backgroundColor: '#1a2a2f' }}>
+            <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#F5F3EA' }}>
+                <Card className="w-full max-w-2xl border shadow-lg" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                     <CardContent className="p-8">
                         <div className="text-center mb-8">
-                            <h2 className="text-2xl font-bold mb-4" style={{ color: '#93D333' }}>Hoàn thành bài tập!</h2>
+                            <h2 className="text-2xl font-bold mb-4" style={{ color: '#F3713B' }}>Hoàn thành bài tập!</h2>
                             <div className="text-6xl mb-4">🎉</div>
                             <div className="grid grid-cols-3 gap-4 mb-6">
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold" style={{ color: '#93D333' }}>{correctCount}</div>
-                                    <div className="text-sm text-gray-300">Câu đúng</div>
+                                    <div className="text-2xl font-bold" style={{ color: '#F3713B' }}>{correctCount}</div>
+                                    <div className="text-sm text-gray-600">Câu đúng</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-red-400">{results.length - correctCount}</div>
-                                    <div className="text-sm text-gray-300">Câu sai</div>
+                                    <div className="text-2xl font-bold text-red-500">{results.length - correctCount}</div>
+                                    <div className="text-sm text-gray-600">Câu sai</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-white">{accuracy}%</div>
-                                    <div className="text-sm text-gray-300">Độ chính xác</div>
+                                    <div className="text-2xl font-bold" style={{ color: '#142F50' }}>{accuracy}%</div>
+                                    <div className="text-sm text-gray-600">Độ chính xác</div>
                                 </div>
                             </div>
-                            <div className="text-gray-300 mb-6">Thời gian: {formatTime(timer)}</div>
+                            <div className="text-gray-600 mb-6">Thời gian: {formatTime(timer)}</div>
                         </div>
 
                         <div className="space-y-4 mb-8">
-                            <h3 className="text-lg font-semibold text-white">Chi tiết kết quả:</h3>
+                            <h3 className="text-lg font-semibold" style={{ color: '#142F50' }}>Chi tiết kết quả:</h3>
                             {results.map((result, index) => (
                                 <div
                                     key={index}
                                     className={`p-4 rounded-lg border-l-4 ${result.correct ? "border-green-500" : "border-red-500"
                                         }`}
-                                    style={{ backgroundColor: '#1a2a2f' }}
+                                    style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}
                                 >
                                     <div className="flex items-center mb-2">
                                         {result.correct ? (
-                                            <Check className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
+                                            <Check className="h-5 w-5 mr-2" style={{ color: '#F3713B' }} />
                                         ) : (
-                                            <X className="h-5 w-5 text-red-400 mr-2" />
+                                            <X className="h-5 w-5 text-red-500 mr-2" />
                                         )}
-                                        <span className="font-semibold text-white">Câu {index + 1}</span>
+                                        <span className="font-semibold" style={{ color: '#142F50' }}>Câu {index + 1}</span>
                                     </div>
                                     <div className="text-sm space-y-1">
-                                        <div className="text-white">
+                                        <div className="text-gray-700">
                                             <strong>Đáp án đúng:</strong> {result.correctAnswer}
                                         </div>
                                         {!result.correct && (
-                                            <div className="text-white">
+                                            <div className="text-gray-700">
                                                 <strong>Câu trả lời của bạn:</strong> {result.userAnswer}
                                             </div>
                                         )}
@@ -173,11 +173,11 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
 
                         <div className="flex space-x-4">
                             <Link href="/learning/listening" className="flex-1">
-                                <Button variant="outline" className="w-full border-gray-600 text-white hover:bg-gray-700 cursor-pointer">
+                                <Button variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer">
                                     Quay lại danh sách
                                 </Button>
                             </Link>
-                            <Button className="flex-1 text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }} onClick={() => window.location.reload()}>
+                            <Button className="flex-1 text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#F3713B' }} onClick={() => window.location.reload()}>
                                 Làm lại
                             </Button>
                         </div>
@@ -188,74 +188,74 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
     }
 
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
-            <div className="px-6 py-4" style={{ backgroundColor: '#141F23' }}>
+        <div className="min-h-screen" style={{ backgroundColor: '#F5F3EA' }}>
+            <div className="px-6 py-4" style={{ backgroundColor: '#F5F3EA' }}>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         <Link href="/learning/listening">
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 cursor-pointer">
+                            <Button variant="ghost" size="sm" className="text-gray-700 hover:bg-gray-100 cursor-pointer">
                                 <ArrowLeft className="h-4 w-4 mr-2" />
                                 Quay lại
                             </Button>
                         </Link>
                         <div>
-                            <h1 className="text-xl font-bold text-white">{exercise.title}</h1>
-                            <p className="text-sm text-gray-300">
+                            <h1 className="text-xl font-bold" style={{ color: '#142F50' }}>{exercise.title}</h1>
+                            <p className="text-sm text-gray-600">
                                 Chép chính tả - Câu {currentSentence + 1}/{exercise.sentences.length}
                             </p>
                         </div>
                     </div>
-                    <div className="text-lg font-mono text-white px-3 py-1 rounded" style={{ backgroundColor: '#93D333' }}>{formatTime(timer)}</div>
+                    <div className="text-lg font-mono text-white px-3 py-1 rounded" style={{ backgroundColor: '#F3713B' }}>{formatTime(timer)}</div>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 py-8">
                 <div className="mb-8">
                     <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-white">Tiến độ</span>
-                        <span className="text-sm text-gray-300">{Math.round(progress)}%</span>
+                        <span className="text-sm font-medium" style={{ color: '#142F50' }}>Tiến độ</span>
+                        <span className="text-sm text-gray-600">{Math.round(progress)}%</span>
                     </div>
                     <Progress value={progress} className="h-2" />
                 </div>
 
                 <div className="max-w-4xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <Card className="border-0" style={{ backgroundColor: '#1a2a2f' }}>
+                        <Card className="border shadow-sm" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                             <CardContent className="p-8">
                                 <div className="text-center">
-                                    <div className="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#93D333' }}>
+                                    <div className="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#F3713B' }}>
                                         <Volume2 className="h-16 w-16 text-white" />
                                     </div>
 
-                                    <h3 className="text-lg font-semibold mb-4 text-white">Nghe và viết lại câu</h3>
+                                    <h3 className="text-lg font-semibold mb-4" style={{ color: '#142F50' }}>Nghe và viết lại câu</h3>
 
                                     <div className="flex justify-center space-x-4 mb-6">
-                                        <Button onClick={playAudio} disabled={isPlaying} className="text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
+                                        <Button onClick={playAudio} disabled={isPlaying} className="text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#F3713B' }}>
                                             {isPlaying ? <Pause className="h-5 w-5 mr-2" /> : <Play className="h-5 w-5 mr-2" />}
                                             {isPlaying ? "Đang phát..." : "Phát âm thanh"}
                                         </Button>
 
-                                        <Button variant="outline" onClick={resetSentence} className="border-gray-600 text-white hover:bg-gray-700 cursor-pointer">
+                                        <Button variant="outline" onClick={resetSentence} className="border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer">
                                             <RotateCcw className="h-5 w-5 mr-2" />
                                             Làm lại
                                         </Button>
                                     </div>
 
-                                    <div className="text-sm text-gray-300">Đã nghe: {playCount} lần</div>
+                                    <div className="text-sm text-gray-600">Đã nghe: {playCount} lần</div>
                                 </div>
                             </CardContent>
                         </Card>
 
-                        <Card className="border-0" style={{ backgroundColor: '#1a2a2f' }}>
+                        <Card className="border shadow-sm" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                             <CardContent className="p-8">
-                                <h3 className="text-lg font-semibold mb-4 text-white">Nhập câu bạn nghe được</h3>
+                                <h3 className="text-lg font-semibold mb-4" style={{ color: '#142F50' }}>Nhập câu bạn nghe được</h3>
 
                                 <div className="space-y-4">
                                     <Input
                                         value={userInput}
                                         onChange={(e) => setUserInput(e.target.value)}
                                         placeholder="Gõ câu bạn nghe được..."
-                                        className="text-lg p-4 bg-gray-800 border-gray-600 text-white placeholder-gray-400"
+                                        className="text-lg p-4 bg-white border-gray-300 text-gray-900 placeholder-gray-500"
                                         disabled={showResult}
                                         onKeyPress={(e) => e.key === "Enter" && !showResult && checkAnswer()}
                                     />
@@ -265,7 +265,7 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
                                             onClick={checkAnswer}
                                             disabled={!userInput.trim()}
                                             className="w-full text-white border-0 hover:opacity-90 cursor-pointer"
-                                            style={{ backgroundColor: '#93D333' }}
+                                            style={{ backgroundColor: '#F3713B' }}
                                         >
                                             Kiểm tra
                                         </Button>
@@ -276,7 +276,7 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
                                                     ? "border border-green-500"
                                                     : "border border-red-500"
                                                     }`}
-                                                style={{ backgroundColor: results[currentSentence]?.correct ? '#1a2a2f' : '#1a2a2f' }}
+                                                style={{ backgroundColor: '#FFFFFF' }}
                                             >
                                                 <div className="flex items-center mb-2">
                                                     {results[currentSentence]?.correct ? (
@@ -284,27 +284,27 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
                                                     ) : (
                                                         <X className="h-5 w-5 text-red-600 mr-2" />
                                                     )}
-                                                    <span className="font-semibold text-white">
+                                                    <span className="font-semibold" style={{ color: '#142F50' }}>
                                                         {results[currentSentence]?.correct ? "Chính xác!" : "Chưa đúng"}
                                                     </span>
                                                 </div>
 
                                                 <div className="space-y-2 text-sm">
-                                                    <div className="text-white">
+                                                    <div className="text-gray-700">
                                                         <strong>Đáp án đúng:</strong> {currentSentenceData.text}
                                                     </div>
-                                                    <div className="text-white">
+                                                    <div className="text-gray-700">
                                                         <strong>Nghĩa:</strong> {currentSentenceData.translation}
                                                     </div>
                                                     {!results[currentSentence]?.correct && (
-                                                        <div className="text-white">
+                                                        <div className="text-gray-700">
                                                             <strong>Câu trả lời của bạn:</strong> {userInput}
                                                         </div>
                                                     )}
                                                 </div>
                                             </div>
 
-                                            <Button onClick={nextSentence} className="w-full text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
+                                            <Button onClick={nextSentence} className="w-full text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#F3713B' }}>
                                                 {currentSentence < exercise.sentences.length - 1 ? "Câu tiếp theo" : "Hoàn thành"}
                                             </Button>
                                         </div>
@@ -314,9 +314,9 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
                         </Card>
                     </div>
 
-                    <Card className="mt-8 border-0" style={{ backgroundColor: '#1a2a2f' }}>
+                    <Card className="mt-8 border shadow-sm" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                         <CardContent className="p-6">
-                            <h3 className="text-lg font-semibold mb-4 text-white">Danh sách câu</h3>
+                            <h3 className="text-lg font-semibold mb-4" style={{ color: '#142F50' }}>Danh sách câu</h3>
                             <div className="grid grid-cols-5 gap-2">
                                 {exercise.sentences.map((_, index) => (
                                     <Button
@@ -327,11 +327,11 @@ export default function ListeningPage({ params }: { params: { id: string } }) {
                                             ? results[index].correct
                                                 ? "text-white border-green-500"
                                                 : "text-white border-red-500"
-                                            : "text-white border-gray-600"
+                                            : "text-gray-700 border-gray-300"
                                             }`}
                                         style={{
-                                            backgroundColor: index === currentSentence ? '#93D333' :
-                                                results[index] ? (results[index].correct ? '#1a2a2f' : '#1a2a2f') : '#1a2a2f'
+                                            backgroundColor: index === currentSentence ? '#F3713B' :
+                                                results[index] ? (results[index].correct ? '#FFFFFF' : '#FFFFFF') : '#FFFFFF'
                                         }}
                                         onClick={() => {
                                             if (index <= results.length) {

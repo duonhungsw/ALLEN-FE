@@ -45,7 +45,6 @@ export default function QuestionPopup({
                     className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {/* Header */}
                     <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
                         <div className="flex justify-between items-center">
                             <div>
@@ -61,7 +60,6 @@ export default function QuestionPopup({
                         </div>
                     </div>
 
-                    {/* Content */}
                     <div className="p-6 overflow-y-auto max-h-[60vh]">
                         {isLoading ? (
                             <div className="flex items-center justify-center py-12">

@@ -8,151 +8,41 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Mic, MessageCircle, Volume2, Star, TrendingUp, Search, Users, Clock, BookOpen, Target } from "lucide-react"
+import { MessageCircle, Volume2, Star, TrendingUp, Search, Users, Clock, Target } from "lucide-react"
 import { Category, Topic, filterCategories, filterTopics } from "@/types/learningType"
+import { useLearningSkill } from "@/hooks/learning/useLearningUnits"
+import { motion } from "framer-motion";
 
 export default function SpeakingPage() {
     const [selectedTab, setSelectedTab] = useState("pronunciation")
     const [searchTerm, setSearchTerm] = useState("")
     const [selectedLevel, setSelectedLevel] = useState("all")
 
-    const pronunciationCategories: Category[] = [
-        {
-            id: 1,
-            name: "Daily Conversation",
-            description: "Hội thoại hàng ngày",
-            icon: "💬",
-            lessons: 12,
-            level: "Beginner",
-            difficulty: "Dễ",
-            duration: "15 phút",
-        },
-        {
-            id: 2,
-            name: "Business English",
-            description: "Tiếng Anh thương mại",
-            icon: "💼",
-            lessons: 15,
-            level: "Advanced",
-            difficulty: "Khó",
-            duration: "25 phút",
-        },
-        {
-            id: 3,
-            name: "Travel & Tourism",
-            description: "Du lịch và khách sạn",
-            icon: "✈️",
-            lessons: 10,
-            level: "Intermediate",
-            difficulty: "Trung bình",
-            duration: "20 phút",
-        },
-        {
-            id: 4,
-            name: "Academic English",
-            description: "Tiếng Anh học thuật",
-            icon: "🎓",
-            lessons: 18,
-            level: "Advanced",
-            difficulty: "Khó",
-            duration: "30 phút",
-        },
-        {
-            id: 5,
-            name: "IELTS Speaking",
-            description: "Luyện thi IELTS Speaking",
-            icon: "📝",
-            lessons: 20,
-            level: "Advanced",
-            difficulty: "Khó",
-            duration: "35 phút",
-        },
-        {
-            id: 6,
-            name: "Pronunciation Basics",
-            description: "Phát âm cơ bản",
-            icon: "🔤",
-            lessons: 8,
-            level: "Beginner",
-            difficulty: "Dễ",
-            duration: "12 phút",
-        },
-    ]
+    const { data: speakingData, isLoading, error } = useLearningSkill();
 
-    const conversationTopics: Topic[] = [
-        {
-            id: 1,
-            title: "Job Interview Practice",
-            description: "Luyện tập phỏng vấn xin việc với AI",
-            duration: "10-15 phút",
-            difficulty: "Trung bình",
-            participants: 156,
-            rating: 4.8,
-            image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3H15NOYIwhyEpWzwWxdy2ztFp2sOcW.png",
-            completed: true,
-            lastScore: 82,
-        },
-        {
-            id: 2,
-            title: "Restaurant Conversation",
-            description: "Hội thoại tại nhà hàng",
-            duration: "5-8 phút",
-            difficulty: "Dễ",
-            participants: 234,
-            rating: 4.9,
-            image: "/placeholder.svg?height=200&width=300&text=Restaurant",
-            completed: true,
-            lastScore: 90,
-        },
-        {
-            id: 3,
-            title: "Travel Planning",
-            description: "Lên kế hoạch du lịch",
-            duration: "8-12 phút",
-            difficulty: "Trung bình",
-            participants: 189,
-            rating: 4.7,
-            image: "/placeholder.svg?height=200&width=300&text=Travel",
-            completed: false,
-            lastScore: null,
-        },
-        {
-            id: 4,
-            title: "Business Meeting",
-            description: "Cuộc họp kinh doanh",
-            duration: "15-20 phút",
-            difficulty: "Khó",
-            participants: 98,
-            rating: 4.6,
-            image: "/placeholder.svg?height=200&width=300&text=Business",
-            completed: false,
-            lastScore: null,
-        },
-        {
-            id: 5,
-            title: "Daily Chat",
-            description: "Trò chuyện hàng ngày",
-            duration: "6-10 phút",
-            difficulty: "Dễ",
-            participants: 312,
-            rating: 4.9,
-            image: "/placeholder.svg?height=200&width=300&text=Chat",
-            completed: false,
-            lastScore: null,
-        },
-        {
-            id: 6,
-            title: "Academic Discussion",
-            description: "Thảo luận học thuật",
-            duration: "12-18 phút",
-            difficulty: "Khó",
-            participants: 87,
-            rating: 4.5,
-            image: "/placeholder.svg?height=200&width=300&text=Academic",
-            completed: false,
-            lastScore: null,
-        },
-    ]
+    const pronunciationCategories: Category[] = speakingData?.data?.map((item: any, index: number) => ({
+        id: item.id || index + 1,
+        name: item.title || "Speaking Practice",
+        description: `Luyện tập ${item.skillType} - Level ${item.level}`,
+        icon: "💬",
+        lessons: item.unitSteps?.length || 0,
+        level: item.level || "Beginner",
+        difficulty: item.level === "A1" ? "Dễ" : item.level === "A2" ? "Trung bình" : "Khó",
+        duration: "15 phút",
+    })) || [];
+
+    const conversationTopics: Topic[] = speakingData?.data?.map((item: any, index: number) => ({
+        id: item.id || index + 1,
+        title: item.title || "Speaking Practice",
+        description: `Luyện tập ${item.skillType} - Level ${item.level}`,
+        duration: "10-15 phút",
+        difficulty: item.level === "A1" ? "Dễ" : item.level === "A2" ? "Trung bình" : "Khó",
+        participants: Math.floor(Math.random() * 200) + 50, // Random participants
+        rating: 4.5 + Math.random() * 0.5,
+        image: "/placeholder.svg?height=200&width=300&text=Speaking",
+        completed: false,
+        lastScore: null,
+    })) || []
 
     const levels = ["all", "Beginner", "Intermediate", "Advanced"]
 
@@ -182,69 +72,13 @@ export default function SpeakingPage() {
         }
     }
 
-    const filteredCategories = filterCategories(pronunciationCategories, { searchTerm, selectedLevel })
-    const filteredTopics = filterTopics(conversationTopics, { searchTerm, selectedLevel })
+    const filteredCategories = filterCategories(pronunciationCategories || [], { searchTerm, selectedLevel })
+    const filteredTopics = filterTopics(conversationTopics || [], { searchTerm, selectedLevel })
 
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
-            <div className="px-6 py-8" style={{ backgroundColor: '#141F23' }}>
-                <div className="container mx-auto">
-                    <div className="flex items-center space-x-4 mb-6">
-                        <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
-                            <BookOpen className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                            <h1 className="text-3xl font-bold text-white">Speaking Practice</h1>
-                            <p className="text-gray-300">Cải thiện phát âm và kỹ năng giao tiếp với AI</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                        <div className="flex items-center space-x-3 p-4 rounded-lg border" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
-                            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
-                                <Mic className="h-5 w-5 text-white" />
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-white">45 phút</div>
-                                <div className="text-sm text-gray-300">Luyện nói</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center space-x-3 p-4 rounded-lg border" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
-                            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
-                                <TrendingUp className="h-5 w-5 text-white" />
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-white">83%</div>
-                                <div className="text-sm text-gray-300">Độ chính xác</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center space-x-3 p-4 rounded-lg border" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
-                            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
-                                <MessageCircle className="h-5 w-5 text-white" />
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-white">12</div>
-                                <div className="text-sm text-gray-300">Cuộc hội thoại</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center space-x-3 p-4 rounded-lg border" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
-                            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
-                                <Star className="h-5 w-5 text-white" />
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-white">4.8</div>
-                                <div className="text-sm text-gray-300">Đánh giá TB</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div className="min-h-screen" style={{ backgroundColor: '#F5F3EA' }}>
             <div className="container mx-auto px-6 py-8">
-                <Card className="mb-6 border-0" style={{ backgroundColor: '#1a2a2f' }}>
+                <Card className="mb-6 border-0 shadow-sm" style={{ backgroundColor: '#F5F3EA', border: '1px solid #E5E7EB' }}>
                     <CardContent className="p-4">
                         <div className="flex flex-wrap items-center gap-4">
                             <div className="flex items-center space-x-2">
@@ -253,16 +87,16 @@ export default function SpeakingPage() {
                                     placeholder="Tìm kiếm bài luyện nói..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-64 bg-gray-800 border-gray-600 text-white placeholder-gray-400"
+                                    className="w-64 bg-white border-gray-300 text-gray-900 placeholder-gray-500"
                                 />
                             </div>
                             <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-                                <SelectTrigger className="w-48 bg-gray-800 border-gray-600 text-white">
+                                <SelectTrigger className="w-48 bg-white border-gray-300 text-gray-900">
                                     <SelectValue placeholder="Chọn cấp độ" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-gray-800 border-gray-600">
+                                <SelectContent className="bg-white border-gray-300">
                                     {levels.map((level) => (
-                                        <SelectItem key={level} value={level} className="text-white hover:bg-gray-700">
+                                        <SelectItem key={level} value={level} className="text-gray-900 hover:bg-gray-100">
                                             {level === "all" ? "Tất cả cấp độ" : level}
                                         </SelectItem>
                                     ))}
@@ -273,17 +107,17 @@ export default function SpeakingPage() {
                 </Card>
 
                 <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-                    <TabsList className="grid w-full grid-cols-2 border-0 mb-8" style={{ backgroundColor: '#1a2a2f' }}>
+                    <TabsList className="grid w-full grid-cols-2 border mb-8" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                         <TabsTrigger
                             value="pronunciation"
-                            className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
+                            className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-gray-600"
                         >
                             <Volume2 className="h-5 w-5 mr-2" />
                             Luyện phát âm
                         </TabsTrigger>
                         <TabsTrigger
                             value="conversation"
-                            className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
+                            className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-gray-600"
                         >
                             <MessageCircle className="h-5 w-5 mr-2" />
                             Hội thoại AI
@@ -292,174 +126,315 @@ export default function SpeakingPage() {
 
                     <TabsContent value="pronunciation" className="mt-6">
                         <div className="mb-6">
-                            <h2 className="text-2xl font-bold mb-3 text-white">Chọn chủ đề luyện phát âm</h2>
-                            <p className="text-gray-300">Chọn một chủ đề để bắt đầu luyện phát âm với các bài học có cấu trúc</p>
+                            <h2 className="text-2xl font-bold mb-3" style={{ color: '#142F50' }}>Chọn chủ đề luyện phát âm</h2>
+                            <p className="text-gray-600">Chọn một chủ đề để bắt đầu luyện phát âm với các bài học có cấu trúc</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredCategories.map((category) => (
-                                <Link key={category.id} href={`/learning/speaking/pronunciation/category/${category.id}`}>
-                                    <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-0" style={{ backgroundColor: '#1a2a2f' }}>
+                            {isLoading ? (
+                                Array.from({ length: 6 }).map((_, index) => (
+                                    <Card key={index} className="border animate-pulse shadow-sm" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                                         <CardContent className="p-6">
                                             <div className="text-center">
-                                                <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl mb-4 mx-auto" style={{ backgroundColor: '#93D333' }}>
-                                                    {category.icon}
-                                                </div>
-                                                <h3 className="text-xl font-bold mb-2 text-white">{category.name}</h3>
-                                                <p className="text-gray-300 mb-4">{category.description}</p>
-
-                                                <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
-                                                    <span className="flex items-center">
-                                                        <Volume2 className="h-4 w-4 mr-1" />
-                                                        {category.lessons} bài
-                                                    </span>
-                                                    <Badge className={getDifficultyColor(category.difficulty)} style={{ backgroundColor: getDifficultyBgColor(category.difficulty) }}>
-                                                        {category.difficulty}
-                                                    </Badge>
-                                                </div>
-
-                                                <div className="text-sm text-gray-400 mb-4">
-                                                    <Clock className="h-4 w-4 inline mr-1" />
-                                                    {category.duration}
-                                                </div>
-
-                                                <Button className="w-full text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
-                                                    Bắt đầu luyện tập
-                                                </Button>
+                                                <div className="w-16 h-16 rounded-full bg-gray-200 mb-4 mx-auto"></div>
+                                                <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                                                <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                                                <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                                                <div className="h-10 bg-gray-200 rounded"></div>
                                             </div>
                                         </CardContent>
                                     </Card>
-                                </Link>
-                            ))}
+                                ))
+                            ) : error ? (
+                                // Error state
+                                <div className="col-span-full text-center py-8">
+                                    <p className="text-red-400 mb-4">Có lỗi khi tải dữ liệu</p>
+                                    <Button
+                                        onClick={() => window.location.reload()}
+                                        style={{ backgroundColor: '#F3713B' }}
+                                        className="text-white"
+                                    >
+                                        Thử lại
+                                    </Button>
+                                </div>
+                            ) : (
+                                filteredCategories.map((category, index) => (
+                                    <motion.div
+                                        key={category.id}
+                                        initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        transition={{
+                                            duration: 0.5,
+                                            delay: index * 0.1,
+                                            ease: "easeOut"
+                                        }}
+                                        whileHover={{
+                                            scale: 1.05,
+                                            y: -5,
+                                            transition: { duration: 0.2 }
+                                        }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <Link href={`/learning/speaking/pronunciation/category/${category.id}`}>
+                                            <Card className="cursor-pointer border overflow-hidden shadow-sm hover:shadow-md transition-shadow" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+                                                <CardContent className="p-6">
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                        transition={{ duration: 0.5, ease: "easeOut" }}
+                                                        className="text-center"
+                                                    >
+                                                        <motion.div
+                                                            className="w-16 h-16 rounded-full flex items-center justify-center text-2xl mb-4 mx-auto"
+                                                            style={{ backgroundColor: '#F3713B' }}
+                                                            whileHover={{
+                                                                rotate: 360,
+                                                                transition: { duration: 0.6 }
+                                                            }}
+                                                        >
+                                                            {category.icon}
+                                                        </motion.div>
+                                                        <h3 className="text-xl font-bold mb-2" style={{ color: '#142F50' }}>{category.name}</h3>
+                                                        <p className="text-gray-600 mb-4">{category.description}</p>
+
+                                                        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                                            <span className="flex items-center">
+                                                                <Volume2 className="h-4 w-4 mr-1" />
+                                                                {category.lessons} bài
+                                                            </span>
+                                                            <Badge className={getDifficultyColor(category.difficulty)} style={{ backgroundColor: getDifficultyBgColor(category.difficulty) }}>
+                                                                {category.difficulty}
+                                                            </Badge>
+                                                        </div>
+
+                                                        <div className="text-sm text-gray-500 mb-4">
+                                                            <Clock className="h-4 w-4 inline mr-1" />
+                                                            {category.duration}
+                                                        </div>
+
+                                                        <motion.div
+                                                            whileHover={{ scale: 1.02 }}
+                                                            whileTap={{ scale: 0.98 }}
+                                                        >
+                                                            <Button className="w-full text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
+                                                                Bắt đầu luyện tập
+                                                            </Button>
+                                                        </motion.div>
+                                                    </motion.div>
+                                                </CardContent>
+                                            </Card>
+                                        </Link>
+                                    </motion.div>
+                                ))
+                            )}
                         </div>
                     </TabsContent>
 
                     <TabsContent value="conversation" className="mt-6">
                         <div className="mb-6">
-                            <h2 className="text-2xl font-bold mb-3 text-white">Hội thoại với AI</h2>
-                            <p className="text-gray-300">Thực hành giao tiếp thực tế với AI trong các tình huống khác nhau</p>
+                            <h2 className="text-2xl font-bold mb-3" style={{ color: '#142F50' }}>Hội thoại với AI</h2>
+                            <p className="text-gray-600">Thực hành giao tiếp thực tế với AI trong các tình huống khác nhau</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredTopics.map((topic) => (
-                                <Card key={topic.id} className="hover:shadow-lg transition-all duration-300 overflow-hidden border-0" style={{ backgroundColor: '#1a2a2f' }}>
-                                    <div className="relative">
-                                        <img
-                                            src={topic.image || "/placeholder.svg"}
-                                            alt={topic.title}
-                                            className="w-full h-48 object-cover"
-                                        />
-                                        <div className="absolute top-4 right-4">
-                                            <Badge className={getDifficultyColor(topic.difficulty)} style={{ backgroundColor: getDifficultyBgColor(topic.difficulty) }}>
-                                                {topic.difficulty}
-                                            </Badge>
-                                        </div>
-                                        {topic.completed && (
-                                            <div className="absolute top-4 left-4">
-                                                <Badge variant="outline" className="text-green-400 border-green-400 bg-transparent">
-                                                    Đã thử
-                                                </Badge>
+                            {isLoading ? (
+                                // Loading skeleton cho conversation topics
+                                Array.from({ length: 6 }).map((_, index) => (
+                                    <Card key={index} className="border animate-pulse overflow-hidden shadow-sm" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+                                        <div className="w-full h-48 bg-gray-200"></div>
+                                        <CardContent className="p-6">
+                                            <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                                            <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                                <div className="h-4 bg-gray-200 rounded"></div>
+                                                <div className="h-4 bg-gray-200 rounded"></div>
+                                                <div className="h-4 bg-gray-200 rounded"></div>
+                                                <div className="h-4 bg-gray-200 rounded"></div>
                                             </div>
-                                        )}
-                                    </div>
+                                            <div className="h-10 bg-gray-200 rounded"></div>
+                                        </CardContent>
+                                    </Card>
+                                ))
+                            ) : error ? (
+                                // Error state
+                                <div className="col-span-full text-center py-8">
+                                    <p className="text-red-400 mb-4">Có lỗi khi tải dữ liệu</p>
+                                    <Button
+                                        onClick={() => window.location.reload()}
+                                        style={{ backgroundColor: '#F3713B' }}
+                                        className="text-white"
+                                    >
+                                        Thử lại
+                                    </Button>
+                                </div>
+                            ) : filteredTopics.length === 0 ? (
+                                // Empty state
+                                <div className="col-span-full text-center py-8">
+                                    <p className="text-gray-400 mb-4">Không có bài học nào</p>
+                                </div>
+                            ) : (
+                                filteredTopics.map((topic, index) => (
+                                    <motion.div
+                                        key={topic.id}
+                                        initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        transition={{
+                                            duration: 0.5,
+                                            delay: index * 0.1,
+                                            ease: "easeOut"
+                                        }}
+                                        whileHover={{
+                                            scale: 1.05,
+                                            y: -5,
+                                            transition: { duration: 0.2 }
+                                        }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <Card className="overflow-hidden border cursor-pointer shadow-sm hover:shadow-md transition-shadow" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+                                            <motion.div
+                                                className="relative"
+                                                whileHover={{ scale: 1.02 }}
+                                                transition={{ duration: 0.3 }}
+                                            >
+                                                <img
+                                                    src={topic.image || "/placeholder.svg"}
+                                                    alt={topic.title}
+                                                    className="w-full h-48 object-cover"
+                                                />
+                                                <motion.div
+                                                    className="absolute top-4 right-4"
+                                                    initial={{ opacity: 0, scale: 0 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ delay: 0.3 }}
+                                                >
+                                                    <Badge className={getDifficultyColor(topic.difficulty)} style={{ backgroundColor: getDifficultyBgColor(topic.difficulty) }}>
+                                                        {topic.difficulty}
+                                                    </Badge>
+                                                </motion.div>
+                                                {topic.completed && (
+                                                    <motion.div
+                                                        className="absolute top-4 left-4"
+                                                        initial={{ opacity: 0, scale: 0 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        transition={{ delay: 0.4 }}
+                                                    >
+                                                        <Badge variant="outline" className="text-green-400 border-green-400 bg-transparent">
+                                                            Đã thử
+                                                        </Badge>
+                                                    </motion.div>
+                                                )}
+                                            </motion.div>
 
-                                    <CardContent className="p-6">
-                                        <h3 className="text-xl font-bold mb-2 text-white">{topic.title}</h3>
-                                        <p className="text-gray-300 mb-4">{topic.description}</p>
+                                            <CardContent className="p-6">
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: 0.2 }}
+                                                >
+                                                    <h3 className="text-xl font-bold mb-2" style={{ color: '#142F50' }}>{topic.title}</h3>
+                                                    <p className="text-gray-600 mb-4">{topic.description}</p>
 
-                                        <div className="grid grid-cols-2 gap-4 mb-4 text-sm text-gray-400">
-                                            <div className="flex items-center">
-                                                <Clock className="h-4 w-4 mr-1" />
-                                                {topic.duration}
-                                            </div>
-                                            <div className="flex items-center">
-                                                <Users className="h-4 w-4 mr-1" />
-                                                {topic.participants}
-                                            </div>
-                                            <div className="flex items-center">
-                                                <Star className="h-4 w-4 mr-1" style={{ color: '#93D333' }} />
-                                                {topic.rating}/5.0
-                                            </div>
-                                            {topic.lastScore && (
-                                                <div className="flex items-center">
-                                                    <TrendingUp className="h-4 w-4 mr-1" style={{ color: '#93D333' }} />
-                                                    {topic.lastScore}%
-                                                </div>
-                                            )}
-                                        </div>
+                                                    <div className="grid grid-cols-2 gap-4 mb-4 text-sm text-gray-500">
+                                                        <div className="flex items-center">
+                                                            <Clock className="h-4 w-4 mr-1" />
+                                                            {topic.duration}
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                            <Users className="h-4 w-4 mr-1" />
+                                                            {topic.participants}
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                            <Star className="h-4 w-4 mr-1" style={{ color: '#F3713B' }} />
+                                                            {topic.rating}/5.0
+                                                        </div>
+                                                        {topic.lastScore && (
+                                                            <div className="flex items-center">
+                                                                <TrendingUp className="h-4 w-4 mr-1" style={{ color: '#F3713B' }} />
+                                                                {topic.lastScore}%
+                                                            </div>
+                                                        )}
+                                                    </div>
 
-                                        <Link href={`/learning/speaking/conversation/${topic.id}`}>
-                                            <Button className="w-full text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
-                                                <MessageCircle className="h-4 w-4 mr-2" />
-                                                {topic.completed ? "Thử lại" : "Bắt đầu hội thoại"}
-                                            </Button>
-                                        </Link>
-                                    </CardContent>
-                                </Card>
-                            ))}
+                                                    <Link href={`/learning/speaking/conversation/${topic.id}`}>
+                                                        <motion.div
+                                                            whileHover={{ scale: 1.02 }}
+                                                            whileTap={{ scale: 0.98 }}
+                                                        >
+                                                            <Button className="w-full text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
+                                                                <MessageCircle className="h-4 w-4 mr-2" />
+                                                                {topic.completed ? "Thử lại" : "Bắt đầu hội thoại"}
+                                                            </Button>
+                                                        </motion.div>
+                                                    </Link>
+                                                </motion.div>
+                                            </CardContent>
+                                        </Card>
+                                    </motion.div>
+                                ))
+                            )}
                         </div>
                     </TabsContent>
                 </Tabs>
 
-                <Card className="mt-12 border-0" style={{ backgroundColor: '#1a2a2f' }}>
+                <Card className="mt-12 border shadow-sm" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                     <CardHeader>
-                        <CardTitle className="text-2xl text-white flex items-center">
-                            <Target className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
+                        <CardTitle className="text-2xl flex items-center" style={{ color: '#142F50' }}>
+                            <Target className="h-5 w-5 mr-2" style={{ color: '#F3713B' }} />
                             Mẹo luyện nói hiệu quả
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-4">
-                                <h4 className="font-semibold text-lg flex items-center text-white">
-                                    <Volume2 className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
+                                <h4 className="font-semibold text-lg flex items-center" style={{ color: '#142F50' }}>
+                                    <Volume2 className="h-5 w-5 mr-2" style={{ color: '#F3713B' }} />
                                     Luyện phát âm
                                 </h4>
                                 <div className="space-y-3">
                                     <div className="flex items-start space-x-3">
-                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#93D333' }}>
+                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#F3713B' }}>
                                             <span className="text-white text-sm font-bold">1</span>
                                         </div>
-                                        <p className="text-gray-300">Nghe kỹ âm mẫu trước khi nói và lặp lại nhiều lần</p>
+                                        <p className="text-gray-600">Nghe kỹ âm mẫu trước khi nói và lặp lại nhiều lần</p>
                                     </div>
                                     <div className="flex items-start space-x-3">
-                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#93D333' }}>
+                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#F3713B' }}>
                                             <span className="text-white text-sm font-bold">2</span>
                                         </div>
-                                        <p className="text-gray-300">Nói chậm và rõ ràng, tập trung vào từng âm</p>
+                                        <p className="text-gray-600">Nói chậm và rõ ràng, tập trung vào từng âm</p>
                                     </div>
                                     <div className="flex items-start space-x-3">
-                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#93D333' }}>
+                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#F3713B' }}>
                                             <span className="text-white text-sm font-bold">3</span>
                                         </div>
-                                        <p className="text-gray-300">Chú ý đến trọng âm và ngữ điệu của câu</p>
+                                        <p className="text-gray-600">Chú ý đến trọng âm và ngữ điệu của câu</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-4">
-                                <h4 className="font-semibold text-lg flex items-center text-white">
-                                    <MessageCircle className="h-5 w-5 mr-2" style={{ color: '#93D333' }} />
+                                <h4 className="font-semibold text-lg flex items-center" style={{ color: '#142F50' }}>
+                                    <MessageCircle className="h-5 w-5 mr-2" style={{ color: '#F3713B' }} />
                                     Hội thoại AI
                                 </h4>
                                 <div className="space-y-3">
                                     <div className="flex items-start space-x-3">
-                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#93D333' }}>
+                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#F3713B' }}>
                                             <span className="text-white text-sm font-bold">1</span>
                                         </div>
-                                        <p className="text-gray-300">Đừng ngại mắc lỗi, AI sẽ giúp bạn cải thiện</p>
+                                        <p className="text-gray-600">Đừng ngại mắc lỗi, AI sẽ giúp bạn cải thiện</p>
                                     </div>
                                     <div className="flex items-start space-x-3">
-                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#93D333' }}>
+                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#F3713B' }}>
                                             <span className="text-white text-sm font-bold">2</span>
                                         </div>
-                                        <p className="text-gray-300">Trả lời tự nhiên như nói chuyện thật</p>
+                                        <p className="text-gray-600">Trả lời tự nhiên như nói chuyện thật</p>
                                     </div>
                                     <div className="flex items-start space-x-3">
-                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#93D333' }}>
+                                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#F3713B' }}>
                                             <span className="text-white text-sm font-bold">3</span>
                                         </div>
-                                        <p className="text-gray-300">Lắng nghe phản hồi và áp dụng gợi ý</p>
+                                        <p className="text-gray-600">Lắng nghe phản hồi và áp dụng gợi ý</p>
                                     </div>
                                 </div>
                             </div>
