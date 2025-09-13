@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { MessageCircle, Volume2, Star, TrendingUp, Search, Users, Clock, Target } from "lucide-react"
-import { Category, Topic, filterCategories, filterTopics } from "@/types/learningType"
+import { Category, Topic, filterCategories, filterTopics, LearningSkillData } from "@/types/learningType"
 import { useLearningSkill } from "@/hooks/learning/useLearningUnits"
 import { motion } from "framer-motion";
 
@@ -18,10 +18,10 @@ export default function SpeakingPage() {
     const [searchTerm, setSearchTerm] = useState("")
     const [selectedLevel, setSelectedLevel] = useState("all")
 
-    const { data: speakingData, isLoading, error } = useLearningSkill();
+    const { data: speakingData, isLoading, error } = useLearningSkill("speaking");
 
-    const pronunciationCategories: Category[] = speakingData?.data?.map((item: any, index: number) => ({
-        id: item.id || index + 1,
+    const pronunciationCategories: Category[] = speakingData?.data?.map((item: LearningSkillData, index: number) => ({
+        id: parseInt(item.id) || index + 1,
         name: item.title || "Speaking Practice",
         description: `Luyện tập ${item.skillType} - Level ${item.level}`,
         icon: "💬",
@@ -31,13 +31,13 @@ export default function SpeakingPage() {
         duration: "15 phút",
     })) || [];
 
-    const conversationTopics: Topic[] = speakingData?.data?.map((item: any, index: number) => ({
-        id: item.id || index + 1,
+    const conversationTopics: Topic[] = speakingData?.data?.map((item: LearningSkillData, index: number) => ({
+        id: parseInt(item.id) || index + 1,
         title: item.title || "Speaking Practice",
         description: `Luyện tập ${item.skillType} - Level ${item.level}`,
         duration: "10-15 phút",
         difficulty: item.level === "A1" ? "Dễ" : item.level === "A2" ? "Trung bình" : "Khó",
-        participants: Math.floor(Math.random() * 200) + 50, // Random participants
+        participants: Math.floor(Math.random() * 200) + 50,
         rating: 4.5 + Math.random() * 0.5,
         image: "/placeholder.svg?height=200&width=300&text=Speaking",
         completed: false,
