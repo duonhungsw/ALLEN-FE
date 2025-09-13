@@ -99,17 +99,46 @@ export const filterExercises: FilterFunction<Exercise> = (exercises, { searchTer
 
 export interface Question {
     id: string;
-    moduleType: string;
-    questionType: string;
-    moduleItemId: string;
-    chart: string | null;
-    prompt: string;
-    options: string;
+    moduleType?: string;
+    questionType?: string;
+    moduleItemId?: string;
+    chart?: string | null;
+    prompt?: string;
+    questionText?: string;
+    options: string | string[];
     correctAnswer: string;
-    contentUrl: string | null;
+    contentUrl?: string | null;
+    explanation?: string;
 }
 
 export interface QuestionResponse {
     data: Question[];
     totalCount: number;
+}
+
+export interface UnitStep {
+    id: string;
+    stepIndex: number;
+    title: string;
+    contentJson: string;
+}
+
+export interface LearningUnit {
+    id: string;
+    title: string;
+    level: string;
+    skillType: string;
+    unitSteps: UnitStep[];
+}
+
+export interface LearningUnitsResponse {
+    data: LearningUnit[];
+}
+
+export interface UnitStepsResponse {
+    data: UnitStep[];
+}
+
+export interface UnitStepQuestionsResponse {
+    data: Question[];
 }
