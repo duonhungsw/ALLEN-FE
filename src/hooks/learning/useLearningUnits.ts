@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllLearningUnits, getUnitSteps, getUnitStepQuestions } from "@/shared/api/unit.api";
 import { getLearningSkill } from "@/shared/api/learning/speaking";
-import { LearningUnitsResponse, UnitStepsResponse, UnitStepQuestionsResponse } from "@/types/learningType";
+import { LearningUnitsResponse, UnitStepsResponse, UnitStepQuestionsResponse, LearningSkillResponse } from "@/types/learningType";
 
 export const useLearningUnits = () => {
   return useQuery<LearningUnitsResponse>({
@@ -13,13 +13,14 @@ export const useLearningUnits = () => {
   });
 };
 
-export const useLearningSkill = () => {
-  return useQuery({
-    queryKey: ["learning-skill", "speaking"],
+export const useLearningSkill = (skillType: string) => {
+  return useQuery<LearningSkillResponse>({
+    queryKey: ["learning-skill", skillType],
     queryFn: async () => {
-      const data = await getLearningSkill({ skillType: "speaking" });
+      const data = await getLearningSkill({ skillType });
       return data;
     },
+    enabled: !!skillType,
   });
 };
 

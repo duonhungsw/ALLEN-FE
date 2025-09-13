@@ -142,3 +142,15 @@ export interface UnitStepsResponse {
 export interface UnitStepQuestionsResponse {
     data: Question[];
 }
+
+export interface LearningSkillData {
+    id: string;
+    title: string;
+    level: string;
+    skillType: string;
+    unitSteps?: UnitStep[];
+}
+
+export interface LearningSkillResponse {
+    data: LearningSkillData[];
+}
