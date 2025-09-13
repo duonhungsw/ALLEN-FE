@@ -36,7 +36,35 @@ export const getAllLearningUnits = async () => {
   }
 };
 
-export const getAllUnit = async (payload: any) => {
+export interface LearningUnitPayload {
+  skip?: number;
+  top?: number;
+  needTotalCount?: boolean;
+  skillType?: string;
+  level?: string;
+}
+
+export const getAllUnit = async (payload: LearningUnitPayload) => {
   const response = await api.post(`${APP_URL}/learningunits`, payload);
   return response.data;
+};
+
+export const getUnitSteps = async (unitId: string) => {
+  try {
+    const response = await api.get(`${APP_URL}/unitsteps/${unitId}`);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+export const getUnitStepQuestions = async (unitStepId: string) => {
+  try {
+    const response = await api.get(`${APP_URL}/unitsteps/${unitStepId}/questions`);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
 };
