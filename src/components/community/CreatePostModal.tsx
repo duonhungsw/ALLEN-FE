@@ -11,21 +11,55 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { X, ImageIcon, Users, Smile, MapPin, Gift, MoreHorizontal, Globe, Lock, UserCheck } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
-import { ApiPost } from "@/types/posType"
+import { ApiPost, User } from "@/types/posType"
+import { useCreatePost } from "@/hooks/auth/useCommunity"
+import { Privacy } from "@/types/emunType"
 
 interface CreatePostModalProps {
+  user: User
   isOpen: boolean
   onClose: () => void
   onPostCreated: (post: ApiPost) => void
 }
 
-export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostModalProps) {
+export function CreatePostModal({user, isOpen, onClose, onPostCreated }: CreatePostModalProps) {
   const [content, setContent] = useState("")
-  const [privacy, setPrivacy] = useState("public")
+  const [privacy, setPrivacy] = useState<Privacy>(Privacy.Public)
   const [category, setCategory] = useState("")
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const tCreatePost = useTranslations("CreatePost");
+  const createPostMutation = useCreatePost();
 
+  const handlePost = () => {
+
+    console.log(user.id);
+    console.log(content);
+    console.log(privacy);
+    console.log(selectedImages);
+    
+    // if (!content.trim() && selectedImages.length === 0) return;
+    
+    createPostMutation.mutate(
+    {
+      usesId: user.id,
+      content,
+      privacy,
+      medias: selectedImages, // nếu bạn có API upload ảnh thì thay link upload ở đây
+    },
+    {
+      onSuccess: (newPost: any) => {
+        console.log("Tạo post thành công:", newPost);
+        onClose();
+        setContent("");
+        setSelectedImages([]);
+        setCategory("");
+      },
+      onError: (err: any) => {
+        console.error("Tạo post thất bại:", err.message);
+      },
+    }
+  );
+};
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
@@ -37,40 +71,6 @@ export function CreatePostModal({ isOpen, onClose, onPostCreated }: CreatePostMo
 
   const removeImage = (index: number) => {
     setSelectedImages((prev) => prev.filter((_, i) => i !== index))
-  }
-
-  const handlePost = () => {
-    if (!content.trim() && selectedImages.length === 0) return
-
-    // const newPost = {
-    //   id: Date.now(),
-    //   author: {
-    //     name: "Minh Anh",
-    //     avatar: "/placeholder.svg?height=40&width=40",
-    //     level: "Intermediate",
-    //     points: 1250,
-    //   },
-    //   content,
-    //   images: selectedImages,
-    //   timestamp: tCreatePost("justNow"),
-    //   likes: 0,
-    //   comments: 0,
-    //   shares: 0,
-    //   category: category || tCreatePost("category.sharing"),
-    //   privacy,
-    //   reactions: {
-    //     like: 0,
-    //     love: 0,
-    //     wow: 0,
-    //   },
-    // }
-
-    // Ensure the id is a string to match CommunityPost type
-    // onPostCreated({ ...newPost, id: String(newPost.id) })
-    onClose()
-    setContent("")
-    setSelectedImages([])
-    setCategory("")
   }
 
   const getPrivacyIcon = (privacyType: string) => {

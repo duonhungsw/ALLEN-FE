@@ -59,7 +59,7 @@ export function Sidebar() {
       const rawUserData = parseJwt(accessToken);
   
       const userData: User = {
-        id: rawUserData.Id,
+        id: rawUserData.Id || '',
         name: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'User',
         email: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || '',
         picture: rawUserData['Picture'] || '',

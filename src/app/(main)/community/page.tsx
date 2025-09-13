@@ -12,8 +12,9 @@ import { PostCard } from "@/components/community/PostCard"
 import { RankingSidebar } from "@/components/community/RankingSidebar"
 import { Search, TrendingUp } from "lucide-react"
 import { useCommunity } from "@/hooks/auth/useCommunity"
-import { ApiPost } from "@/types/posType"
+import { ApiPost, User } from "@/types/posType"
 import { Privacy } from "@/types/emunType"
+import { parseJwt } from "@/utils/jwt";
 
 export default function CommunityPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
@@ -22,6 +23,26 @@ export default function CommunityPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const searchInputRef = useRef<HTMLInputElement | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken != null) {
+      const rawUserData = parseJwt(accessToken);
+  
+      const userData: User = {
+        id: rawUserData.Id,
+        name: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'User',
+        email: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || '',
+        picture: rawUserData['Picture'] || '',
+        role: rawUserData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || '',
+      };
+  
+      setUser(userData);
+    }
+  }, []);
+
+  console.log(user)
 
   const { data: postsPaging } = useCommunity(
     {
@@ -35,7 +56,6 @@ export default function CommunityPage() {
       retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 5000),
     }
   )
-  
 
   const [posts, setPosts] = useState<ApiPost[]>([])
 
@@ -47,8 +67,10 @@ export default function CommunityPage() {
 
   useEffect(() => {
     if (postsPaging?.data) {
+      console.log(postsPaging?.data);
       setPosts(postsPaging.data as ApiPost[])
     }
+    console.log(posts);
   }, [postsPaging])
 
   const addNewPost = (newPost: ApiPost) => {
@@ -139,6 +161,7 @@ if(postsPaging){
       </div>
 
       <CreatePostModal
+        user={user}
         isOpen={isCreatePostOpen}
         onClose={() => setIsCreatePostOpen(false)}
         onPostCreated={addNewPost}

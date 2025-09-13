@@ -17,33 +17,10 @@ export interface PagingResponse<TData> {
   [key: string]: unknown;
 }
 
-// export interface CommunityPost {
-//   id: string;
-//   author: {
-//     name: string;
-//     avatar: string;
-//     level?: string;
-//     points?: number;
-//   };
-//   content: string;
-//   images?: string[];
-//   timestamp?: string;
-//   likes?: number;
-//   comments?: number;
-//   shares?: number;
-//   category?: string;
-//   privacy?: string;
-//   reactions: {
-//     like: number
-//     love: number
-//     wow: number
-//   }
-// }
-
 export type ApiPost = {
   id: string
   userName: string
-  userAvatar: string | null
+  userAvatar: string
   content: string
   medias: string[]
   createdAt: string
@@ -61,23 +38,6 @@ export type CreatePostPayload = {
   category?: string;
 };
 
-// export interface Comment {
-//   id: string
-//   author: {
-//     name: string
-//     avatar: string
-//   }
-//   content: string
-//   timestamp: string
-//   likes: number
-//   replies?: Comment[]
-//   reactions: {
-//     like: number
-//     love: number
-//     wow: number
-//   }
-// }
-
 export interface Comment {
   id: string
   objectId: string
@@ -90,4 +50,12 @@ export interface Comment {
   replyCount: 0
   totalReaction: 0
   createdAt: string
+}
+
+export interface User {
+  id?: string;
+  name?: string;
+  email?: string;
+  picture?: string;
+  role?: string;
 }
