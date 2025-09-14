@@ -1,6 +1,7 @@
 import React from "react"
 import { Button } from "@/components/ui/button"
 import { Exercise } from "@/providers/auth/types/readingType"
+import { useTranslations } from "next-intl"
 
 interface QuestionsPanelProps {
   exercise: Exercise
@@ -17,16 +18,15 @@ function QuestionsPanel({   exercise,
   showExplanation,
   setShowExplanation,
   completeExercise, }: QuestionsPanelProps) {
+  const tQuestions = useTranslations("reading.full.QuestionsPanel")
   return (
   <div className="w-96 p-6 overflow-y-auto" style={{ backgroundColor: '#1a2a2f', borderLeft: '1px solid #93D333' }}>
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-bold text-white mb-4">Questions 1-5</h3>
-        <p className="text-sm text-gray-300 mb-2">The reading Passage has seven paragraphs A-K.</p>
-        <p className="text-sm text-gray-300 mb-2">Which paragraph contains the following information?</p>
-        <p className="text-sm text-gray-300 mb-4">
-          Write the correct letter <strong className="text-white">A-K</strong>, in boxes <strong className="text-white">1-5</strong> on your answer sheet.
-        </p>
+        <h3 className="text-lg font-bold text-white mb-4">{tQuestions("title")}</h3>
+        <p className="text-sm text-gray-300 mb-2">{tQuestions("desc1")}</p>
+        <p className="text-sm text-gray-300 mb-2">{tQuestions("desc2")}</p>
+        <p className="text-sm text-gray-300 mb-4">{tQuestions("desc3")}</p>
         <div className="space-y-4">
           {exercise.questions[0].options.map((question: string, index: number) => (
             <div key={index} className="space-y-2">
@@ -55,7 +55,7 @@ function QuestionsPanel({   exercise,
                   className="text-xs text-gray-300 border-gray-500 hover:bg-gray-700"
                   onClick={() => setShowExplanation(showExplanation === index + 1 ? null : index + 1)}
                 >
-                  📖 Explain
+                  📖 {tQuestions("explain")}
                 </Button>
                 {showExplanation === index + 1 && (
                   <div className="mt-2 p-3 rounded-lg border" style={{ backgroundColor: '#2a3a3f', borderColor: '#93D333' }}>
@@ -70,7 +70,7 @@ function QuestionsPanel({   exercise,
     </div>
     <div className="mt-8 text-right">
       <Button className="text-white" style={{ backgroundColor: '#93D333' }} onClick={completeExercise}>
-        Hoàn thành
+        {tQuestions("complete")}
       </Button>
     </div>
   </div>

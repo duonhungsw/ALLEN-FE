@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { mockVocabulary } from "@/shared/constants/reading/mockData"
+import { useTranslations } from "next-intl"
 
 interface VocabularyListModalProps {
   open: boolean
@@ -11,13 +12,14 @@ interface VocabularyListModalProps {
 }
 
 function VocabularyListModal({ open, setShowVocabularyList }: VocabularyListModalProps) {
+  const tVocabularyListModal = useTranslations("Reading.full.VocabularyListModal")
   return (
   <Dialog open={open} onOpenChange={setShowVocabularyList}>
     <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <DialogHeader>
         <DialogTitle className="flex items-center text-white">
           <span className="mr-2">🔥</span>
-          Yeah yeah yeah, vào đây để anh Đậu giúp bạn nào
+            {tVocabularyListModal("title")}
           <Button variant="ghost" size="sm" className="ml-auto text-white hover:bg-gray-700">
             <X className="h-4 w-4" />
           </Button>
@@ -26,15 +28,15 @@ function VocabularyListModal({ open, setShowVocabularyList }: VocabularyListModa
       <div className="space-y-4">
         <div className="flex space-x-2 mb-4">
           <Button size="sm" className="text-white" style={{ backgroundColor: '#93D333' }}>
-            Lưu từ vựng vào
+            {tVocabularyListModal("saveVocabulary")}
           </Button>
-          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">Work</Button>
-          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">Topic 2</Button>
-          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">Topic 3</Button>
-          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">Topic 4</Button>
-          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">Topic 5</Button>
-          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">Nhóm 6</Button>
-          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">Nhóm 9</Button>
+          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">{tVocabularyListModal("topic")} 1</Button>
+          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">{tVocabularyListModal("topic")} 2</Button>
+          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">{tVocabularyListModal("topic")} 3</Button>
+          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">{tVocabularyListModal("topic")} 4</Button>
+          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">{tVocabularyListModal("topic")} 5</Button>
+          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">{tVocabularyListModal("topic")} 6</Button>
+          <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">{tVocabularyListModal("topic")} 7</Button>
           <Button size="sm" className="text-white" style={{ backgroundColor: '#2a3a3f' }}>🎓 Anh Giáo Đậu</Button>
         </div>
         <div className="rounded-md border" style={{ borderColor: '#93D333' }}>
@@ -44,10 +46,10 @@ function VocabularyListModal({ open, setShowVocabularyList }: VocabularyListModa
                 <TableHead className="w-10 text-white">
                   <input type="checkbox" />
                 </TableHead>
-                <TableHead className="text-white">Từ vựng</TableHead>
-                <TableHead className="text-white">Nghĩa</TableHead>
-                <TableHead className="text-white">IPA</TableHead>
-                <TableHead className="text-white">Ví dụ</TableHead>
+                <TableHead className="text-white">{tVocabularyListModal("table.word")}</TableHead>
+                <TableHead className="text-white">{tVocabularyListModal("table.meaning")}</TableHead>
+                <TableHead className="text-white">{tVocabularyListModal("table.ipa")}</TableHead>
+                <TableHead className="text-white">{tVocabularyListModal("table.example")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { BookOpen } from "lucide-react"
 import { Exercise } from "@/providers/auth/types/readingType"
+import { useTranslations } from 'next-intl'
 
 function getLevelColor(level?: string) {
   switch (level) {
@@ -28,6 +29,7 @@ interface ExerciseCardProps {
 }
 
 function ExerciseCard({ exercise, type }: ExerciseCardProps) {
+  const tExerciseCard = useTranslations("Reading.exerciseCard")
   return (
     <Card key={exercise.id} className="hover:shadow-md transition-shadow" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <CardContent className="p-6">
@@ -49,20 +51,20 @@ function ExerciseCard({ exercise, type }: ExerciseCardProps) {
               <Badge variant="outline" className="text-gray-300 border-gray-500">{exercise.category}</Badge>
               {exercise.completed && (
                 <Badge variant="outline" className="text-green-400 border-green-400">
-                  Hoàn thành
+                  {tExerciseCard("completed")}
                 </Badge>
               )}
             </div>
             <p className="text-gray-300 mb-3">{exercise.description}</p>
             <div className="flex items-center space-x-4 text-sm text-gray-400 mb-4">
-              <span>⏱️ {typeof exercise.duration === "number" ? `${exercise.duration} min` : exercise.duration}</span>
-              <span>❓ {Array.isArray(exercise.questions) ? exercise.questions.length : exercise.questions} câu hỏi</span>
+              <span>⏱️ {typeof exercise.duration === "number" ? `${exercise.duration} ${tExerciseCard("minutes")}` : exercise.duration}</span>
+              <span>❓ {Array.isArray(exercise.questions) ? exercise.questions.length : exercise.questions} {tExerciseCard("questions")}</span>
               {typeof exercise.score === "number" && <span className="text-[#93D333] font-medium">📊 {exercise.score}%</span>}
             </div>
             <Link href={`/reading/${type}/${exercise.id}`}>
               <Button className="w-full text-white" style={{ backgroundColor: '#93D333' }}>
                 <BookOpen className="h-4 w-4 mr-2" />
-                {exercise.completed ? "Làm lại" : "Bắt đầu"}
+                {exercise.completed ? tExerciseCard("redo") : tExerciseCard("start")}
               </Button>
             </Link>
           </div>

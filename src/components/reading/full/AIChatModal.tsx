@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Maximize2, X, Send } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface AIChatModalProps {
   open: boolean
@@ -21,14 +22,17 @@ function AIChatModal({
   setChatMessage,
   handleChatSubmit,
 }: AIChatModalProps) {
-  return (
+  
+const tAIChatModal = useTranslations("Reading.full.AIChatModal");
+  
+return (
   <Dialog open={open} onOpenChange={setShowAIChat}>
     <DialogContent className="max-w-md max-h-[80vh] p-0" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <div className="text-white p-4 rounded-t-lg" style={{ backgroundColor: '#93D333' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#2a3a3f' }}>🧠</div>
-            <span className="font-semibold">Anh Giáo Đậu</span>
+            <span className="font-semibold">{tAIChatModal("teacherName")}</span>
           </div>
           <div className="flex space-x-2">
             <Button size="sm" variant="ghost" className="text-white hover:bg-gray-700">
@@ -52,25 +56,25 @@ function AIChatModal({
               variant="outline"
               size="sm"
               className="w-full text-left justify-start text-gray-300 border-gray-500 hover:bg-gray-700"
-              onClick={() => setChatMessage("Hướng dẫn làm câu 4 😊")}
+              onClick={() => setChatMessage(tAIChatModal("suggestion1"))}
             >
-              Hướng dẫn làm câu 4 😊
+              {tAIChatModal("suggestion1")}
             </Button>
             <Button
               variant="outline"
               size="sm"
               className="w-full text-left justify-start text-gray-300 border-gray-500 hover:bg-gray-700"
-              onClick={() => setChatMessage("Hướng dẫn làm câu 5 😊")}
+              onClick={() => setChatMessage(tAIChatModal("suggestion2"))}
             >
-              Hướng dẫn làm câu 5 😊
+              H{tAIChatModal("suggestion2")}
             </Button>
             <Button
               variant="outline"
               size="sm"
               className="w-full text-left justify-start text-gray-300 border-gray-500 hover:bg-gray-700"
-              onClick={() => setChatMessage("Tóm tắt bài đọc hiện tại 🤔")}
+              onClick={() => setChatMessage(tAIChatModal("suggestion3"))}
             >
-              Tóm tắt bài đọc hiện tại 🤔
+              {tAIChatModal("suggestion3")}
             </Button>
           </div>
         ) : (
@@ -91,7 +95,7 @@ function AIChatModal({
       <div className="p-4 border-t rounded-b-lg" style={{ backgroundColor: '#2a3a3f', borderColor: '#93D333' }}>
         <div className="flex items-center space-x-2">
           <Input
-            placeholder="Bạn có thắc mắc gì về bài đọc không 🤔"
+            placeholder={tAIChatModal("placeholder")}
             value={chatMessage}
             onChange={(e) => setChatMessage(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && handleChatSubmit()}

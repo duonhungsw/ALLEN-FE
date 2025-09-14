@@ -1,6 +1,7 @@
 import React from "react"
 import { Button } from "@/components/ui/button"
 import { X, Volume2, ThumbsUp, ThumbsDown, BookmarkPlus } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface VocabularyPopupModalProps {
   vocabularyPopup: any
@@ -17,6 +18,8 @@ function VocabularyPopupModal({
   handleVocabularyLike,
   handleVocabularyDislike,
 }: VocabularyPopupModalProps) {
+
+const tVocabularyPopupModal = useTranslations("Reading.full.VocabularyPopupModal")
 if (!vocabularyPopup.visible) return null
   return (
     <div
@@ -49,7 +52,7 @@ if (!vocabularyPopup.visible) return null
           <p className="font-medium text-white">{getVocabularyData(vocabularyPopup.word).vietnamese}</p>
         </div>
         <div className="p-3 rounded" style={{ backgroundColor: '#2a3a3f' }}>
-          <p className="text-sm font-medium mb-1 text-gray-300">Ví dụ:</p>
+          <p className="text-sm font-medium mb-1 text-gray-300">{tVocabularyPopupModal("exampleLabel")}</p>
           <p className="text-sm text-gray-200 italic">{getVocabularyData(vocabularyPopup.word).example}</p>
         </div>
         <div className="flex items-center justify-between pt-3 border-t" style={{ borderColor: '#93D333' }}>
@@ -64,7 +67,7 @@ if (!vocabularyPopup.visible) return null
           <div className="flex items-center space-x-2">
             <Button size="sm" className="text-white" style={{ backgroundColor: '#93D333' }}>
               <BookmarkPlus className="h-4 w-4 mr-1" />
-              Lưu từ vựng
+              {tVocabularyPopupModal("saveWord")}
             </Button>
           </div>
         </div>

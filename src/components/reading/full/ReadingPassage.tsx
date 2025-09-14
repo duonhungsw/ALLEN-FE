@@ -2,6 +2,7 @@ import React, { RefObject } from "react"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Exercise } from "@/providers/auth/types/readingType"
+import { useTranslations } from "next-intl"
 
 interface ReadingPassageProps {
   exercise: Exercise
@@ -20,6 +21,7 @@ function ReadingPassage({
   textRef,
   handleTextSelection,
  }: ReadingPassageProps) {
+  const tReadingPassage = useTranslations("Reading.full.ReadingPassage")
   return (
   <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
     <CardContent className="p-6">
@@ -32,7 +34,7 @@ function ReadingPassage({
           alt={exercise.title}
           className="w-48 h-32 object-cover rounded-lg mb-4"
         />
-        <h2 className="text-xl font-bold text-white mb-2">[Recent Tests-Bộ VOL] - {exercise.title}</h2>
+        <h2 className="text-xl font-bold text-white mb-2">{tReadingPassage("recentTest")} - {exercise.title}</h2>
       </div>
       <div
         ref={textRef}

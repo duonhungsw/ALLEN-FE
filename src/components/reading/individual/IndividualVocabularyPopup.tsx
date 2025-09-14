@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { X, Volume2, BookmarkPlus, ThumbsUp, ThumbsDown } from "lucide-react"
 import { VocabularyData } from "@/providers/auth/types/readingType"
+import { useTranslations } from "next-intl"
 
 interface IndividualVocabularyPopupProps {
   word: string
@@ -17,8 +18,8 @@ export default function IndividualVocabularyPopup({
   vocabularyData,
   onClose,
 }: IndividualVocabularyPopupProps) {
+  const tIndividualVocabularyPopup = useTranslations("Reading.individual.IndividualVocabularyPopup")
   if (!visible) return null
-
   return (
     <div
       className="fixed z-50 rounded-lg shadow-lg p-4 w-80"
@@ -50,12 +51,12 @@ export default function IndividualVocabularyPopup({
         </div>
 
         <div className="p-3 rounded" style={{ backgroundColor: '#2a3a3f' }}>
-          <p className="text-sm font-medium mb-1 text-gray-300">Từ/Cấu trúc tiền quan:</p>
+          <p className="text-sm font-medium mb-1 text-gray-300">{tIndividualVocabularyPopup("structure")}</p>
           <p className="text-sm text-gray-200">{vocabularyData.meaning}</p>
         </div>
 
         <div className="p-3 rounded" style={{ backgroundColor: '#2a3a3f' }}>
-          <p className="text-sm font-medium mb-1 text-gray-300">Ví dụ:</p>
+          <p className="text-sm font-medium mb-1 text-gray-300">{tIndividualVocabularyPopup("example")}:</p>
           <p className="text-sm text-gray-200 italic">{vocabularyData.example}</p>
         </div>
 
@@ -71,16 +72,16 @@ export default function IndividualVocabularyPopup({
           <div className="flex items-center space-x-2">
             <Button size="sm" className="text-white" style={{ backgroundColor: '#93D333' }}>
               <BookmarkPlus className="h-4 w-4 mr-1" />
-              Lưu từ vựng
+              {tIndividualVocabularyPopup("save")}
             </Button>
             <Button size="sm" variant="outline" className="text-gray-300 border-gray-500 hover:bg-gray-700">
-              📋 Sao chép
+              {tIndividualVocabularyPopup("copy")}
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="text-xs text-gray-400 text-right mt-2">Explained by 🧠 AI</div>
+      <div className="text-xs text-gray-400 text-right mt-2">{tIndividualVocabularyPopup("explainedByAI")}</div>
     </div>
   )
 }

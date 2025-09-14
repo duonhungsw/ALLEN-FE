@@ -206,5 +206,164 @@
     },
     "points": "points",
     "you": "You"
+  },
+  "Reading": {
+    "full": {
+      "AIChatModal": {
+        "teacherName": "Teacher Bean",
+        "suggestion1": "Guide me for question 4 😊",
+        "suggestion2": "Guide me for question 5 😊",
+        "suggestion3": "Summarize the current reading 🤔",
+        "placeholder": "Do you have any questions about the reading? 🤔"
+      },
+      "DislikeFeedbackModal": {
+        "title": "Feedback for improvement",
+        "description": "Please let us know the problem with this translation so we can improve the quality:",
+        "placeholder": "Enter your feedback...",
+        "cancel": "Cancel",
+        "submit": "Send feedback",
+        "thankYouTitle": "Thank you for your feedback!",
+        "thankYouDescription": "We will improve translation quality."
+      },
+      "HighlightNoteDialog": {
+        "title": "Add note for highlighted text",
+        "placeholder": "Enter your note...",
+        "cancel": "Cancel",
+        "save": "Save note"
+      },
+      "QuestionsPanel": {
+        "title": "Questions 1-5",
+        "desc1": "The reading passage has seven paragraphs A-K.",
+        "desc2": "Which paragraph contains the following information?",
+        "desc3": "Write the correct letter A-K in boxes 1-5 on your answer sheet.",
+        "explain": "Explain",
+        "complete": "Complete"
+      },
+      "ReadingHeader": {
+        "highlightMode": "🖍️ Highlight Mode",
+        "vocabularyMode": "📚 Vocabulary Mode",
+        "vocabularyTab": "Check vocabulary in this tab! 🔥",
+        "settings": "Settings",
+        "share": "📤 Share Result"
+      },
+      "readingPassage": {
+        "recentTest": "[Recent Tests - VOL Set]"
+      },
+      "settings": {
+        "title": "Settings",
+        "eyeProtection": "Eye Protection Mode",
+        "fontSize": "Font Size",
+        "on": "ON",
+        "off": "OFF"
+      },
+      "ShowResult": {
+        "title": "That was tough, take it easy and keep practicing with YouPass!",
+        "summaryTitle": "Test Results",
+        "sentences": "Sentences",
+        "timeSpent": "Time spent",
+        "correct": "Correct",
+        "incorrect": "Incorrect",
+        "skipped": "Skipped",
+        "recommend": "Would you like to recommend this exercise to others at your level?",
+        "detailTable": "Detailed Data Table",
+        "questionType": "Question Type",
+        "totalQuestions": "Total",
+        "correctAnswers": "Correct",
+        "incorrectAnswers": "Incorrect",
+        "skippedAnswers": "Skipped",
+        "viewExplanation": "View detailed explanation",
+        "backToList": "Back to list"
+      },
+      "VocabularyListModal": {
+        "title": "Yeah yeah yeah, come here let Mr. Dau help you!",
+        "saveVocabulary": "Save vocabulary to",
+        "topic": "topic",
+        "table": {
+          "word": "Word",
+          "meaning": "Meaning",
+          "ipa": "IPA",
+          "example": "Example"
+        }
+      },
+      "VocabularyPopupModal": {
+        "exampleLabel": "Example:",
+        "saveWord": "Save word"
+      },
+      "VocabularyTranslationSection": {
+        "searchedWords": "Recently searched words"
+      }
+    },
+    "individual": {
+      "questions": {
+        "range": "Questions 1-{{count}}",
+        "complete": "Complete"
+      },
+      "IndividualReadingHeader": {
+        "highlight": "Highlight Mode",
+        "vocabulary": "Vocabulary Mode",
+        "tip": "Check vocabulary in this tab! 🔥",
+        "settings": "Settings"
+      },
+      "IndividualVocabularyPopup": {
+        "structure": "Structure / Related expression:",
+        "example": "Example:",
+        "save": "Save word",
+        "copy": "Copy",
+        "explainedByAI": "Explained by 🧠 AI"
+      }
+    },
+    "exerciseCard": {
+      "redo": "Redo",
+      "start": "Start",
+      "completed": "Completed",
+      "minutes": "min",
+      "questions": "questions"
+    },
+    "FiltersSection": {
+      "searchPlaceholder": "Search reading exercises...",
+      "selectCategory": "Select category",
+      "allCategories": "All categories",
+      "selectLevel": "Select level",
+      "allLevels": "All levels"
+    },
+    "StatsSection": {
+      "completedExercises": "Completed exercises",
+      "averageAccuracy": "Average accuracy",
+      "totalMinutes": "Minutes practiced"
+    },
+    "TipsSection": {
+      "title": "Effective Reading Tips",
+      "full": {
+        "title": "Full exercises",
+        "tip1": "Skim the entire passage before answering questions",
+        "tip2": "Use the highlight mode to mark important information",
+        "tip3": "Look up vocabulary when necessary",
+        "tip4": "Manage your time effectively"
+      },
+      "single": {
+        "title": "Single exercises",
+        "tip1": "Focus on a specific skill",
+        "tip2": "Read carefully and understand the content deeply",
+        "tip3": "Practice regularly",
+        "tip4": "Check detailed explanations after completing"
+      }
+    },
+    "Reading": {
+      "back": "Back",
+      "title": "Reading Practice",
+      "subtitle": "Improve your English reading comprehension",
+      "tabs": {
+        "full": "Full exercises",
+        "individual": "Single passages"
+      },
+      "full": {
+        "title": "Full Reading Exercises",
+        "desc": "Complete IELTS-style readings with various question types"
+      },
+      "individual": {
+        "title": "Single Passages",
+        "desc": "Short passages focusing on specific skills"
+      }
+    }
   }
 }

@@ -11,6 +11,7 @@ import FiltersSection from "@/components/reading/FiltersSection"
 import TipsSection from "@/components/reading/TipsSection"
 import { fullArticles, individualPassages, categories, levels } from "@/shared/constants/reading/mockData"
 import { filterExercises } from "@/utils/filterUtils"
+import { useTranslations } from "next-intl"
 
 export default function ReadingPage() {
   const [selectedTab, setSelectedTab] = useState("full")
@@ -26,7 +27,7 @@ export default function ReadingPage() {
   // Filter exercises
   const filteredFullArticles = filterExercises(fullArticles, searchTerm, selectedCategory, selectedLevel)
   const filteredIndividualPassages = filterExercises(individualPassages, searchTerm, selectedCategory, selectedLevel)
-
+  const tReading = useTranslations("Reading.Reading")
   return (
     <div className="min-h-screen " >
       <div className="container mx-auto px-4 py-8">
@@ -34,12 +35,12 @@ export default function ReadingPage() {
           <Link href="/">
             <Button variant="ghost" size="sm" className="mr-4 text-white hover:bg-gray-700">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Quay lại
+              {tReading("back")}
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-white">Luyện Đọc</h1>
-            <p className="text-gray-300">Nâng cao kỹ năng đọc hiểu tiếng Anh</p>
+            <h1 className="text-3xl font-bold text-white">{tReading("title")}</h1>
+            <p className="text-gray-300">{tReading("subtitle")}</p>
           </div>
         </div>
         <StatsSection 
@@ -63,19 +64,19 @@ export default function ReadingPage() {
               value="full" 
               className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
             >
-              Bài đầy đủ
+              {tReading("tabs.full")}
             </TabsTrigger>
             <TabsTrigger 
               value="individual" 
               className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
             >
-              Bài lẻ
+              {tReading("tabs.individual")}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="full" className="mt-6">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-2 text-white">Bài đọc đầy đủ</h2>
-              <p className="text-gray-300">Các bài đọc IELTS hoàn chỉnh với nhiều dạng câu hỏi</p>
+              <h2 className="text-xl font-semibold mb-2 text-white">{tReading("full.title")}</h2>
+              <p className="text-gray-300">{tReading("full.desc")}</p>
             </div>
             <div className="grid grid-cols-1 gap-6">
               {filteredFullArticles.map((exercise) => (
@@ -85,8 +86,8 @@ export default function ReadingPage() {
           </TabsContent>
           <TabsContent value="individual" className="mt-6">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-2 text-white">Bài đọc lẻ</h2>
-              <p className="text-gray-300">Các đoạn văn ngắn tập trung vào kỹ năng cụ thể</p>
+              <h2 className="text-xl font-semibold mb-2 text-white">{tReading("individual.title")}</h2>
+              <p className="text-gray-300">{tReading("individual.desc")}</p>
             </div>
             <div className="grid grid-cols-1 gap-6">
               {filteredIndividualPassages.map((exercise) => (

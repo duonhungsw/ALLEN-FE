@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Question } from "@/providers/auth/types/readingType"
+import { useTranslations } from "next-intl"
 
 interface IndividualQuestionsPanelProps {
   questions: Question[]
@@ -14,10 +15,11 @@ export default function IndividualQuestionsPanel({
   handleAnswerChange,
   onComplete,
 }: IndividualQuestionsPanelProps) {
+  const tIndividualQuestionsPanel = useTranslations("Reading.individual.IndividualQuestionsPanel")
   return (
     <div className="w-96 p-6 overflow-y-auto" style={{ backgroundColor: '#1a2a2f', borderLeft: '1px solid #93D333' }}>
       <div className="space-y-6">
-        <h3 className="text-lg font-bold text-white">Questions 1-{questions.length}</h3>
+        <h3 className="text-lg font-bold text-white">{tIndividualQuestionsPanel("questions.range")}-{questions.length}</h3>
 
         {questions.map((question) => {
           const qid: string = String(question.id)
@@ -78,7 +80,7 @@ export default function IndividualQuestionsPanel({
           style={{ backgroundColor: '#93D333' }}
           onClick={onComplete}
         >
-          Hoàn thành
+          {tIndividualQuestionsPanel("questions.complete")}
         </Button>
       </div>
     </div>
