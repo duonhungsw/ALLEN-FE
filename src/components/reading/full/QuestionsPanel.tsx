@@ -11,14 +11,13 @@ interface QuestionsPanelProps {
   completeExercise: () => void
 }
 
-const QuestionsPanel: React.FC<QuestionsPanelProps> = ({
-  exercise,
+function QuestionsPanel({   exercise,
   answers,
   setAnswers,
   showExplanation,
   setShowExplanation,
-  completeExercise,
-}) => (
+  completeExercise, }: QuestionsPanelProps) {
+  return (
   <div className="w-96 p-6 overflow-y-auto" style={{ backgroundColor: '#1a2a2f', borderLeft: '1px solid #93D333' }}>
     <div className="space-y-6">
       <div>
@@ -76,5 +75,5 @@ const QuestionsPanel: React.FC<QuestionsPanelProps> = ({
     </div>
   </div>
 )
-
+}
 export default QuestionsPanel

@@ -3,14 +3,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { mockVocabulary } from "../../shared/constants/reading/mockData"
+import { mockVocabulary } from "@/shared/constants/reading/mockData"
 
 interface VocabularyListModalProps {
   open: boolean
   setShowVocabularyList: (v: boolean) => void
 }
 
-const VocabularyListModal: React.FC<VocabularyListModalProps> = ({ open, setShowVocabularyList }) => (
+function VocabularyListModal({ open, setShowVocabularyList }: VocabularyListModalProps) {
+  return (
   <Dialog open={open} onOpenChange={setShowVocabularyList}>
     <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <DialogHeader>
@@ -68,5 +69,5 @@ const VocabularyListModal: React.FC<VocabularyListModalProps> = ({ open, setShow
     </DialogContent>
   </Dialog>
 )
-
+}
 export default VocabularyListModal

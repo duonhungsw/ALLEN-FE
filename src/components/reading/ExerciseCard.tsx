@@ -27,7 +27,7 @@ interface ExerciseCardProps {
   type: string;
 }
 
-const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, type }) => {
+function ExerciseCard({ exercise, type }: ExerciseCardProps) {
   return (
     <Card key={exercise.id} className="hover:shadow-md transition-shadow" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <CardContent className="p-6">

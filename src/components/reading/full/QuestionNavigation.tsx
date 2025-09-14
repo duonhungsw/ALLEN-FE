@@ -6,7 +6,7 @@ interface QuestionNavigationProps {
   setCurrentQuestion: (q: number) => void
 }
 
-const QuestionNavigation: React.FC<QuestionNavigationProps> = ({ currentQuestion, setCurrentQuestion }) => {
+function QuestionNavigation({ currentQuestion, setCurrentQuestion }: QuestionNavigationProps) {
   return (
     <div className="flex justify-center mt-8">
       <div className="flex items-center space-x-2 p-2 rounded-lg" style={{ backgroundColor: '#2a3a3f', border: '2px solid #93D333' }}>

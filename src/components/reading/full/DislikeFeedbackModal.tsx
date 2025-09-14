@@ -12,14 +12,15 @@ interface DislikeFeedbackModalProps {
   submitDislikeFeedback: () => void
 }
 
-const DislikeFeedbackModal: React.FC<DislikeFeedbackModalProps> = ({
+function DislikeFeedbackModal({ 
   open,
   setShowDislikeModal,
   feedbackSubmitted,
   dislikeFeedback,
   setDislikeFeedback,
   submitDislikeFeedback,
-}) => (
+  }: DislikeFeedbackModalProps) {
+return (
   <Dialog open={open} onOpenChange={setShowDislikeModal}>
     <DialogContent style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <DialogHeader>
@@ -53,5 +54,5 @@ const DislikeFeedbackModal: React.FC<DislikeFeedbackModalProps> = ({
     </DialogContent>
   </Dialog>
 )
-
+}
 export default DislikeFeedbackModal

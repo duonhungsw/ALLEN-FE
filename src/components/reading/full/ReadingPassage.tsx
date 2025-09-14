@@ -12,14 +12,15 @@ interface ReadingPassageProps {
   handleTextSelection: () => void
 }
 
-const ReadingPassage: React.FC<ReadingPassageProps> = ({
+function ReadingPassage({ 
   exercise,
   vocabularyMode,
   renderTextWithClickableWords,
   getFontSizeClass,
   textRef,
   handleTextSelection,
-}) => (
+ }: ReadingPassageProps) {
+  return (
   <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
     <CardContent className="p-6">
       <div className="mb-4">
@@ -48,5 +49,5 @@ const ReadingPassage: React.FC<ReadingPassageProps> = ({
     </CardContent>
   </Card>
 )
-
+}
 export default ReadingPassage

@@ -13,14 +13,15 @@ interface AIChatModalProps {
   handleChatSubmit: () => void
 }
 
-const AIChatModal: React.FC<AIChatModalProps> = ({
+function AIChatModal({
   open,
   setShowAIChat,
   chatHistory,
   chatMessage,
   setChatMessage,
   handleChatSubmit,
-}) => (
+}: AIChatModalProps) {
+  return (
   <Dialog open={open} onOpenChange={setShowAIChat}>
     <DialogContent className="max-w-md max-h-[80vh] p-0" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <div className="text-white p-4 rounded-t-lg" style={{ backgroundColor: '#93D333' }}>
@@ -104,5 +105,5 @@ const AIChatModal: React.FC<AIChatModalProps> = ({
     </DialogContent>
   </Dialog>
 )
-
+}
 export default AIChatModal

@@ -7,7 +7,8 @@ interface FloatingButtonsProps {
   setShowAIChat: (v: boolean) => void
 }
 
-const FloatingButtons: React.FC<FloatingButtonsProps> = ({ setShowVocabularyList, setShowAIChat }) => (
+function FloatingButtons({ setShowVocabularyList, setShowAIChat}: FloatingButtonsProps) {
+  return (
   <div className="fixed bottom-6 right-6 space-y-3">
     <Button
       className="w-14 h-14 rounded-full text-white shadow-lg"
@@ -25,5 +26,5 @@ const FloatingButtons: React.FC<FloatingButtonsProps> = ({ setShowVocabularyList
     </Button>
   </div>
 )
-
+}
 export default FloatingButtons

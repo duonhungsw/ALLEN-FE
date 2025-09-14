@@ -11,7 +11,7 @@ interface VocabularyTranslationSectionProps {
   vocabularyWords: VocabularyWord[]
 }
 
-const VocabularyTranslationSection: React.FC<VocabularyTranslationSectionProps> = ({ vocabularyWords }) => {
+function VocabularyTranslationSection({ vocabularyWords }: VocabularyTranslationSectionProps) {
   if (vocabularyWords.length === 0) return null
   return (
     <Card className="mt-4" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>

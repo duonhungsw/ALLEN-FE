@@ -14,15 +14,15 @@ interface HighlightNoteDialogProps {
   saveHighlightNote: () => void
 }
 
-const HighlightNoteDialog: React.FC<HighlightNoteDialogProps> = ({
-  open,
+function HighlightNoteDialog({ open,
   selectedHighlight,
   highlights,
   highlightNote,
   setHighlightNote,
   setSelectedHighlight,
   saveHighlightNote,
-}) => (
+ }: HighlightNoteDialogProps) {
+  return (
   <Dialog open={open} onOpenChange={() => setSelectedHighlight(null)}>
     <DialogContent style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <DialogHeader>
@@ -48,5 +48,5 @@ const HighlightNoteDialog: React.FC<HighlightNoteDialogProps> = ({
     </DialogContent>
   </Dialog>
 )
-
+}
 export default HighlightNoteDialog

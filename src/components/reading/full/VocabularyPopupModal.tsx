@@ -10,14 +10,14 @@ interface VocabularyPopupModalProps {
   handleVocabularyDislike: () => void
 }
 
-const VocabularyPopupModal: React.FC<VocabularyPopupModalProps> = ({
+function VocabularyPopupModal({ 
   vocabularyPopup,
   getVocabularyData,
   setVocabularyPopup,
   handleVocabularyLike,
   handleVocabularyDislike,
-}) => {
-  if (!vocabularyPopup.visible) return null
+}: VocabularyPopupModalProps) {
+if (!vocabularyPopup.visible) return null
   return (
     <div
       className="fixed z-50 rounded-lg shadow-lg p-4 w-80"

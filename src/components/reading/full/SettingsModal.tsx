@@ -12,14 +12,15 @@ interface SettingsModalProps {
   setFontSize: (v: string) => void
 }
 
-const SettingsModal: React.FC<SettingsModalProps> = ({
+function SettingsModal({ 
   open,
   setShowSettings,
   eyeProtection,
   setEyeProtection,
   fontSize,
   setFontSize,
-}) => (
+}: SettingsModalProps) {
+return (
   <Dialog open={open} onOpenChange={setShowSettings}>
     <DialogContent className="max-w-sm" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
       <DialogHeader>
@@ -68,5 +69,5 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     </DialogContent>
   </Dialog>
 )
-
+}
 export default SettingsModal

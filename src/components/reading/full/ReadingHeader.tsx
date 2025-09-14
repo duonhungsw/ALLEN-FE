@@ -13,15 +13,16 @@ interface ReadingHeaderProps {
   setShowSettings: (v: boolean) => void
 }
 
-const ReadingHeader: React.FC<ReadingHeaderProps> = ({
+function ReadingHeader({ 
   highlightMode,
   setHighlightMode,
   vocabularyMode,
   setVocabularyMode,
   timer,
   formatTime,
-  setShowSettings,
-}) => (
+  setShowSettings, 
+}: ReadingHeaderProps) {
+  return (
   <div className="px-6 py-4" style={{ backgroundColor: '#1a2a2f', borderBottom: '1px solid #93D333' }}>
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
@@ -73,5 +74,5 @@ const ReadingHeader: React.FC<ReadingHeaderProps> = ({
     </div>
   </div>
 )
-
+}
 export default ReadingHeader
