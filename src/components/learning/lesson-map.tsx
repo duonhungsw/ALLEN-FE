@@ -37,10 +37,10 @@ function generateLessonNodes(learningUnits: LearningUnit[]): LessonNodeData[] {
 
   learningUnits.forEach((unit, unitIndex) => {
     const unitColor = [
-      "bg-purple-500",
-      "bg-blue-500",
-      "bg-green-500",
-      "bg-red-500",
+      "bg-[#F3713B]",
+      "bg-[#142F50]",
+      "bg-[#F3713B]",
+      "bg-[#142F50]",
     ][unitIndex % 4];
 
     const unitNode: LessonNodeData = {
@@ -73,7 +73,7 @@ function generateLessonNodes(learningUnits: LearningUnit[]): LessonNodeData[] {
           top: `${currentTop + (stepIndex + 1) * stepSpacing}%`,
           left: isLeft ? `${50 - offsetX}%` : `${50 + offsetX}%`,
         },
-        colorClass: "bg-slate-600",
+        colorClass: "bg-[#142F50]",
       };
       nodes.push(stepNode);
     });
@@ -88,7 +88,7 @@ function generateLessonNodes(learningUnits: LearningUnit[]): LessonNodeData[] {
         label: "Chest",
         position: { top: `${currentTop}%`, left: "50%" },
         isSpecial: true,
-        colorClass: "bg-yellow-500",
+        colorClass: "bg-[#F3713B]",
       });
       currentTop += 8;
     }
