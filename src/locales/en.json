@@ -206,5 +206,17 @@
     },
     "points": "points",
     "you": "You"
+  },
+  "Community": {
+    "title": "Community",
+    "filters": {
+      "all": "All",
+      "favorites": "Favorites",
+      "following": "Following",
+      "trending": "Trending"
+    },
+    "create": {
+      "placeholder": "What's on your mind?"
+    }
   }
 }

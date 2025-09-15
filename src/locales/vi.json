@@ -140,9 +140,9 @@
     "title": "Tạo bài viết",
     "placeholder": "Bạn đang nghĩ gì?",
     "privacy": {
-      "public": "Công khai",
-      "friends": "Bạn bè",
-      "private": "Chỉ mình tôi"
+      "Public": "Công khai",
+      "Friends": "Bạn bè",
+      "OnlyMe": "Chỉ mình tôi"
     },
     "category": {
       "placeholder": "Chọn chủ đề bài viết",
@@ -206,5 +206,18 @@
     },
     "points": "điểm",
     "you": "Bạn"
+  },
+  "Community": {
+    "title": "Cộng đồng",
+    "filters": {
+      "all": "Tất cả",
+      "favorites": "Yêu thích",
+      "following": "Quan tâm",
+      "trending": "Xu hướng"
+    },
+    "create": {
+      "placeholder": "Bạn đang nghĩ gì?"
+    },
+    "search": "Tìm kiếm bài viết..."
   }
 }

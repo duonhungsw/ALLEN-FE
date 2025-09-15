@@ -38,9 +38,21 @@ export const fetchPostsPaging = async (
 };
 
 export const createPost = async (payload: CreatePostPayload) => {
-  const response = await api.post(`${APP_URL}/posts`, payload, {
+  const formData = new FormData();
+  formData.append("UserId", payload.usesId);
+  formData.append("Content", payload.content);
+  formData.append("Privacy", payload.privacy);
+  console.log(payload.images);
+  
+  if (payload.images && payload.images.length > 0) {
+    payload.images.forEach((file) => {
+      formData.append("Images", file);
+    });
+  }
+  const response = await api.post(`${APP_URL}/posts`, formData, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      "Content-Type": "multipart/form-data",
     },
   });
   return response.data;

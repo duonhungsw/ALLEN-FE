@@ -34,7 +34,7 @@ export type CreatePostPayload = {
   usesId: string;
   content: string;
   privacy: Privacy;
-  medias?: string[];
+  images?: File[];
   category?: string;
 };
 
@@ -53,9 +53,9 @@ export interface Comment {
 }
 
 export interface User {
-  id?: string;
-  name?: string;
-  email?: string;
-  picture?: string;
-  role?: string;
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+  role: string;
 }

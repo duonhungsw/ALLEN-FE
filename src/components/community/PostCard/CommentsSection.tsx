@@ -3,10 +3,11 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { Comment } from "@/types/posType"
+import { Comment, User } from "@/types/posType"
 import React from "react"
 
 interface CommentsSectionProps {
+  user: User
   postId: string
   comments: Comment[]
   commentsReply: Comment[]
@@ -26,6 +27,7 @@ interface CommentsSectionProps {
 }
 
 export function CommentsSection({
+  user,
   postId,
   comments,
   commentsReply,
@@ -45,9 +47,6 @@ export function CommentsSection({
 }: CommentsSectionProps) {
   const tPostCard = useTranslations("PostCard")
 
-  console.log(comments);
-  console.log(commentsReply);
-
   if (showComments !== postId) return null
 
   return (
@@ -55,12 +54,12 @@ export function CommentsSection({
       {isLoading && <div>Đang tải bình luận...</div>}
       {error && <div className="text-red-500">Lỗi: {error.message}</div>}
       {comments && Array.isArray(comments) && comments.length === 0 && (
-        <div>Chưa có bình luận nào.</div>
+        <div className="text-gray-400">Chưa có bình luận nào.</div>
       )}
       <div className="flex items-center space-x-3 mb-4">
         <Avatar className="h-8 w-8">
-          <AvatarImage src="/placeholder.svg?height=32&width=32" />
-          <AvatarFallback>B</AvatarFallback>
+          <AvatarImage src={user?.picture} />
+          <AvatarFallback>{user?.name[0]}</AvatarFallback>
         </Avatar>
         <div className="flex-1 flex space-x-2">
           <Input

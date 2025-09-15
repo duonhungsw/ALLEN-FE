@@ -26,25 +26,19 @@ export function CreatePostModal({user, isOpen, onClose, onPostCreated }: CreateP
   const [content, setContent] = useState("")
   const [privacy, setPrivacy] = useState<Privacy>(Privacy.Public)
   const [category, setCategory] = useState("")
-  const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const [selectedImages, setSelectedImages] = useState<File[]>([])
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
   const tCreatePost = useTranslations("CreatePost");
   const createPostMutation = useCreatePost();
 
   const handlePost = () => {
-
-    console.log(user.id);
-    console.log(content);
-    console.log(privacy);
-    console.log(selectedImages);
-    
-    // if (!content.trim() && selectedImages.length === 0) return;
-    
+    if (!content.trim() && selectedImages.length === 0) return;
     createPostMutation.mutate(
     {
       usesId: user.id,
       content,
       privacy,
-      medias: selectedImages, // nếu bạn có API upload ảnh thì thay link upload ở đây
+      images: selectedImages,
     },
     {
       onSuccess: (newPost: any) => {
@@ -62,24 +56,29 @@ export function CreatePostModal({user, isOpen, onClose, onPostCreated }: CreateP
 };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
+    const files = event.target.files;
     if (files) {
-      const newImages = Array.from(files).map((file) => URL.createObjectURL(file))
-      setSelectedImages((prev) => [...prev, ...newImages])
+      const fileArray = Array.from(files);
+      setSelectedImages((prev) => [...prev, ...fileArray]); // lưu File gốc
+      setPreviewImages((prev) => [
+        ...prev,
+        ...fileArray.map((file) => URL.createObjectURL(file)), // chỉ để preview
+      ]);
     }
-  }
+  };
 
   const removeImage = (index: number) => {
     setSelectedImages((prev) => prev.filter((_, i) => i !== index))
+    setPreviewImages((prev) => prev.filter((_, i) => i !== index))
   }
 
   const getPrivacyIcon = (privacyType: string) => {
     switch (privacyType) {
-      case "public":
+      case "Public":
         return <Globe className="h-4 w-4" />
-      case "friends":
+      case "Friends":
         return <UserCheck className="h-4 w-4" />
-      case "private":
+      case "OnlyMe":
         return <Lock className="h-4 w-4" />
       default:
         return <Globe className="h-4 w-4" />
@@ -89,13 +88,13 @@ export function CreatePostModal({user, isOpen, onClose, onPostCreated }: CreateP
   const getPrivacyLabel = (privacyType: string) => {
     switch (privacyType) {
       case "Public":
-        return tCreatePost("privacy.public")
+        return tCreatePost("privacy.Public")
       case "Friends":
-        return tCreatePost("privacy.friends")
+        return tCreatePost("privacy.Friends")
       case "OnlyMe":
         return tCreatePost("privacy.OnlyMe")
       default:
-        return tCreatePost("privacy.public")
+        return tCreatePost("privacy.Public")
     }
   }
 
@@ -115,11 +114,11 @@ export function CreatePostModal({user, isOpen, onClose, onPostCreated }: CreateP
           {/* User Info */}
           <div className="flex items-center space-x-3">
             <Avatar>
-              <AvatarImage src="/placeholder.svg?height=40&width=40" />
-              <AvatarFallback>MA</AvatarFallback>
+              <AvatarImage src={user.picture} />
+              <AvatarFallback>{user.name[0]}</AvatarFallback>
             </Avatar>
             <div>
-              <h4 className="font-semibold text-white">Minh Anh</h4>
+              <h4 className="font-semibold text-white">{user.name}</h4>
               <Select value={privacy} onValueChange={setPrivacy}>
                 <SelectTrigger className="w-auto h-auto p-1 bg-[#1a2a2f] text-gray-300 border-[#93D333]">
                   <SelectValue>
@@ -130,22 +129,22 @@ export function CreatePostModal({user, isOpen, onClose, onPostCreated }: CreateP
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2a2f] text-gray-300 border border-[#93D333]">
-                  <SelectItem value="public">
+                  <SelectItem value="Public">
                     <div className="flex items-center space-x-2">
                       <Globe className="h-4 w-4" />
-                      <span>{tCreatePost("privacy.public")}</span>
+                      <span>{tCreatePost("privacy.Public")}</span>
                     </div>
                   </SelectItem>
-                  <SelectItem value="friends">
+                  <SelectItem value="Friends">
                     <div className="flex items-center space-x-2">
                       <UserCheck className="h-4 w-4" />
-                      <span>{tCreatePost("privacy.friends")}</span>
+                      <span>{tCreatePost("privacy.Friends")}</span>
                     </div>
                   </SelectItem>
-                  <SelectItem value="private">
+                  <SelectItem value="OnlyMe">
                     <div className="flex items-center space-x-2">
                       <Lock className="h-4 w-4" />
-                      <span>{tCreatePost("privacy.private")}</span>
+                      <span>{tCreatePost("privacy.OnlyMe")}</span>
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -176,9 +175,9 @@ export function CreatePostModal({user, isOpen, onClose, onPostCreated }: CreateP
           />
 
           {/* Selected Images */}
-          {selectedImages.length > 0 && (
+          {previewImages.length > 0 && (
             <div className="grid grid-cols-2 gap-2">
-              {selectedImages.map((image, index) => (
+              {previewImages.map((image, index) => (
                 <div key={index} className="relative">
                   <Image
                     width={0}

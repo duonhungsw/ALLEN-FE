@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Heart, ThumbsUp, Laugh} from "lucide-react"
 import { useTranslations } from "next-intl"
-import { ApiPost } from "@/types/posType"
+import { ApiPost, User } from "@/types/posType"
 import { level } from "@/types/emunType"
 import { useFetchComment, useFetchReplyComment } from "@/hooks/auth/useCommunity"
 import { PostHeader } from "./PostCard/PostHeader"
@@ -16,10 +16,11 @@ import { ImageModal } from "./PostCard/ImageModal"
 import { ReactionModal } from "./PostCard/ReactionModal"
 
 interface PostCardProps {
+  user: User
   post: ApiPost
 }
 
-export function PostCard({ post: initialPost }: PostCardProps) {
+export function PostCard({ post: initialPost,user }: PostCardProps) {
   const [post, setPost] = useState({
     ...initialPost
   })
@@ -192,6 +193,7 @@ const getTopReactions = () => {
 
           {/* Comments Section */}
           <CommentsSection
+            user={user}
             postId={post.id}             // truyền id của post
             comments={Array.isArray(comments) ? comments : comments?.data || []}
             commentsReply={Array.isArray(commentsReply) ? commentsReply : commentsReply?.data || []}

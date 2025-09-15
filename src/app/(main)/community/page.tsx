@@ -15,6 +15,7 @@ import { useCommunity } from "@/hooks/auth/useCommunity"
 import { ApiPost, User } from "@/types/posType"
 import { Privacy } from "@/types/emunType"
 import { parseJwt } from "@/utils/jwt";
+import { useTranslations } from "next-intl"
 
 export default function CommunityPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
@@ -23,8 +24,8 @@ export default function CommunityPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const searchInputRef = useRef<HTMLInputElement | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [user, setUser] = useState<User | null>(null);
-
+  const [user, setUser] = useState<User>();
+  const tCommunity = useTranslations("Community");
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken != null) {
@@ -41,8 +42,6 @@ export default function CommunityPage() {
       setUser(userData);
     }
   }, []);
-
-  console.log(user)
 
   const { data: postsPaging } = useCommunity(
     {
@@ -67,10 +66,8 @@ export default function CommunityPage() {
 
   useEffect(() => {
     if (postsPaging?.data) {
-      console.log(postsPaging?.data);
       setPosts(postsPaging.data as ApiPost[])
     }
-    console.log(posts);
   }, [postsPaging])
 
   const addNewPost = (newPost: ApiPost) => {
@@ -91,7 +88,7 @@ if(postsPaging){
           <div className="lg:col-span-2 space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-white">Cộng đồng</h1>
+              <h1 className="text-2xl font-bold text-white">{tCommunity("title")}</h1>
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400"
@@ -114,12 +111,12 @@ if(postsPaging){
               <CardContent className="p-4">
                 <Tabs value={selectedFilter} onValueChange={setSelectedFilter}>
                   <TabsList className="grid w-full grid-cols-4 border-0" style={{ backgroundColor: '#1a2a2f' }}>
-                    <TabsTrigger value="all" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">Tất cả</TabsTrigger>
-                    <TabsTrigger value="favorites" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">Yêu thích</TabsTrigger>
-                    <TabsTrigger value="following" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">Quan tâm</TabsTrigger>
+                    <TabsTrigger value="all" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">{tCommunity("filters.all")}</TabsTrigger>
+                    <TabsTrigger value="favorites" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">{tCommunity("filters.favorites")}</TabsTrigger>
+                    <TabsTrigger value="following" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">{tCommunity("filters.following")}</TabsTrigger>
                     <TabsTrigger value="trending" className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300">
                       <TrendingUp className="h-4 w-4 mr-1" />
-                      Xu hướng
+                      {tCommunity("filters.trending")}
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
@@ -131,15 +128,15 @@ if(postsPaging){
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
                   <Avatar>
-                    <AvatarImage src="/" />
-                    <AvatarFallback>MA</AvatarFallback>
+                    <AvatarImage src={user?.picture} />
+                    <AvatarFallback>{user?.name[0]}</AvatarFallback>
                   </Avatar>
                   <Button
                     variant="outline"
                     className="flex-1 justify-start text-gray-300 border-[#93D333] bg-[#1a2a2f] hover:opacity-90"
                     onClick={() => setIsCreatePostOpen(true)}
                   >
-                    Bạn đang nghĩ gì?
+                    {tCommunity("create.placeholder")}
                   </Button>
                 </div>
               </CardContent>
@@ -148,7 +145,7 @@ if(postsPaging){
             {/* Posts */}
             <div className="space-y-4">
               {postsPaging.data.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard key={post.id} post={post} user={user} />
               ))}
             </div>
           </div>
