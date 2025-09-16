@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { MessageCircle, Share } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { ReactionPicker } from "./Reaction"
-import { Dispatch, useState, SetStateAction } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { ApiPost } from "@/types/postType"
 
 interface ActionButtonsProps {
@@ -25,14 +25,12 @@ export function ActionButtons({ setPost, userReaction, setUserReaction, onReacti
     setPost((prev) => ({
       ...prev,
       reactions: {
-        ...prev.reactions,
+        ...(prev.reactions || {}),
         [type]: wasReacted
-          ? prev.reactions[type as keyof typeof prev.reactions] - 1
-          : prev.reactions[type as keyof typeof prev.reactions] + 1,
+          ? (prev.reactions?.[type] || 0) - 1
+          : (prev.reactions?.[type] || 0) + 1,
         ...(userReaction && userReaction !== type
-          ? {
-              [userReaction]: prev.reactions[userReaction as keyof typeof prev.reactions] - 1,
-            }
+          ? { [userReaction]: (prev.reactions?.[userReaction] || 0) - 1 }
           : {}),
       },
     }))
@@ -41,23 +39,6 @@ export function ActionButtons({ setPost, userReaction, setUserReaction, onReacti
   }
   return (
     <div className="flex items-center justify-between pt-3">
-      {/* <div className="flex items-center space-x-1">
-        {reactions.map((reaction) => {
-          const Icon = reaction.icon
-          return (
-            <Button
-              key={reaction.type}
-              variant="ghost"
-              size="sm"
-              onClick={() => onReaction(reaction.type)}
-              className={`${userReaction === reaction.type ? reaction.color : "text-gray-300"} hover:bg-white/10`}
-            >
-              <Icon className="h-4 w-4 mr-1" />
-              {tPostCard(`reactions.${reaction.type}`)}
-            </Button>
-          )
-        })}
-      </div> */}
       <ReactionPicker onReactionSelect={handleReaction} currentReaction={userReaction}/>
       <div className="flex items-center space-x-1">
         <Button

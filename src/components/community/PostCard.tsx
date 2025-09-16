@@ -64,7 +64,6 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
   const handleReaction = (type: string) => {
     const wasReacted = userReaction === type
     const newReaction = wasReacted ? null : type
-
     setUserReaction(newReaction)
   }
 

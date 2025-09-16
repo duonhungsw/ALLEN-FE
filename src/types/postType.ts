@@ -1,11 +1,11 @@
 import { Privacy } from "./emunType";
 
 export interface PagingParams {
-  page: number; // zero-based offset mapped to Skip
-  size: number; // mapped to Top
-  search?: string; // mapped to SearchText
+  page: number; 
+  size: number;
+  search?: string;
   category?: string | null;
-  sort?: string; // mapped to OrderBy
+  sort?: string;
   privacy: Privacy;
 }
 
@@ -28,6 +28,7 @@ export type ApiPost = {
   totalComment?: number
   privacy?: Privacy
   lever?: string
+  reactions?: any
 }
 
 export type CreatePostPayload = {

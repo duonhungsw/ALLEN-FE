@@ -3,13 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-
-interface Reaction {
-  type: string
-  emoji: string
-  label: string
-  color: string
-}
+import { Reaction } from "@/types/postType"
 
 const reactions: Reaction[] = [
   { type: "like", emoji: "👍", label: "Thích", color: "text-blue-600" },
