@@ -11,11 +11,11 @@ import { FAQSidebar } from "@/components/community/FAQSidebar"
 import { PostCard } from "@/components/community/PostCard"
 import { RankingSidebar } from "@/components/community/RankingSidebar"
 import { Search, TrendingUp } from "lucide-react"
-import { useCommunity } from "@/hooks/auth/useCommunity"
-import { ApiPost, User } from "@/types/posType"
+import { useCommunity } from "@/hooks/community/useCommunity"
+import { ApiPost } from "@/types/postType"
 import { Privacy } from "@/types/emunType"
-import { parseJwt } from "@/utils/jwt";
 import { useTranslations } from "next-intl"
+import { useProfile } from "@/hooks/auth/useProfile"
 
 export default function CommunityPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
@@ -24,24 +24,9 @@ export default function CommunityPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const searchInputRef = useRef<HTMLInputElement | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [user, setUser] = useState<User>();
+  const [posts, setPosts] = useState<ApiPost[]>([])
   const tCommunity = useTranslations("Community");
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken != null) {
-      const rawUserData = parseJwt(accessToken);
-  
-      const userData: User = {
-        id: rawUserData.Id,
-        name: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'User',
-        email: rawUserData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || '',
-        picture: rawUserData['Picture'] || '',
-        role: rawUserData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || '',
-      };
-  
-      setUser(userData);
-    }
-  }, []);
+  const { data: user } = useProfile();
 
   const { data: postsPaging } = useCommunity(
     {
@@ -49,14 +34,8 @@ export default function CommunityPage() {
       size: 10,
       search: searchQuery || undefined,
       privacy: Privacy.Public,
-    },
-    {
-      retry: 2,
-      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 5000),
     }
   )
-
-  const [posts, setPosts] = useState<ApiPost[]>([])
 
   const handleSearchPost = () => {
     const value = searchInputRef.current ? searchInputRef.current.value : searchTerm
@@ -79,6 +58,7 @@ if(postsPaging){
     <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
           {/* Left Sidebar - FAQ & Categories */}
           <div className="lg:col-span-1">
             <FAQSidebar onCategorySelect={setSelectedCategory} selectedCategory={selectedCategory} />

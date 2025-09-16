@@ -1,7 +1,7 @@
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useQuery, UseQueryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchPostsPaging, createPost, fetchComment, fetchCommentReply } from "@/shared/api/community.api";
-import { PagingParams, PagingResponse, ApiPost, CreatePostPayload } from "@/types/posType";
+import { getPostsPaging, createPost, getComment, getCommentReply } from "@/shared/api/community/community.api";
+import { PagingParams, PagingResponse, ApiPost, CreatePostPayload } from "@/types/postType";
 
 export const useCommunity = (
   params: PagingParams,
@@ -13,10 +13,8 @@ export const useCommunity = (
   const hasMounted = useHasMounted();
   return useQuery<PagingResponse<ApiPost>, Error>({
     queryKey: ["posts", params],
-    queryFn: () => fetchPostsPaging(params),
+    queryFn: () => getPostsPaging(params),
     enabled: hasMounted && typeof params?.page === "number" && typeof params?.size === "number",
-    staleTime: 60 * 1000,
-    gcTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     ...(options || {}),
   });
@@ -35,7 +33,7 @@ export const useCreatePost = () => {
 export const useFetchComment = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (commentID: string) => fetchComment(commentID),
+    mutationFn: (commentID: string) => getComment(commentID),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
@@ -45,7 +43,7 @@ export const useFetchComment = () => {
 export const useFetchReplyComment = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (commentID: string) => fetchCommentReply(commentID),
+    mutationFn: (commentID: string) => getCommentReply(commentID),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },

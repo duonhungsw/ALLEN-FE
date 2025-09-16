@@ -49,7 +49,7 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     // Mock feedback based on score
-    const score = Math.floor(Math.random() * 40) + 60 // Random score between 60-100
+    const score = Math.floor(Math.random() * 40) + 60
 
     let feedbackText = ""
     let color = ""

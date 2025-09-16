@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { Comment, User } from "@/types/posType"
+import { Comment, User } from "@/types/postType"
 import React from "react"
 
 interface CommentsSectionProps {

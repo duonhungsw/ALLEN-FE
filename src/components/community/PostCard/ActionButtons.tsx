@@ -1,26 +1,47 @@
 import { Button } from "@/components/ui/button"
 import { MessageCircle, Share } from "lucide-react"
 import { useTranslations } from "next-intl"
-
-interface ReactionBtn {
-  type: string
-  icon: any
-  color: string
-}
+import { ReactionPicker } from "./Reaction"
+import { Dispatch, useState, SetStateAction } from "react"
+import { ApiPost } from "@/types/postType"
 
 interface ActionButtonsProps {
-  reactions: ReactionBtn[]
+  reactions: any
+  setPost: Dispatch<SetStateAction<ApiPost>>
   userReaction: string | null
+  setUserReaction: Dispatch<SetStateAction<string | null>>
   onReaction: (type: string) => void
   onShowComments: () => void
   onShare: () => void
 }
 
-export function ActionButtons({ reactions, userReaction, onReaction, onShowComments, onShare }: ActionButtonsProps) {
+export function ActionButtons({ setPost, userReaction, setUserReaction, onReaction, onShowComments, onShare }: ActionButtonsProps) {
   const tPostCard = useTranslations("PostCard")
+  
+  const handleReaction = (type: string) => {
+    const wasReacted = userReaction === type
+    const newReaction = wasReacted ? null : type
+
+    setPost((prev) => ({
+      ...prev,
+      reactions: {
+        ...prev.reactions,
+        [type]: wasReacted
+          ? prev.reactions[type as keyof typeof prev.reactions] - 1
+          : prev.reactions[type as keyof typeof prev.reactions] + 1,
+        ...(userReaction && userReaction !== type
+          ? {
+              [userReaction]: prev.reactions[userReaction as keyof typeof prev.reactions] - 1,
+            }
+          : {}),
+      },
+    }))
+
+    setUserReaction(newReaction)
+  }
   return (
     <div className="flex items-center justify-between pt-3">
-      <div className="flex items-center space-x-1">
+      {/* <div className="flex items-center space-x-1">
         {reactions.map((reaction) => {
           const Icon = reaction.icon
           return (
@@ -36,7 +57,8 @@ export function ActionButtons({ reactions, userReaction, onReaction, onShowComme
             </Button>
           )
         })}
-      </div>
+      </div> */}
+      <ReactionPicker onReactionSelect={handleReaction} currentReaction={userReaction}/>
       <div className="flex items-center space-x-1">
         <Button
           variant="ghost"

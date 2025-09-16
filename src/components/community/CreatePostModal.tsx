@@ -11,8 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { X, ImageIcon, Users, Smile, MapPin, Gift, MoreHorizontal, Globe, Lock, UserCheck } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
-import { ApiPost, User } from "@/types/posType"
-import { useCreatePost } from "@/hooks/auth/useCommunity"
+import { ApiPost, User } from "@/types/postType"
+import { useCreatePost } from "@/hooks/community/useCommunity"
 import { Privacy } from "@/types/emunType"
 
 interface CreatePostModalProps {

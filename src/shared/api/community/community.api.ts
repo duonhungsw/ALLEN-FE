@@ -1,24 +1,16 @@
-import api from "./index";
-import { APP_URL } from "../constants/apiConstants";
-import { ApiPost, CreatePostPayload, PagingParams, PagingResponse } from "@/types/posType";
+import api from "@/shared/api/index";
+import { APP_URL } from "@/shared/constants/apiConstants";
+import { CreatePostPayload, PagingParams } from "@/types/postType";
 
-export const fetchPostsPaging = async (
-  params: PagingParams
-): Promise<PagingResponse<ApiPost>> => {
-  const queryParams: Record<string, string | number | boolean> = {
-    // Backend expects these exact names/casing (per Postman screenshot):
-    Skip: params.page ?? 0 ,          // zero-based offset
-    Top: params.size ?? 10,           // page size
+export const getPostsPaging = async (params: PagingParams) => {
+  const queryParams = {
+    Skip: params.page ?? 0,
+    Top: params.size ?? 10,
     SearchText: params.search ?? "",
     NeedTotalCount: true,
     Privacy: params.privacy ?? "Public",
     OrderBy: params.sort ?? "CreateAt",
   };
-  // Optionally pass category/sort if provided and supported by backend
-  if (params.category) queryParams.Category = params.category;
-  if (params.sort) queryParams.OrderBy = params.sort;
-  // Some backends require explicit privacy filter; default to Public
-  if (!('privacy' in queryParams)) queryParams.privacy = 'Public';
 
   const response = await api.get(`${APP_URL}/posts/paging`, {
     params: queryParams,
@@ -30,7 +22,7 @@ export const fetchPostsPaging = async (
   const apiData = response.data;
 
   return {
-    data: response.data.data,
+    data: apiData?.data ?? [],
     total: apiData?.totalCount ?? 0,
     page: params.page,
     size: params.size,
@@ -58,7 +50,7 @@ export const createPost = async (payload: CreatePostPayload) => {
   return response.data;
 };
 
-export const fetchComment = async (commentID: string) => {
+export const getComment = async (commentID: string) => {
   const response = await api.get(`${APP_URL}/comments/root/${commentID}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -67,7 +59,7 @@ export const fetchComment = async (commentID: string) => {
   return response.data;
 };
 
-export const fetchCommentReply = async (commentID: string) => {
+export const getCommentReply = async (commentID: string) => {
   const response = await api.get(`${APP_URL}/comments/replies/${commentID}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -75,3 +67,4 @@ export const fetchCommentReply = async (commentID: string) => {
   });
   return response.data;
 };
+ 

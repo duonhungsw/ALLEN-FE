@@ -4,9 +4,9 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Heart, ThumbsUp, Laugh} from "lucide-react"
 import { useTranslations } from "next-intl"
-import { ApiPost, User } from "@/types/posType"
+import { ApiPost, User } from "@/types/postType"
 import { level } from "@/types/emunType"
-import { useFetchComment, useFetchReplyComment } from "@/hooks/auth/useCommunity"
+import { useFetchComment, useFetchReplyComment } from "@/hooks/community/useCommunity"
 import { PostHeader } from "./PostCard/PostHeader"
 import { PostImages } from "./PostCard/PostImages"
 import { ReactionsSummary } from "./PostCard/ReactionsSummary"
@@ -30,8 +30,8 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const tPostCard = useTranslations("PostCard")
   // const [comment, setComment] = useState<any[]>([])
-  const { data: comments, mutate: fetchComment, isLoading, error } = useFetchComment();
-  const { data: commentsReply, mutate: fetchCommentReply, isLoadingReply, errorReply } = useFetchReplyComment();
+  const { data: comments, mutate: getComment, isLoading, error } = useFetchComment();
+  const { data: commentsReply, mutate: getCommentReply, isLoadingReply, errorReply } = useFetchReplyComment();
   const [openReplyId, setOpenReplyId] = useState<string>("");
   const [showComments, setShowComments] = useState<string>("")
   
@@ -40,14 +40,14 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
     if (showComments === post.id) {
       setShowComments("");
     } else {
-      fetchComment(post.id);
+      getComment(post.id);
       setShowComments(post.id);
     }
   };
 
   const handleFetchReply = (commentId: string) => {
     if (openReplyId !== commentId) {
-      fetchCommentReply(commentId);
+      getCommentReply(commentId);
       setOpenReplyId(commentId);
     }
   }
@@ -184,8 +184,10 @@ const getTopReactions = () => {
 
           {/* Action Buttons */}
           <ActionButtons
+            setPost={setPost}
             reactions={reactions}
             userReaction={userReaction}
+            setUserReaction={setUserReaction}
             onReaction={handleReaction}
             onShowComments={handleFetchComment}
             onShare={() => {}}

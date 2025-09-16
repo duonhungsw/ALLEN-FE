@@ -18,3 +18,13 @@ export enum level {
   C1 = 'C1',
   C2 = 'C2',
 }
+
+export enum ReactionType {
+  Default = 'Default',
+  Like = 'Like',
+  Love = 'Love',
+  Haha = 'Haha',
+  Wow = 'Wow',
+  Sad = 'Sad',
+  Angry = 'Angry'
+}
