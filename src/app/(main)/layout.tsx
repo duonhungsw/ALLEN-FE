@@ -39,9 +39,9 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
     <div className="min-h-screen flex flex-col ">
       {/* <NavBar/> */}
       <main className="flex-1 overflow-y-auto">
-        <div className="flex h-screen bg-slate-50">
+        <div className="flex h-screen bg-gray-50">
           <Sidebar />
-          <main className="flex-1 overflow-auto bg-[#132024]">{children}</main>
+          <main className="flex-1 overflow-auto bg-white">{children}</main>
         </div>
       </main>
     </div>

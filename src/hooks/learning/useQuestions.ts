@@ -1,13 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { getQuestions } from "@/shared/api/question.api";
+import { getLearningSkill, LearningSkillPayload } from "@/shared/api/learning/speaking";
+import { Question } from "@/types/learningType";
 
-export const useQuestions = ( moduleItemId: string) => {
-  return useQuery({
+export const useQuestions = (moduleItemId: string) => {
+  return useQuery<Question[]>({
     queryKey: ["questions", moduleItemId],
     queryFn: async () => {
       const data = await getQuestions(moduleItemId);
       return data;
     },
+    enabled: !!moduleItemId,
   });
 };
-//moduleItemId
+
+export const useLearnings = (payload: LearningSkillPayload) => {
+  return useQuery({
+    queryKey: ["learnings", payload],
+    queryFn: async () => {
+      const data = await getLearningSkill(payload);
+      return data;
+    },
+    enabled: !!payload.skillType,
+  });
+};
