@@ -40,7 +40,13 @@ export const useLogin = () => {
 
       dispatch(setUser(userInfo));
       toast.success("Đăng nhập thành công!");
-      router.push("/");
+      const userRole = userInfo["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      
+      if (userRole === "Admin") {
+        window.location.href = "/admin/users";
+      } else {
+        window.location.href = "/home";
+      }
     },
     onError: (error) => {
       const msg = extractErrorMessage(error);
