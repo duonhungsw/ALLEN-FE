@@ -206,5 +206,136 @@
     },
     "points": "points",
     "you": "You"
+  },
+  "Writing": {
+    "ParagraphExercise": {
+      "back": "Back",
+      "mode": "Translation mode:",
+      "modes": {
+        "vi-en": "Vietnamese → English",
+        "en-vi": "English → Vietnamese"
+      },
+      "yourTranslation": "Your Translation",
+      "submit": "Submit",
+      "retry": "Try Again",
+      "aiFeedback": "AI Feedback",
+      "analyzing": "AI is analyzing your work...",
+      "reference": "Reference translation:",
+      "tips": {
+        "title": "Effective Translation Tips",
+        "vi-en": {
+          "title": "Vietnamese → English",
+          "items": [
+            "Pay attention to verb tenses",
+            "Use correct prepositions",
+            "Avoid word-for-word translation",
+            "Ensure natural sentences"
+          ]
+        },
+        "en-vi": {
+          "title": "English → Vietnamese",
+          "items": [
+            "Understand the overall meaning",
+            "Choose appropriate Vietnamese words",
+            "Keep the original meaning",
+            "Ensure smooth Vietnamese sentences"
+          ]
+        }
+      },
+      "feedbackStatus": {
+        "excellent": "Excellent",
+        "good": "Needs improvement",
+        "bad": "Needs major improvement"
+      }
+    },
+    "SentenceExercise": {
+      "back": "Back",
+      "mode": "Translation mode:",
+      "modeViEn": "Vietnamese → English",
+      "modeEnVi": "English → Vietnamese",
+      "submit": "Submit",
+      "reset": "Retry",
+      "inputPlaceholder": "Enter your translation...",
+      "aiFeedback": "AI Feedback",
+      "aiAnalyzing": "AI is analyzing your translation...",
+      "reference": "Reference translation:"
+    },
+    "WritingPage": {
+      "header": {
+        "title": "Writing Practice",
+        "subtitle": "Improve your writing skills with AI feedback",
+        "back": "Back"
+      },
+      "stats": {
+        "completed": "Exercises Completed",
+        "averageScore": "Average Score",
+        "wordsWritten": "Words Written"
+      },
+      "tabs": {
+        "paragraph": "Paragraph",
+        "sentence": "Sentence",
+        "ielts": "IELTS"
+      },
+      "filters": {
+        "level": "Level",
+        "category": "Category",
+        "status": "Status",
+        "task": "Task",
+        "chartType": "Chart Type",
+        "all": "All",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "available": "Available",
+        "completed": "Completed",
+        "in-progress": "In Progress",
+        "lifestyle": "Lifestyle",
+        "environment": "Environment",
+        "technology": "Technology",
+        "communication": "Communication",
+        "grammar": "Grammar",
+        "task1": "Task 1",
+        "task2": "Task 2",
+        "line": "Line Chart",
+        "bar": "Bar Chart",
+        "pie": "Pie Chart",
+        "mixed": "Mixed Chart",
+        "table": "Table"
+      },
+      "buttons": {
+        "start": "Start",
+        "redo": "Redo"
+      },
+      "tips": {
+        "title": "Effective Writing Tips",
+        "paragraph": {
+          "title": "Paragraph",
+          "items": [
+            "Start with a clear topic sentence",
+            "Use transition words to connect ideas",
+            "End with a summary sentence",
+            "Check grammar and spelling"
+          ]
+        },
+        "sentence": {
+          "title": "Sentence",
+          "items": [
+            "Pay attention to verb tenses",
+            "Use appropriate vocabulary",
+            "Vary sentence structures",
+            "Avoid unnecessary repetition"
+          ]
+        },
+        "ielts": {
+          "title": "IELTS",
+          "items": [
+            "Task 1: Describe data accurately",
+            "Task 2: Provide logical and clear arguments",
+            "Manage time effectively",
+            "Use academic vocabulary"
+          ]
+        }
+      }
+    }
   }
 }
