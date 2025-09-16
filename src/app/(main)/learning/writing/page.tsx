@@ -346,7 +346,6 @@ export default function WritingPage() {
                 )}
               </div>
 
-              {/* Chart type filter for IELTS Task 1 */}
               {selectedTab === "ielts" && selectedTask === "task1" && (
                 <div className="mt-4">
                   <label className="text-sm font-medium mb-2 block text-white">{tWritingPage("filters.chartType")}</label>
