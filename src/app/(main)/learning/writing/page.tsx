@@ -32,7 +32,6 @@ export default function WritingPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedStatus, setSelectedStatus] = useState("all")
 
-  // IELTS specific filters
   const [selectedTask, setSelectedTask] = useState("task1")
   const [selectedChartType, setSelectedChartType] = useState("all")
 
