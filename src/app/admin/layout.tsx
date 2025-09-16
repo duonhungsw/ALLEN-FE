@@ -13,7 +13,6 @@ export default function AdminLayout({
         <div className="min-h-screen bg-gray-50 flex">
             <AdminSidebar />
 
-            {/* Main Content */}
             <div className="flex-1 flex flex-col">
                 <AdminHeader />
 
