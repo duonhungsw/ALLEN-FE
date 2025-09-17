@@ -44,11 +44,12 @@ jobs:
         id: vercel
         run: |
           url=$(vercel deploy \
-            --prod \
             --token $VERCEL_TOKEN \
+            --yes \
             --scope $VERCEL_ORG_ID \
-            --yes)
-          echo "prod_url=$url" >> $GITHUB_OUTPUT
+            --project $VERCEL_PROJECT_ID \
+            --prebuilt)
+          echo "preview_url=$url" >> $GITHUB_OUTPUT
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

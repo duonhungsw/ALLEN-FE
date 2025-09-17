@@ -46,8 +46,10 @@ jobs:
         run: |
           url=$(vercel deploy \
             --token $VERCEL_TOKEN \
+            --yes \
             --scope $VERCEL_ORG_ID \
-            --yes)
+            --project $VERCEL_PROJECT_ID \
+            --prebuilt)
           echo "preview_url=$url" >> $GITHUB_OUTPUT
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
