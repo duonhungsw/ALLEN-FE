@@ -47,7 +47,6 @@ jobs:
             --token $VERCEL_TOKEN \
             --yes \
             --scope $VERCEL_ORG_ID \
-            --project $VERCEL_PROJECT_ID \
             --prebuilt)
           echo "preview_url=$url" >> $GITHUB_OUTPUT
         env:
