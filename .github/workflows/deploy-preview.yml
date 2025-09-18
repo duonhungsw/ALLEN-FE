@@ -13,7 +13,7 @@ permissions:
 jobs:
   preview:
     runs-on: ubuntu-latest
-    environment: preview   # 👈 để GitHub hiển thị "View deployment"
+    environment: preview   # 👈 giúp GitHub hiện "View deployment"
 
     steps:
       - name: Checkout repo
@@ -39,15 +39,15 @@ jobs:
         with:
           token: ${{ github.token }}
           environment: preview
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.sha }}
 
       - name: Deploy to Vercel (Preview)
         id: vercel
         run: |
-          url=$(vercel deploy \
+          url=$(vercel deploy --yes --confirm \
             --token $VERCEL_TOKEN \
             --scope $VERCEL_ORG_ID \
-            --yes)
+            --project $VERCEL_PROJECT_ID)
           echo "preview_url=$url" >> $GITHUB_OUTPUT
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
