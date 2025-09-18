@@ -1,53 +1,42 @@
-name: CI/CD Vercel
+name: Deploy to Vercel
 
 on:
-  pull_request:
-    branches:
-      - develop
-      - main
   push:
     branches:
-      - main
+      - main   # hoặc branch bạn muốn deploy
+  workflow_dispatch:
 
 jobs:
-  preview:
-    if: github.event_name == 'pull_request'
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - run: npm ci
-      - run: npm run build
-      - run: npm install -g vercel
-      - name: Deploy to Vercel (Preview)
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
-          VERCEL_GIT_COMMIT_AUTHOR_NAME: CI
-          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: github-actions[bot]
-        run: vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID
 
-  production:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci
-      - run: npm run build
-      - run: npm install -g vercel
-      - name: Deploy to Vercel (Production)
+
+      - name: Install dependencies
+        run: npm install
+
+      # Nếu bạn muốn build trước
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Vercel (Preview)
+        run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
-          VERCEL_GIT_COMMIT_AUTHOR_NAME: CI
-          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: github-actions[bot]
-        run: vercel deploy --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID
+
+      - name: Deploy to Vercel (Production)
+        if: github.ref == 'refs/heads/main'
+        run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
