@@ -1,15 +1,17 @@
-name: Deploy to Vercel
+name: CI/CD Vercel
 
 on:
+  pull_request:
+    branches:
+      - main     # Khi có PR vào main → chạy preview deploy
   push:
     branches:
-      - main   # hoặc branch bạn muốn deploy
-  workflow_dispatch:
+      - main     # Khi merge vào main → chạy production deploy
 
 jobs:
-  deploy:
+  preview:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -20,22 +22,53 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # Nếu bạn muốn build trước
       - name: Build project
         run: npm run build
 
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
       - name: Deploy to Vercel (Preview)
-        run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+        run: vercel deploy ./ \
+          --token $VERCEL_TOKEN \
+          --yes \
+          --scope $VERCEL_ORG_ID \
+          --project $VERCEL_PROJECT_ID
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
       - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main'
-        run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+        run: vercel deploy ./ \
+          --prod \
+          --token $VERCEL_TOKEN \
+          --yes \
+          --scope $VERCEL_ORG_ID \
+          --project $VERCEL_PROJECT_ID
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
