@@ -29,9 +29,9 @@ jobs:
           VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
           VERCEL_GIT_COMMIT_AUTHOR_NAME: Duong Hung
           VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ddhung2003
-          VERCEL_GIT_COMMIT_AUTHOR_EMAIL: ddhung2003@gmail.com
-
-        run: vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID
+          VERCEL_GIT_COMMIT_REF: ${{ github.ref_name }}
+          VERCEL_GIT_COMMIT_MESSAGE: ${{ github.event.pull_request.title }}
+        run: vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --confirm
 
   production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -51,5 +51,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
           VERCEL_GIT_COMMIT_AUTHOR_NAME: Duong Hung
-          VERCEL_GIT_COMMIT_AUTHOR_EMAIL: ddhung2003@gmail.com
-        run: vercel deploy --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID
+          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ddhung2003
+          VERCEL_GIT_COMMIT_REF: ${{ github.ref_name }}
+          VERCEL_GIT_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: vercel deploy --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --confirm
