@@ -20,6 +20,7 @@ export interface User {
   joinDate: string;
   lastActive: string;
   totalLessons: number;
+  picture?: string;
   avatar?: string;
 }
 
@@ -41,5 +42,7 @@ export const getAllUsers = async (filters: UserFilters = {}): Promise<UsersRespo
   if (filters.NeedTotalCount !== undefined) params.append('NeedTotalCount', filters.NeedTotalCount.toString());
 
   const response = await api.get(`${APP_URL}/users/paging?${params.toString()}`);
+  console.log("11",response.data);
+  
   return response.data;
 };
