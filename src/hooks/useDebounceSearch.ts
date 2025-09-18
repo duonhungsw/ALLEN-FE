@@ -15,7 +15,6 @@ interface UseDebounceSearchReturn {
 
 /**
  * Custom hook để quản lý debounce search
- * Tự động search sau một khoảng thời gian delay khi người dùng ngừng gõ
  * 
  * @param options - Cấu hình cho hook
  * @param options.delay - Thời gian delay (mặc định 500ms)
