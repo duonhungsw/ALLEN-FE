@@ -1,3 +1,86 @@
+# name: CI/CD Vercel
+
+# on:
+#   pull_request:
+#     branches:
+#       - main     # Khi có PR vào main → chạy preview deploy
+#   push:
+#     branches:
+#       - main     # Khi merge vào main → chạy production deploy
+
+# jobs:
+#   preview:
+#     if: github.event_name == 'pull_request'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4  # Update to latest
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4  # Update to latest
+#         with:
+#           node-version: 18
+#           cache: 'npm'  # Cache dependencies for faster runs
+
+#       - name: Install dependencies
+#         run: npm ci --frozen-lockfile
+
+#       - name: Build project
+#         run: npm run build
+
+#       - name: Install Vercel CLI
+#         run: npm install -g vercel@latest  # Ensure latest version
+
+#       - name: Pull environment variables (optional)
+#         run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+#       - name: Deploy to Vercel (Preview)
+#         run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+#   production:
+#     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 18
+#           cache: 'npm'
+
+#       - name: Install dependencies
+#         run: npm ci --frozen-lockfile
+
+#       - name: Build project
+#         run: npm run build
+
+#       - name: Install Vercel CLI
+#         run: npm install -g vercel@latest
+
+#       - name: Pull environment variables (optional)
+#         run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+#       - name: Deploy to Vercel (Production)
+#         run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+
 name: CI/CD Vercel
 
 on:
@@ -14,13 +97,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # Update to latest
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4  # Update to latest
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'  # Cache dependencies for faster runs
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci --frozen-lockfile
@@ -29,17 +112,25 @@ jobs:
         run: npm run build
 
       - name: Install Vercel CLI
-        run: npm install -g vercel@latest  # Ensure latest version
+        run: npm install -g vercel@latest
 
-      - name: Pull environment variables (optional)
-        run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+      # Link project trước khi pull env
+      - name: Link Vercel project
+        run: vercel link --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --yes
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+      # Pull env variables (không cần --project-id vì đã link)
+      - name: Pull environment variables
+        run: vercel env pull .env.local --token $VERCEL_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        continue-on-error: true  # Tiếp tục nếu không có env vars
+
       - name: Deploy to Vercel (Preview)
-        run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+        run: vercel deploy --token $VERCEL_TOKEN --yes
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -67,14 +158,23 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
-      - name: Pull environment variables (optional)
-        run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+      # Link project trước khi pull env
+      - name: Link Vercel project
+        run: vercel link --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --yes
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      # Pull env variables (không cần --project-id vì đã link)
+      - name: Pull environment variables
+        run: vercel env pull .env.local --token $VERCEL_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        continue-on-error: true  # Tiếp tục nếu không có env vars
 
       - name: Deploy to Vercel (Production)
-        run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+        run: vercel deploy --prod --token $VERCEL_TOKEN --yes
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
