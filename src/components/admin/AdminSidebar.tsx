@@ -53,7 +53,7 @@ export default function AdminSidebar() {
                             <h1 className="text-lg font-bold" style={{ color: "#F3713B" }}>
                                 Allen Admin
                             </h1>
-                            <p className="text-xs text-gray-300">Admin Panel</p>
+                            <p className="text-xs text-gray-300">Admin Panel1111</p>
                         </div>
                     )}
                     <Button
