@@ -15,52 +15,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - run: npm ci
       - run: npm run build
       - run: npm install -g vercel
-
       - name: Deploy to Vercel (Preview)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID \
-            --meta gitAuthorName="Duong Hung" \
-            --meta gitAuthorLogin="ddhung2003" \
-            --meta gitCommitMessage="${{ github.event.pull_request.title }}" \
-            --meta gitCommitRef="${{ github.ref_name }}" \
-            --meta gitCommitSha="${{ github.sha }}"
+        run: vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+
 
   production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - run: npm ci
       - run: npm run build
       - run: npm install -g vercel
-
       - name: Deploy to Vercel (Production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --prod \
-            --meta gitAuthorName="Duong Hung" \
-            --meta gitAuthorLogin="ddhung2003" \
-            --meta gitCommitMessage="${{ github.event.head_commit.message }}" \
-            --meta gitCommitRef="${{ github.ref_name }}" \
-            --meta gitCommitSha="${{ github.sha }}"
-
+        run: vercel deploy --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
