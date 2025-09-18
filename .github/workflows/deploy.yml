@@ -27,8 +27,8 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
-          VERCEL_GIT_COMMIT_AUTHOR_NAME: CI
-          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: github-actions[bot]
+          VERCEL_GIT_COMMIT_AUTHOR_NAME: Duong Hung
+          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ddhung2003
         run: vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID
 
   production:
@@ -48,6 +48,6 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
-          VERCEL_GIT_COMMIT_AUTHOR_NAME: CI
-          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: github-actions[bot]
+          VERCEL_GIT_COMMIT_AUTHOR_NAME: Duong Hung
+          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ddhung2003
         run: vercel deploy --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID
