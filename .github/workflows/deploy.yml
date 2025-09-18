@@ -103,7 +103,7 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}     # Organization ID
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # Project ID
           github-token: ${{ secrets.GITHUB_TOKEN }}       # GitHub mặc định có sẵn
-          vercel-args: '--prebuilt'                       # Deploy preview
+          vercel-args: ''                       # Deploy preview
 
   production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -119,4 +119,4 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-args: '--prod --prebuilt'                # Deploy production
+          vercel-args: '--prod'                # Deploy production
