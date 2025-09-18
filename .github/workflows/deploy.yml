@@ -31,7 +31,13 @@ jobs:
           VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ddhung2003
           VERCEL_GIT_COMMIT_REF: ${{ github.ref_name }}
           VERCEL_GIT_COMMIT_MESSAGE: ${{ github.event.pull_request.title }}
-        run: vercel deploy --yes --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+        run: vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID \
+          --meta gitAuthorName="Duong Hung" \
+          --meta gitAuthorLogin="ddhung2003" \
+          --meta gitCommitMessage="${{ github.event.head_commit.message }}" \
+          --meta gitCommitRef="${{ github.ref_name }}" \
+          --meta gitCommitSha="${{ github.sha }}"
+
 
   production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -54,4 +60,9 @@ jobs:
           VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ddhung2003
           VERCEL_GIT_COMMIT_REF: ${{ github.ref_name }}
           VERCEL_GIT_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-        run: vercel deploy --yes --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+        run: vercel deploy --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID \
+          --meta gitAuthorName="Duong Hung" \
+          --meta gitAuthorLogin="ddhung2003" \
+          --meta gitCommitMessage="${{ github.event.head_commit.message }}" \
+          --meta gitCommitRef="${{ github.ref_name }}" \
+          --meta gitCommitSha="${{ github.sha }}"
