@@ -43,15 +43,15 @@ jobs:
       - name: Deploy to Vercel (Production)
         id: vercel
         run: |
-          url=$(vercel deploy --prod --yes --confirm \
-            --token $VERCEL_TOKEN \
-            --scope $VERCEL_ORG_ID \
-            --project $VERCEL_PROJECT_ID)
-          echo "prod_url=$url" >> $GITHUB_OUTPUT
+          export VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID
+          export VERCEL_ORG_ID=$VERCEL_ORG_ID
+          url=$(vercel deploy --yes --confirm --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID)
+          echo "preview_url=$url" >> $GITHUB_OUTPUT
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 
       - name: Set Deployment Status
         uses: chrnorm/deployment-status@v2
