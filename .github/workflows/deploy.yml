@@ -32,13 +32,14 @@ jobs:
         run: npm install -g vercel@latest  # Ensure latest version
 
       - name: Pull environment variables (optional)
-        run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+        run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel (Preview)
-        run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+        run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -73,7 +74,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 
       - name: Deploy to Vercel (Production)
-        run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID
+        run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
