@@ -137,6 +137,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Git identity
+        run: |
+          git config --global user.name "duonhungsw"
+          git config --global user.email "ddhung2003@gmail.com"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -149,4 +154,4 @@ jobs:
         run: npm run build
 
       - name: Deploy to Vercel
-        run: npx vercel deploy --prod --yes --confirm --token=i8enORPRt8sdkmFSiTlGSKcw --scope=team_syeZsXrqBgXPtVAuZl71OPuE
+        run: npx vercel deploy --prod --yes --token=i8enORPRt8sdkmFSiTlGSKcw --scope=team_syeZsXrqBgXPtVAuZl71OPuE
