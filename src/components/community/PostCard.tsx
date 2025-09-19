@@ -2,11 +2,10 @@
 
 import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Heart, ThumbsUp, Laugh} from "lucide-react"
+// import { Heart, ThumbsUp, Laugh, Smile, Frown, Angry } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { ApiPost, User } from "@/types/postType"
+import { ApiPost, reactions, User } from "@/types/postType"
 import { level } from "@/types/emunType"
-import { useFetchComment, useFetchReplyComment } from "@/hooks/community/useCommunity"
 import { PostHeader } from "./PostCard/PostHeader"
 import { PostImages } from "./PostCard/PostImages"
 import { ReactionsSummary } from "./PostCard/ReactionsSummary"
@@ -24,15 +23,11 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
   const [post, setPost] = useState({
     ...initialPost
   })
-  const [newComment, setNewComment] = useState("")
+
   const [userReaction, setUserReaction] = useState<string | null>(null)
   const [showReactionModal, setShowReactionModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const tPostCard = useTranslations("PostCard")
-  // const [comment, setComment] = useState<any[]>([])
-  const { data: comments, mutate: getComment, isLoading, error } = useFetchComment();
-  const { data: commentsReply, mutate: getCommentReply, isLoadingReply, errorReply } = useFetchReplyComment();
-  const [openReplyId, setOpenReplyId] = useState<string>("");
   const [showComments, setShowComments] = useState<string>("")
   
   // Gọi API khi cần (ví dụ khi bấm nút hoặc khi mount)
@@ -40,74 +35,24 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
     if (showComments === post.id) {
       setShowComments("");
     } else {
-      getComment(post.id);
       setShowComments(post.id);
     }
   };
 
-  const handleFetchReply = (commentId: string) => {
-    if (openReplyId !== commentId) {
-      getCommentReply(commentId);
-      setOpenReplyId(commentId);
-    }
-  }
-
-  const [replyingTo, setReplyingTo] = useState<string | null>(null)
-  const [replyContent, setReplyContent] = useState("")
-
-  const reactions = [
-    { type: "like", icon: ThumbsUp, color: "text-blue-600", emoji: "👍" },
-    { type: "love", icon: Heart, color: "text-red-600", emoji: "❤️" },
-    { type: "wow", icon: Laugh, color: "text-yellow-600", emoji: "😮" },
-  ]
+  // const reactions = [
+  //   { type: "like", icon: ThumbsUp, color: "text-blue-600", emoji: "👍" },
+  //   { type: "love", icon: Heart, color: "text-red-600", emoji: "❤️" },
+  //   { type: "haha", icon: Smile, color: "text-yellow-500", emoji: "😂" },
+  //   { type: "wow", icon: Laugh, color: "text-yellow-600", emoji: "😮" },
+  //   { type: "sad", icon: Frown, color: "text-blue-500", emoji: "😢" },
+  //   { type: "angry", icon: Angry, color: "text-red-500", emoji: "😠" },
+  // ]
 
   const handleReaction = (type: string) => {
     const wasReacted = userReaction === type
     const newReaction = wasReacted ? null : type
     setUserReaction(newReaction)
   }
-
-  // const handleComment = () => {
-  //   if (!newComment.trim()) return
-
-  //   const comment: Comment = {
-  //     id: Date.now().toString(),
-  //     author: { name: tPostCard("you"), avatar: "/placeholder.svg?height=32&width=32" },
-  //     content: newComment,
-  //     timestamp: tPostCard("justNow"),
-  //     likes: 0,
-  //     reactions: { like: 0, love: 0, wow: 0 },
-  //   }
-
-  //   setComments([...comments, comment])
-  //   setPost((prev) => ({
-  //     ...prev,
-  //     // comments: (prev.comments ?? 0) + 1,
-  //   }))
-  //   setNewComment("")
-  // }
-
-  // const handleReply = (commentId: string) => {
-  //   if (!replyContent.trim()) return
-
-  //   const reply: Comment = {
-  //     id: Date.now().toString(),
-  //     author: { name: tPostCard("you"), avatar: "/placeholder.svg?height=32&width=32" },
-  //     content: replyContent,
-  //     timestamp: tPostCard("justNow"),
-  //     likes: 0,
-  //     reactions: { like: 0, love: 0, wow: 0 },
-  //   }
-
-    // setComments((prev) =>
-    //   prev.map((comment) =>
-    //     comment.id === commentId ? { ...comment, replies: [...(comment.replies || []), reply] } : comment,
-    //   ),
-    // )
-
-  //   setReplyingTo(null)
-  //   setReplyContent("")
-  // }
 
   // const getLevelColor = (level: string) => {
   //   switch (level) {
@@ -129,18 +74,18 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
   // }
 
 const getTopReactions = () => {
-  const safeReactions = post.reactions || { like: 0, love: 0, wow: 0 }
+  const safeReactions = post.reactions || { like: 0, love: 0, haha: 0, wow: 0, sad: 0, angry: 0 }
   const reactionEntries = Object.entries(safeReactions)
-    .filter(([, count]) => count > 0)
-    .sort(([, a], [, b]) => b - a)
+    .filter(([, count]) => (count as number) > 0)
+    .sort(([, a], [, b]) => (b as number) - (a as number))
     .slice(0, 3)
 
   return reactionEntries.map(([type, count]) => {
     const reaction = reactions.find((r) => r.type === type)
-    return { type, count, emoji: reaction?.emoji || "👍" }
+    return { type, count: Number(count), emoji: reaction?.emoji || "👍" }
   })
 }
-  const totalReactions = Object.values(post.reactions || { like: 0, love: 0, wow: 0 }).reduce((sum, count) => sum + count, 0)
+  // const totalReactions = Object.values(post.reactions || { like: 0, love: 0, haha: 0, wow: 0, sad: 0, angry: 0 }).reduce((sum: number, count) => sum + (count as number), 0)
 
 
   return (
@@ -170,8 +115,10 @@ const getTopReactions = () => {
           <div className="flex items-center justify-between py-3 border-t border-b" style={{ borderColor: '#334048' }}>
             <div className="flex items-center space-x-2">
               <ReactionsSummary
+                postId={post.id}
+                userId={user.id}
                 topReactions={getTopReactions()}
-                totalReactions={totalReactions}
+                totalReactions={post.totalReaction ?? 0}
                 onShowModal={() => setShowReactionModal(true)}
               />
             </div>
@@ -183,8 +130,8 @@ const getTopReactions = () => {
 
           {/* Action Buttons */}
           <ActionButtons
+            postId={post.id}
             setPost={setPost}
-            reactions={reactions}
             userReaction={userReaction}
             setUserReaction={setUserReaction}
             onReaction={handleReaction}
@@ -195,28 +142,40 @@ const getTopReactions = () => {
           {/* Comments Section */}
           <CommentsSection
             user={user}
-            postId={post.id}             // truyền id của post
-            comments={Array.isArray(comments) ? comments : comments?.data || []}
-            commentsReply={Array.isArray(commentsReply) ? commentsReply : commentsReply?.data || []}
-            isLoading={isLoading}
-            error={error}
-            isLoadingReply={isLoadingReply}
-            errorReply={errorReply}
+            postId={post.id}
             showComments={showComments}
-            newComment={newComment}
-            setNewComment={setNewComment}
-            handleFetchReply={handleFetchReply}
-            openReplyId={openReplyId}
-            replyingTo={replyingTo}
-            setReplyingTo={setReplyingTo}
-            replyContent={replyContent}
-            setReplyContent={setReplyContent}
           />
         </CardContent>
       </Card>
 
       {/* Image Modal */}
-      <ImageModal selectedImage={selectedImage} onClose={() => setSelectedImage(null)} />
+      <ImageModal 
+        selectedImage={selectedImage} 
+        post={post}
+        user={user}
+        showComments={showComments}
+        onClose={() => setSelectedImage(null)}
+        userName={post.userName}
+        userAvatar={post.userAvatar}
+        postContent={post.content}
+        createdAt={post.createdAt}
+        onComment={(comment) => {
+          // TODO: Implement comment on image
+          console.log('Comment on image:', comment)
+        }}
+        onLike={() => {
+          // TODO: Implement like image
+          console.log('Like image')
+        }}
+        onShare={() => {
+          // TODO: Implement share image
+          console.log('Share image')
+        }}
+        onDownload={() => {
+          // TODO: Implement download image
+          console.log('Download image')
+        }}
+      />
 
       {/* Reaction Modal */}
       <ReactionModal open={showReactionModal} onOpenChange={setShowReactionModal} topReactions={getTopReactions()} />

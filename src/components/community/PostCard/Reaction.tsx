@@ -3,16 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Reaction } from "@/types/postType"
-
-const reactions: Reaction[] = [
-  { type: "like", emoji: "👍", label: "Thích", color: "text-blue-600" },
-  { type: "love", emoji: "❤️", label: "Yêu thích", color: "text-red-600" },
-  { type: "haha", emoji: "😂", label: "Haha", color: "text-yellow-600" },
-  { type: "wow", emoji: "😮", label: "Wow", color: "text-orange-600" },
-  { type: "sad", emoji: "😢", label: "Buồn", color: "text-yellow-700" },
-  { type: "angry", emoji: "😡", label: "Phẫn nộ", color: "text-red-700" },
-]
+import { reactions } from "@/types/postType"
 
 interface ReactionPickerProps {
   onReactionSelect: (type: string) => void
@@ -54,7 +45,7 @@ export function ReactionPicker({ onReactionSelect, currentReaction, className }:
         size="sm"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={() => onReactionSelect(currentReaction ? "" : "like")}
+        // onClick={() => onReactionSelect(currentReaction ? "" : "like")}
         className={cn(
           "transition-all duration-200",
           currentReaction ? currentReactionData?.color || "text-blue-600" : "text-slate-500 hover:text-blue-600",

@@ -1,6 +1,7 @@
 import api from "@/shared/api/index";
 import { APP_URL } from "@/shared/constants/apiConstants";
-import { CreatePostPayload, PagingParams } from "@/types/postType";
+import { ReactionType } from "@/types/emunType";
+import { CreatePostPayload, PagingParams, reactionByUserPayload, UpdateCommentPayload } from "@/types/postType";
 
 export const getPostsPaging = async (params: PagingParams) => {
   const queryParams = {
@@ -29,13 +30,22 @@ export const getPostsPaging = async (params: PagingParams) => {
   };
 };
 
+export const getPostById = async (postId: string) => {
+  const response = await api.get(`${APP_URL}/posts/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};
+
 export const createPost = async (payload: CreatePostPayload) => {
   const formData = new FormData();
   formData.append("UserId", payload.usesId);
   formData.append("Content", payload.content);
   formData.append("Privacy", payload.privacy);
   console.log(payload.images);
-  
+
   if (payload.images && payload.images.length > 0) {
     payload.images.forEach((file) => {
       formData.append("Images", file);
@@ -67,4 +77,65 @@ export const getCommentReply = async (commentID: string) => {
   });
   return response.data;
 };
- 
+
+export const postComment = async (data: {
+  objectId: string;
+  userId: string;
+  commentParentId?: string;
+  content: string;
+}) => {
+  const response = await api.post(`${APP_URL}/comments`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};
+
+export const updateComment = async ({ commentId, data }: UpdateCommentPayload) => {
+  const response = await api.patch(`${APP_URL}/comments/${commentId}`, {data}, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};
+
+export const deleteComment = async (commentId: string) => {
+  const response = await api.delete(`${APP_URL}/comments/${commentId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};
+
+export const getReaction = async ({reactionId}: {reactionId: string}) => {
+  const response = await api.get(`${APP_URL}/reactions/${reactionId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};
+
+export const getReactionByUser = async ({postId, userId}: reactionByUserPayload) => {
+  const response = await api.get(`${APP_URL}/reactions/${postId}/user/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};
+
+export const postReaction = async (data: {
+  objectId: string;
+  reactionType?: ReactionType;
+}) => {
+  const response = await api.post(`${APP_URL}/reactions`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};

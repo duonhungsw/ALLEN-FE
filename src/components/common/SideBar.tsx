@@ -32,7 +32,7 @@ const navigation = [
   { name: "Luyện đọc", href: "/learning/reading", icon: FileText },
   { name: "Luyện viết", href: "/learning/writing", icon: PenTool },
   { name: "Từ vựng", href: "/learning/vocabulary", icon: Brain },
-  { name: "Cộng đồng", href: "/learning/community", icon: Users },
+  { name: "Cộng đồng", href: "/community", icon: Users },
 ];
 
 export function Sidebar() {

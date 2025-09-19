@@ -4,9 +4,11 @@ import { useTranslations } from "next-intl"
 import { ReactionPicker } from "./Reaction"
 import { Dispatch, SetStateAction } from "react"
 import { ApiPost } from "@/types/postType"
+import { useGetPostById, usePostReaction } from "@/hooks/community/useCommunity"
+import { ReactionType } from "@/types/emunType"
 
 interface ActionButtonsProps {
-  reactions: any
+  postId: string
   setPost: Dispatch<SetStateAction<ApiPost>>
   userReaction: string | null
   setUserReaction: Dispatch<SetStateAction<string | null>>
@@ -15,31 +17,28 @@ interface ActionButtonsProps {
   onShare: () => void
 }
 
-export function ActionButtons({ setPost, userReaction, setUserReaction, onReaction, onShowComments, onShare }: ActionButtonsProps) {
+export function ActionButtons({postId, setPost, userReaction, setUserReaction, onReaction, onShowComments, onShare}: ActionButtonsProps) {
   const tPostCard = useTranslations("PostCard")
-  
-  const handleReaction = (type: string) => {
-    const wasReacted = userReaction === type
-    const newReaction = wasReacted ? null : type
-
-    setPost((prev) => ({
-      ...prev,
-      reactions: {
-        ...(prev.reactions || {}),
-        [type]: wasReacted
-          ? (prev.reactions?.[type] || 0) - 1
-          : (prev.reactions?.[type] || 0) + 1,
-        ...(userReaction && userReaction !== type
-          ? { [userReaction]: (prev.reactions?.[userReaction] || 0) - 1 }
-          : {}),
-      },
-    }))
-
-    setUserReaction(newReaction)
+  const {mutate: postReaction} = usePostReaction()
+  const {mutate: getPostById} = useGetPostById()
+  const handleReaction = (type: ReactionType | string) => {
+    const normalized = (type || "Like") as ReactionType
+    postReaction({
+      objectId: postId,
+      reactionType: normalized
+    }, {
+      onSuccess: () => {
+        // getPostById(postId)
+        setUserReaction(type)
+      }
+    })
   }
   return (
     <div className="flex items-center justify-between pt-3">
-      <ReactionPicker onReactionSelect={handleReaction} currentReaction={userReaction}/>
+      <ReactionPicker 
+      onReactionSelect={handleReaction} 
+      currentReaction={userReaction}
+      />
       <div className="flex items-center space-x-1">
         <Button
           variant="ghost"

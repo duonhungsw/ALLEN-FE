@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { useGetReactionByUser } from "@/hooks/community/useCommunity"
 
 interface Reaction {
   type: string
@@ -13,6 +14,14 @@ interface ReactionsSummaryProps {
 }
 
 export function ReactionsSummary({ topReactions, totalReactions, onShowModal }: ReactionsSummaryProps) {
+  
+  // const {data: yourReaction} = useGetReactionByUser(
+  //   {
+  //     postId: postId,
+  //     userId: userId
+  //   }
+  // )
+
   if (topReactions.length === 0) return null
   return (
     <Button variant="ghost" size="sm" className="p-1 h-auto text-gray-300 hover:bg-white/10" onClick={onShowModal}>
