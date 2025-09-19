@@ -1,10 +1,133 @@
-name: Deploy to Vercel
+# name: CI/CD Vercel
+
+# on:
+#   pull_request:
+#     branches:
+#       - main     # Khi có PR vào main → chạy preview deploy
+#   push:
+#     branches:
+#       - main     # Khi merge vào main → chạy production deploy
+
+# jobs:
+#   preview:
+#     if: github.event_name == 'pull_request'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4  # Update to latest
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4  # Update to latest
+#         with:
+#           node-version: 18
+#           cache: 'npm'  # Cache dependencies for faster runs
+
+#       - name: Install dependencies
+#         run: npm ci --frozen-lockfile
+
+#       - name: Build project
+#         run: npm run build
+
+#       - name: Install Vercel CLI
+#         run: npm install -g vercel@latest  # Ensure latest version
+
+#       - name: Pull environment variables (optional)
+#         run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+#       - name: Deploy to Vercel (Preview)
+#         run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+#   production:
+#     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 18
+#           cache: 'npm'
+
+#       - name: Install dependencies
+#         run: npm ci --frozen-lockfile
+
+#       - name: Build project
+#         run: npm run build
+
+#       - name: Install Vercel CLI
+#         run: npm install -g vercel@latest
+
+#       - name: Pull environment variables (optional)
+#         run: vercel env pull .env.local --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+#       - name: Deploy to Vercel (Production)
+#         run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project-id $VERCEL_PROJECT_ID
+#         env:
+#           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+# name: CI/CD Vercel
+
+# on:
+#   pull_request:
+#     branches: [ main ]   # Preview khi mở PR vào main
+#   push:
+#     branches: [ main ]   # Production khi merge vào main
+
+# jobs:
+#   preview:
+#     if: github.event_name == 'pull_request'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Deploy to Vercel (Preview)
+#         uses: amondnet/vercel-action@v20
+#         with:
+#           vercel-token: ${{ secrets.VERCEL_TOKEN }}       # Lấy từ Vercel → Project → Settings → Tokens
+#           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}     # Organization ID
+#           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # Project ID
+#           github-token: ${{ secrets.GITHUB_TOKEN }}       # GitHub mặc định có sẵn
+#           vercel-args: ''                       # Deploy preview
+
+#   production:
+#     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Deploy to Vercel (Production)
+#         uses: amondnet/vercel-action@v20
+#         with:
+#           vercel-token: ${{ secrets.VERCEL_TOKEN }}
+#           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+#           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           vercel-args: '--prod'                # Deploy production
+
+
+name: Deploy to Vercel (Team)
 
 on:
   push:
     branches:
-      - main   # hoặc branch bạn muốn deploy
-  workflow_dispatch:
+      - dev
 
 jobs:
   deploy:
@@ -12,31 +135,23 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Setup Git identity
+        run: |
+          git config --global user.name "duonhungsw"
+          git config --global user.email "ddhung2003@gmail.com"
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      # Nếu bạn muốn build trước
       - name: Build project
         run: npm run build
 
-      - name: Deploy to Vercel (Preview)
-        run: vercel deploy ./ --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main'
-        run: vercel deploy ./ --prod --token $VERCEL_TOKEN --yes --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Deploy to Vercel
+        run: npx vercel deploy --prod --yes --token=i8enORPRt8sdkmFSiTlGSKcw --scope=team_syeZsXrqBgXPtVAuZl71OPuE
