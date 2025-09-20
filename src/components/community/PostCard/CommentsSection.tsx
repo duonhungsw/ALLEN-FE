@@ -5,7 +5,9 @@ import { X, Send } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Comment, User } from "@/types/postType"
 import React, { useState } from "react"
-import { usePostComment, useFetchComment, useFetchReplyComment, useDeleteComment, useUpdateComment } from "@/hooks/community/useCommunity"
+import { usePostComment, useFetchComment, useFetchReplyComment, useDeleteComment, useUpdateComment, usePostReaction } from "@/hooks/community/useCommunity"
+import { ReactionPicker } from "@/components/community/PostCard/Reaction"
+import { ReactionType } from "@/types/emunType"
 
 interface CommentsSectionProps {
   user: User
@@ -24,6 +26,7 @@ export function CommentsSection({
   const [updateContent, setUpdateContent] = useState("")
   const [openReplyId, setOpenReplyId] = useState<string | null>(null)
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
+  const [userReactionReplies, setUserReactionReplies] = useState<Record<string, string | null>>({})
   
   // API hooks
   const { mutate: postComment, isPending: isSubmittingComment } = usePostComment()
@@ -31,11 +34,9 @@ export function CommentsSection({
   const { data: commentsReply, mutate: getCommentReply, isPending: isLoadingReply, error: errorReply } = useFetchReplyComment()
   const { mutate: updateComment} = useUpdateComment()
   const { mutate: deleteComment} = useDeleteComment()
+  const { mutate: postReaction} = usePostReaction()
 
-  console.log(    user );
-  console.log(    postId );
-  console.log(    showComments );
-
+  // console.log(    showComments );
   const handleSubmitComment = () => {
     if (!newComment.trim()) return
     
@@ -88,6 +89,31 @@ export function CommentsSection({
     deleteComment(commentId);
   }
 
+  const handleReactionReply = (type: ReactionType | string, commentId: string) => {
+    // console.log("reaction:", type, "commentId:", commentId);
+    // setUserReactionReply(type)
+    // console.log( "setUserReactionReply(type)",userReactionReply);
+    
+  
+    setUserReactionReplies(prev => ({
+      ...prev,
+      [commentId]: type
+    }))
+    // Gọi API nếu cần
+    const normalized = (type || "Like") as ReactionType
+    postReaction({
+      objectId: commentId,
+      reactionType: normalized
+    }, {
+      onSuccess: () => {
+        // getReaction(postId)
+        setUserReactionReplies(prev => ({
+          ...prev,
+          [commentId]: type
+        }))
+      }
+    })
+  }
   const handleFetchReply = (commentId: string) => {
     if (openReplyId !== commentId) {
       getCommentReply(commentId)
@@ -203,13 +229,17 @@ export function CommentsSection({
                     </p>
                   </div>
                   <div className="flex items-center space-x-4 mt-2 ml-2">
-                    <Button 
+                    {/* <Button 
                       variant="ghost" 
                       size="sm" 
                       className="h-7 px-2 text-xs text-gray-400 hover:text-[#93D333] hover:bg-white/5 transition-colors duration-200"
                     >
                       👍 {comment.totalReaction || 0}
-                    </Button>
+                    </Button> */}
+                    <ReactionPicker
+                      onReactionSelect={(type) => handleReactionReply(type, comment.id)} 
+                      currentReaction={userReactionReplies[comment.id] || null}
+                    />
                     <Button
                       variant="ghost"
                       size="sm"

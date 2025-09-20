@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 // import { Heart, ThumbsUp, Laugh, Smile, Frown, Angry } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { ApiPost, reactions, User } from "@/types/postType"
-import { level } from "@/types/emunType"
+import { ApiPost, ReactionSummary, reactions, User, dataReaction } from "@/types/postType"
+import { level, ReactionType } from "@/types/emunType"
 import { PostHeader } from "./PostCard/PostHeader"
 import { PostImages } from "./PostCard/PostImages"
 import { ReactionsSummary } from "./PostCard/ReactionsSummary"
@@ -13,23 +13,27 @@ import { ActionButtons } from "./PostCard/ActionButtons"
 import { CommentsSection } from "./PostCard/CommentsSection"
 import { ImageModal } from "./PostCard/ImageModal"
 import { ReactionModal } from "./PostCard/ReactionModal"
+import { useGetReaction } from "@/hooks/community/useCommunity"
 
 interface PostCardProps {
   user: User
   post: ApiPost
 }
 
-export function PostCard({ post: initialPost,user }: PostCardProps) {
-  const [post, setPost] = useState({
-    ...initialPost
-  })
-
+export function PostCard({ post, user }: PostCardProps) {
   const [userReaction, setUserReaction] = useState<string | null>(null)
   const [showReactionModal, setShowReactionModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const tPostCard = useTranslations("PostCard")
   const [showComments, setShowComments] = useState<string>("")
-  
+  const { data: dataReaction = [], mutate: getReaction } = useGetReaction()
+
+  useEffect(() => {
+    if (post.id) {
+      getReaction(post.id)
+    }
+  }, [post.id, getReaction])
+
   // Gọi API khi cần (ví dụ khi bấm nút hoặc khi mount)
   const handleFetchComment = () => {
     if (showComments === post.id) {
@@ -38,15 +42,6 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
       setShowComments(post.id);
     }
   };
-
-  // const reactions = [
-  //   { type: "like", icon: ThumbsUp, color: "text-blue-600", emoji: "👍" },
-  //   { type: "love", icon: Heart, color: "text-red-600", emoji: "❤️" },
-  //   { type: "haha", icon: Smile, color: "text-yellow-500", emoji: "😂" },
-  //   { type: "wow", icon: Laugh, color: "text-yellow-600", emoji: "😮" },
-  //   { type: "sad", icon: Frown, color: "text-blue-500", emoji: "😢" },
-  //   { type: "angry", icon: Angry, color: "text-red-500", emoji: "😠" },
-  // ]
 
   const handleReaction = (type: string) => {
     const wasReacted = userReaction === type
@@ -73,20 +68,40 @@ export function PostCard({ post: initialPost,user }: PostCardProps) {
   //   }
   // }
 
-const getTopReactions = () => {
-  const safeReactions = post.reactions || { like: 0, love: 0, haha: 0, wow: 0, sad: 0, angry: 0 }
-  const reactionEntries = Object.entries(safeReactions)
-    .filter(([, count]) => (count as number) > 0)
-    .sort(([, a], [, b]) => (b as number) - (a as number))
-    .slice(0, 3)
-
-  return reactionEntries.map(([type, count]) => {
-    const reaction = reactions.find((r) => r.type === type)
-    return { type, count: Number(count), emoji: reaction?.emoji || "👍" }
-  })
-}
-  // const totalReactions = Object.values(post.reactions || { like: 0, love: 0, haha: 0, wow: 0, sad: 0, angry: 0 }).reduce((sum: number, count) => sum + (count as number), 0)
-
+  const calcReactions = () => {
+    if (!dataReaction) return { summary: [], top3: [] }
+  
+    const summary: Record<string, ReactionSummary & { items: dataReaction[] }> = {}
+    const order: string[] = []
+  
+    dataReaction.forEach((item: dataReaction) => {
+      const type = item.reactionType as ReactionType
+      const base = reactions.find(r => r.type === type)
+      if (!base) return
+  
+      if (!summary[type]) {
+        summary[type] = { ...base, count: 1, items: [item] }
+        order.push(type) // lưu thứ tự xuất hiện đầu tiên
+      } else {
+        summary[type].count += 1
+        summary[type].items.push(item)
+      }
+    })
+  
+    // Giữ nguyên thứ tự xuất hiện
+    const allTypes = order.map(type => summary[type])
+  
+    // Lấy top 3 theo count (nhiều nhất)
+    const topReactions = [...allTypes]
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3)
+  
+    return {
+      summary: allTypes,
+      topReactions,
+      data: dataReaction
+    }
+  }
 
   return (
     <>
@@ -115,9 +130,8 @@ const getTopReactions = () => {
           <div className="flex items-center justify-between py-3 border-t border-b" style={{ borderColor: '#334048' }}>
             <div className="flex items-center space-x-2">
               <ReactionsSummary
-                postId={post.id}
-                userId={user.id}
-                topReactions={getTopReactions()}
+                post={post}
+                topReactions={calcReactions()}
                 totalReactions={post.totalReaction ?? 0}
                 onShowModal={() => setShowReactionModal(true)}
               />
@@ -130,12 +144,13 @@ const getTopReactions = () => {
 
           {/* Action Buttons */}
           <ActionButtons
-            postId={post.id}
-            setPost={setPost}
+            post={post}
+            userId={user.id}
             userReaction={userReaction}
             setUserReaction={setUserReaction}
             onReaction={handleReaction}
             onShowComments={handleFetchComment}
+            getReaction={getReaction}
             onShare={() => {}}
           />
 
@@ -178,7 +193,7 @@ const getTopReactions = () => {
       />
 
       {/* Reaction Modal */}
-      <ReactionModal open={showReactionModal} onOpenChange={setShowReactionModal} topReactions={getTopReactions()} />
+      <ReactionModal open={showReactionModal} onOpenChange={setShowReactionModal} topReactions={calcReactions()} />
     </>
   )
 }

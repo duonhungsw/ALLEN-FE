@@ -110,8 +110,8 @@ export const deleteComment = async (commentId: string) => {
   return response.data;
 };
 
-export const getReaction = async ({reactionId}: {reactionId: string}) => {
-  const response = await api.get(`${APP_URL}/reactions/${reactionId}`, {
+export const getReaction = async (postId: string) => {
+  const response = await api.get(`${APP_URL}/reactions/${postId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },

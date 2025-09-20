@@ -1,6 +1,6 @@
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { useQuery, UseQueryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getPostsPaging, createPost, getComment, getCommentReply, postComment, deleteComment, updateComment, postReaction, getPostById, getReactionByUser } from "@/shared/api/community/community.api";
+import { getPostsPaging, createPost, getComment, getCommentReply, postComment, deleteComment, updateComment, postReaction, getPostById, getReactionByUser, getReaction } from "@/shared/api/community/community.api";
 import { PagingParams, PagingResponse, ApiPost, CreatePostPayload, UpdateCommentPayload, reactionByUserPayload } from "@/types/postType";
 import { toast } from "sonner";
 import { extractErrorMessage } from "@/utils/ErrorHandle";
@@ -104,11 +104,24 @@ export const useDeleteComment = () => {
   });
 };
 
+export const useGetReaction = () => {
+  return useMutation({
+    mutationFn: getReaction,
+    // onSuccess: () => {
+    //   toast.success('get reaction successfully');
+    // },
+    onError: (error) => {
+      const msg = extractErrorMessage(error);
+      toast.error(msg);
+    },
+  });
+};
+
 export const useGetReactionByUser= () => {
   return useMutation({
     mutationFn: (payload: reactionByUserPayload) => getReactionByUser(payload),
     onSuccess: () => {
-      toast.success('get reaction successfully');
+      toast.success('get reaction by user successfully');
     },
     onError: (error) => {
       const msg = extractErrorMessage(error);

@@ -19,6 +19,7 @@ export interface PagingResponse<TData> {
 
 export type ApiPost = {
   id: string
+  userId: string
   userName: string
   userAvatar: string
   content: string
@@ -61,7 +62,7 @@ export interface User {
   role: string;
 }
 
-interface Reaction {
+export interface Reaction {
   type: string;
   emoji: string;
   label: string;
@@ -96,4 +97,17 @@ export const reactions: Reaction[] = [
 export interface reactionByUserPayload {
   postId: string,
   userId: string
+}
+
+export interface dataReaction{
+  id: string,
+  objectId: string,
+  objectType: string,
+  userId: string,
+  userName: string,
+  reactionType: string
+}
+
+export interface ReactionSummary extends Reaction {
+  count: number
 }

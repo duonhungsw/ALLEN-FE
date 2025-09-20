@@ -1,19 +1,35 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { reactions } from "@/types/postType"
+import { ReactionType } from "@/types/emunType"
+import { useGetReactionByUser } from "@/hooks/community/useCommunity"
 
 interface ReactionPickerProps {
-  onReactionSelect: (type: string) => void
+  onReactionSelect: (type: ReactionType, commentId?: string) => void
   currentReaction?: string | null
+  postId: string
+  userId: string
   className?: string
 }
 
-export function ReactionPicker({ onReactionSelect, currentReaction, className }: ReactionPickerProps) {
+export function ReactionPicker({ postId, userId, onReactionSelect, currentReaction, className }: ReactionPickerProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
+  const {data: currentReactionData, mutate: getCurrentReaction} = useGetReactionByUser()
+
+  useEffect(() => {
+    if (postId && userId) {
+      getCurrentReaction({ postId, userId })
+    }
+  }, [postId, userId, getCurrentReaction])
+  
+  // Debug log
+  useEffect(() => {
+    console.log('currentReactionData:', currentReactionData)
+  }, [currentReactionData])
 
   const handleMouseEnter = () => {
     setIsVisible(true)
@@ -30,12 +46,14 @@ export function ReactionPicker({ onReactionSelect, currentReaction, className }:
     }, 300)
   }
 
-  const handleReactionClick = (type: string) => {
+  const handleReactionClick = (type: ReactionType) => {
     onReactionSelect(type)
     setIsVisible(false)
   }
 
-  const currentReactionData = reactions.find((r) => r.type === currentReaction)
+  const currentReactionObj = reactions.find(
+    (r) => r.type === (currentReactionData?.reactionType || currentReaction)
+  )
 
   return (
     <div className={cn("relative", className)}>
@@ -48,22 +66,20 @@ export function ReactionPicker({ onReactionSelect, currentReaction, className }:
         // onClick={() => onReactionSelect(currentReaction ? "" : "like")}
         className={cn(
           "transition-all duration-200",
-          currentReaction ? currentReactionData?.color || "text-blue-600" : "text-slate-500 hover:text-blue-600",
-        )}
-      >
-        {currentReaction ? (
-          <>
-            <span className="text-lg mr-1">{currentReactionData?.emoji}</span>
-            {currentReactionData?.label}
-          </>
-        ) : (
-          <>
-            <span className="text-lg mr-1">👍</span>
-            Thích
-          </>
-        )}
-      </Button>
-
+          currentReactionObj ? currentReactionObj.color : "text-slate-500 hover:text-blue-600"
+        )}>
+          {currentReactionObj ? (
+            <>
+              <span className="text-lg mr-1">{currentReactionObj.emoji}</span>
+              {currentReactionObj.label}
+            </>
+          ) : (
+            <>
+              <span className="text-lg mr-1">👍</span>
+              Thích
+            </>
+          )}
+        </Button>
       {/* Reaction Picker */}
       {isVisible && (
         <div

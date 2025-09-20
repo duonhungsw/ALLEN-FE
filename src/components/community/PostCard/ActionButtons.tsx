@@ -3,32 +3,34 @@ import { MessageCircle, Share } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { ReactionPicker } from "./Reaction"
 import { Dispatch, SetStateAction } from "react"
-import { ApiPost } from "@/types/postType"
-import { useGetPostById, usePostReaction } from "@/hooks/community/useCommunity"
+import { usePostReaction } from "@/hooks/community/useCommunity"
 import { ReactionType } from "@/types/emunType"
+import { UseMutateFunction } from "@tanstack/react-query"
+import { ApiPost } from "@/types/postType"
 
 interface ActionButtonsProps {
-  postId: string
-  setPost: Dispatch<SetStateAction<ApiPost>>
+  post: ApiPost
+  userId: string
   userReaction: string | null
   setUserReaction: Dispatch<SetStateAction<string | null>>
   onReaction: (type: string) => void
   onShowComments: () => void
   onShare: () => void
+  getReaction: UseMutateFunction<string, Error, string, unknown>
 }
 
-export function ActionButtons({postId, setPost, userReaction, setUserReaction, onReaction, onShowComments, onShare}: ActionButtonsProps) {
+export function ActionButtons({ post, userId, userReaction, setUserReaction, onShowComments, onShare, getReaction}: ActionButtonsProps) {
   const tPostCard = useTranslations("PostCard")
   const {mutate: postReaction} = usePostReaction()
-  const {mutate: getPostById} = useGetPostById()
+  
   const handleReaction = (type: ReactionType | string) => {
     const normalized = (type || "Like") as ReactionType
     postReaction({
-      objectId: postId,
+      objectId: post.id,
       reactionType: normalized
     }, {
       onSuccess: () => {
-        // getPostById(postId)
+        getReaction(post.id)
         setUserReaction(type)
       }
     })
@@ -36,8 +38,10 @@ export function ActionButtons({postId, setPost, userReaction, setUserReaction, o
   return (
     <div className="flex items-center justify-between pt-3">
       <ReactionPicker 
-      onReactionSelect={handleReaction} 
-      currentReaction={userReaction}
+        postId={post.id}
+        userId={userId}
+        onReactionSelect={handleReaction} 
+        currentReaction={userReaction}
       />
       <div className="flex items-center space-x-1">
         <Button
