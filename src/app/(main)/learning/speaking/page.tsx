@@ -21,7 +21,7 @@ export default function SpeakingPage() {
     const { data: speakingData, isLoading, error } = useLearningSkill("speaking");
 
     const pronunciationCategories: Category[] = speakingData?.data?.map((item: LearningSkillData, index: number) => ({
-        id: parseInt(item.id) || index + 1,
+        id: item.id || `fallback-${index + 1}`,
         name: item.title || "Speaking Practice",
         description: `Luyện tập ${item.skillType} - Level ${item.level}`,
         icon: "💬",
@@ -32,7 +32,7 @@ export default function SpeakingPage() {
     })) || [];
 
     const conversationTopics: Topic[] = speakingData?.data?.map((item: LearningSkillData, index: number) => ({
-        id: parseInt(item.id) || index + 1,
+        id: item.id || `fallback-${index + 1}`,
         title: item.title || "Speaking Practice",
         description: `Luyện tập ${item.skillType} - Level ${item.level}`,
         duration: "10-15 phút",
@@ -175,7 +175,7 @@ export default function SpeakingPage() {
                                         }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        <Link href={`/learning/speaking/pronunciation/category/${category.id}`}>
+                                        <Link href={`/learning/speaking/practice/${category.id}`}>
                                             <Card className="cursor-pointer border overflow-hidden shadow-sm hover:shadow-md transition-shadow" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
                                                 <CardContent className="p-6">
                                                     <motion.div

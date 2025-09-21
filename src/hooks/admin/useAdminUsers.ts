@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllUsers, UserFilters } from "@/shared/api/admin.api";
+import { getAllUsers, UserFilters } from "@/shared/api/admin/user.api";
 
 export const useAdminUsers = (filters: UserFilters = {}) => {
   return useQuery({
@@ -7,3 +7,4 @@ export const useAdminUsers = (filters: UserFilters = {}) => {
     queryFn: () => getAllUsers(filters),
   });
 };
+
