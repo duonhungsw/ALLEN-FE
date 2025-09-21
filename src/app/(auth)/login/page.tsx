@@ -234,8 +234,11 @@ export default function LoginPage() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-white text-center"
         >
-          <h1 className="text-4xl font-bold mb-4 text-primaryDark">
-            {t("auth.welcomeBack")}
+         <h1 className="text-4xl font-calistoga-regular mb-2 text-primaryDark text-black">
+          Allen
+        </h1>
+          <h1 className="text-2xl font-calistoga-regular mb-4 text-primaryDark text-black">
+           {t("auth.welcomeBack")}
           </h1>
           <p className="text-xl text-blue-100 leading-relaxed">
             {t("auth.signInto")}
