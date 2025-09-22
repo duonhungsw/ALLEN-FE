@@ -33,3 +33,22 @@ export const getAllCategorys = async (filters: CategoryFilters): Promise<Categor
   
   return response.data;
 }
+
+export const DeleteCategory = async (categoryId: string) => {
+  const response = await api.delete(`${APP_URL}/categories/${categoryId}`);
+  return response.data;
+}
+
+export const CreateCategory = async (data: { name: string; skillType: string;}) => {
+  const response = await api.post(`${APP_URL}/categories`, data);
+  return response.data;
+}
+export const UpdateCategory = async (categoryId: string, data: { name: string; skillType: string;}) => {
+  const response = await api.patch(`${APP_URL}/categories/${categoryId}`, data);
+  return response.data;
+}
+
+export const getCategoryById = async (categoryId: string) => {
+  const response = await api.get(`${APP_URL}/categories/${categoryId}`);
+  return response.data;
+}

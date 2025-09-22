@@ -154,3 +154,13 @@ export interface LearningSkillData {
 export interface LearningSkillResponse {
     data: LearningSkillData[];
 }
+
+export interface LearningSkillPayload {
+  skillType: string;
+  Top?: string;
+  Skip?: string;
+  SearchText?: string;
+  OrderType?: string;
+  OrderBy?: string;
+  NeedTotalCount?: string;
+}

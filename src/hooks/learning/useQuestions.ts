@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getQuestions } from "@/shared/api/question.api";
 import { getLearningSkill, LearningSkillPayload } from "@/shared/api/learning/speaking";
-import { Question } from "@/types/learningType";
+import { Question } from "@/types/learning/learningType";
 
 export const useQuestions = (moduleItemId: string) => {
   return useQuery<Question[]>({
