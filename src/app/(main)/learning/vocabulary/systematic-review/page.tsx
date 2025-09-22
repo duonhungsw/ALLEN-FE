@@ -270,7 +270,6 @@ export default function SystematicReviewPage() {
 
         {!studyPlan ? (
           <div className="space-y-6">
-            {/* User Profile */}
             <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
               <CardHeader>
                 <CardTitle className="flex items-center text-white">

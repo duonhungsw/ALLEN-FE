@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
     Users,
-    Shield,
-    BarChart3,
     Settings,
     Bell,
     ChevronLeft,
@@ -18,15 +16,17 @@ import {
     Headphones,
     PenTool,
     BookOpen,
+    Folder,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useProfile } from "@/hooks/auth/useProfile";
+import { useLogout } from "@/hooks/auth/useLogin";
 
 const adminNavigation = [
     { name: "Người dùng", href: "/admin/users", icon: Users },
-    { name: "Category", href: "/admin/category", icon: Shield },
-    { name: "Topic", href: "/admin/topic", icon: BarChart3 },
+    { name: "Category", href: "/admin/category", icon: Folder },
+    { name: "Topic", href: "/admin/topic", icon: BookOpen },
     { name: "Thông báo", href: "/admin/notifications", icon: Bell },
     { name: "Cài đặt", href: "/admin/settings", icon: Settings },
 ];
@@ -43,11 +43,7 @@ export default function AdminSidebar() {
     const pathname = usePathname();
     const { data: user, isLoading } = useProfile();
 
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = "/login";
-    };
+    const { mutate: doLogout, isPending } = useLogout();
 
     return (
         <div
@@ -61,10 +57,10 @@ export default function AdminSidebar() {
                 <div className="flex items-center justify-between">
                     {!collapsed && (
                         <div>
-                            <h1 className="text-lg font-bold" style={{ color: "#F3713B" }}>
+                            <h1 className="text-lg font-bold font-calistoga-regular" style={{ color: "#F3713B" }}>
                                 Allen Admin
                             </h1>
-                            <p className="text-xs text-gray-300">Admin Panel1111</p>
+                            <p className="text-xs text-gray-300 font-calistoga-regular">Admin Panel</p>
                         </div>
                     )}
                     <Button
@@ -108,13 +104,13 @@ export default function AdminSidebar() {
                                 </div>
                             ) : (
                                 <>
-                                    <p className="text-sm font-medium truncate text-white">
+                                    <p className="text-sm font-medium truncate text-white font-calistoga-regular">
                                         {user?.name || "Admin"}
                                     </p>
                                     <div className="flex items-center space-x-2">
                                         <Badge
                                             variant="secondary"
-                                            className="text-white text-xs"
+                                            className="text-white text-xs font-calistoga-regular"
                                             style={{ backgroundColor: "#F3713B" }}
                                         >
                                             Admin
@@ -139,7 +135,7 @@ export default function AdminSidebar() {
                                     <Button
                                         variant="ghost"
                                         className={cn(
-                                            "w-full justify-start font-roboto text-base font-normal leading-5 text-white hover:text-white hover:bg-gray-600 relative",
+                                            "w-full justify-start font-calistoga-regular text-base leading-5 text-white hover:text-white hover:bg-gray-600 relative",
                                             isActive && "text-white hover:text-white",
                                             collapsed && "px-2"
                                         )}
@@ -157,7 +153,7 @@ export default function AdminSidebar() {
                                                 !collapsed && "mr-3"
                                             )}
                                         />
-                                        {!collapsed && item.name}
+                                        {!collapsed && <span className="font-calistoga-regular">{item.name}</span>}
                                     </Button>
                                 </Link>
                             </li>
@@ -168,7 +164,7 @@ export default function AdminSidebar() {
                 {/* Skills Section */}
                 {!collapsed && (
                     <div className="mt-6">
-                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2">
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2 font-calistoga-regular">
                             Kỹ năng
                         </h3>
                         <ul className="space-y-2">
@@ -182,7 +178,7 @@ export default function AdminSidebar() {
                                             <Button
                                                 variant="ghost"
                                                 className={cn(
-                                                    "w-full justify-start text-sm text-gray-300 hover:text-white hover:bg-gray-600 relative",
+                                                    "w-full justify-start text-sm text-gray-300 hover:text-white hover:bg-gray-600 relative font-calistoga-regular",
                                                     isActive && "text-white hover:text-white",
                                                     collapsed && "px-2"
                                                 )}
@@ -195,7 +191,7 @@ export default function AdminSidebar() {
                                                     />
                                                 )}
                                                 <Icon className="h-4 w-4 mr-3" />
-                                                {item.name}
+                                                <span className="font-calistoga-regular">{item.name}</span>
                                             </Button>
                                         </Link>
                                     </li>
@@ -245,7 +241,8 @@ export default function AdminSidebar() {
             <div className="p-4 border-t" style={{ borderColor: "#1e3a5f" }}>
                 <Button
                     variant="ghost"
-                    onClick={handleLogout}
+                    onClick={() => doLogout()}
+                    disabled={isPending}
                     className={cn(
                         "w-full justify-start text-white hover:text-white hover:bg-gray-600",
                         collapsed && "px-2"

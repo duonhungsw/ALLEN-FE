@@ -28,8 +28,8 @@ export const sendGoogleUserToBackend = async (payload: { idToken: string }) => {
   }
 };
 
-export const logout = async () => {
-  const response = await api.post(`${APP_URL}/auth/logout`);
+export const logout = async (payload: { token: string }) => {
+  const response = await api.post(`${APP_URL}/auth/logout`, payload);
   return response.data;
 };
 
