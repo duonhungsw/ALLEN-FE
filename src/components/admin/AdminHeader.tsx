@@ -1,14 +1,11 @@
 "use client";
 
+import { useLogout } from "@/hooks/auth/useLogin";
 import { LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function AdminHeader() {
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = "/login";
-    };
+    const { mutate: doLogout, isPending } = useLogout();
 
     return (
         <header className="bg-white shadow-sm border-b border-gray-200">
@@ -25,7 +22,8 @@ export default function AdminHeader() {
                     <Button
                         variant="ghost"
                         size="sm"
-                        onClick={handleLogout}
+                        onClick={() => doLogout()}
+                        disabled={isPending}
                         className="text-gray-600 hover:text-red-600"
                     >
                         <LogOut className="w-4 h-4" />

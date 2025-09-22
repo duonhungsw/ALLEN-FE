@@ -54,3 +54,4 @@ export default function CategoryHeader({ onCreateCategory, isCreating }: Categor
         </motion.div>
     );
 }
+
