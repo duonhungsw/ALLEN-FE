@@ -1,16 +1,8 @@
 import api from "../index";
 import { APP_URL } from "../../constants/apiConstants";
-import { LearningSkillResponse } from "../.././../types/learningType";
+import { LearningSkillResponse ,LearningSkillPayload } from "../../../types/learning/learningType";
 
-export interface LearningSkillPayload {
-  skillType: string;
-  Top?: string;
-  Skip?: string;
-  SearchText?: string;
-  OrderType?: string;
-  OrderBy?: string;
-  NeedTotalCount?: string;
-}
+
 
 export const getLearningSkill = async (payload: LearningSkillPayload): Promise<LearningSkillResponse> => {
   const response = await api.get(`${APP_URL}/learningunits/skilltype`, {
@@ -45,3 +37,10 @@ export const transcribeStream = async (file: File) => {
   });
   return response.data;
 };
+
+export const deleteFile = async (fileUrl: string) => {
+  const response = await api.delete(`${APP_URL}/speakings/delete-file`, {
+    params: { fileUrl },
+  });
+  return response.data;
+}

@@ -1,5 +1,5 @@
 import api from "./index";
-import { QuestionResponse } from "@/types/learningType";
+import { QuestionResponse } from "@/types/learning/learningType";
 import { APP_URL } from "@/shared/constants/apiConstants";
 
 export const getQuestions = async (moduleItemId: string) => {
