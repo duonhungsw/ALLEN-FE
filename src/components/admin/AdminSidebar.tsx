@@ -21,7 +21,7 @@ import { useProfile } from "@/hooks/auth/useProfile";
 
 const adminNavigation = [
     { name: "Người dùng", href: "/admin/users", icon: Users },
-    { name: "Kiểm duyệt", href: "/admin/moderation", icon: Shield },
+    { name: "Category", href: "/admin/category", icon: Shield },
     { name: "Thống kê", href: "/admin/analytics", icon: BarChart3 },
     { name: "Thông báo", href: "/admin/notifications", icon: Bell },
     { name: "Cài đặt", href: "/admin/settings", icon: Settings },

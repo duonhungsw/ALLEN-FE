@@ -1,5 +1,5 @@
-import api from "./index";
-import { APP_URL } from "../constants/apiConstants";
+import api from "../index";
+import { APP_URL } from "../../constants/apiConstants";
 
 export interface UserFilters {
   Top?: number;
@@ -41,8 +41,6 @@ export const getAllUsers = async (filters: UserFilters = {}): Promise<UsersRespo
   if (filters.OrderBy) params.append('OrderBy', filters.OrderBy);
   if (filters.NeedTotalCount !== undefined) params.append('NeedTotalCount', filters.NeedTotalCount.toString());
 
-  const response = await api.get(`${APP_URL}/users/paging?${params.toString()}`);
-  console.log("11",response.data);
-  
+  const response = await api.get(`${APP_URL}/users/paging?${params.toString()}`);  
   return response.data;
 };
