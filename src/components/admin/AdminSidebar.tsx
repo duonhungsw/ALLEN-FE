@@ -14,6 +14,10 @@ import {
     ChevronLeft,
     ChevronRight,
     LogOut,
+    Mic,
+    Headphones,
+    PenTool,
+    BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -22,9 +26,16 @@ import { useProfile } from "@/hooks/auth/useProfile";
 const adminNavigation = [
     { name: "Người dùng", href: "/admin/users", icon: Users },
     { name: "Category", href: "/admin/category", icon: Shield },
-    { name: "Thống kê", href: "/admin/analytics", icon: BarChart3 },
+    { name: "Topic", href: "/admin/topic", icon: BarChart3 },
     { name: "Thông báo", href: "/admin/notifications", icon: Bell },
     { name: "Cài đặt", href: "/admin/settings", icon: Settings },
+];
+
+const skillNavigation = [
+    { name: "Speaking", href: "/admin/skills/speaking", icon: Mic },
+    { name: "Listening", href: "/admin/skills/listening", icon: Headphones },
+    { name: "Writing", href: "/admin/skills/writing", icon: PenTool },
+    { name: "Reading", href: "/admin/skills/reading", icon: BookOpen },
 ];
 
 export default function AdminSidebar() {
@@ -142,8 +153,8 @@ export default function AdminSidebar() {
                                         )}
                                         <Icon
                                             className={cn(
-                                                "h- w-6 text-[18px",
-                                                !collapsed && "mr-3 text-[18px] font-semibold"
+                                                "h-5 w-5",
+                                                !collapsed && "mr-3"
                                             )}
                                         />
                                         {!collapsed && item.name}
@@ -153,6 +164,82 @@ export default function AdminSidebar() {
                         );
                     })}
                 </ul>
+
+                {/* Skills Section */}
+                {!collapsed && (
+                    <div className="mt-6">
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2">
+                            Kỹ năng
+                        </h3>
+                        <ul className="space-y-2">
+                            {skillNavigation.map((item) => {
+                                const Icon = item.icon;
+                                const isActive = pathname === item.href;
+
+                                return (
+                                    <li key={item.name}>
+                                        <Link href={item.href}>
+                                            <Button
+                                                variant="ghost"
+                                                className={cn(
+                                                    "w-full justify-start text-sm text-gray-300 hover:text-white hover:bg-gray-600 relative",
+                                                    isActive && "text-white hover:text-white",
+                                                    collapsed && "px-2"
+                                                )}
+                                                style={isActive ? { backgroundColor: "#1e3a5f" } : {}}
+                                            >
+                                                {isActive && (
+                                                    <div
+                                                        className="absolute left-0 top-0 bottom-0 w-1"
+                                                        style={{ backgroundColor: "#F3713B" }}
+                                                    />
+                                                )}
+                                                <Icon className="h-4 w-4 mr-3" />
+                                                {item.name}
+                                            </Button>
+                                        </Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                )}
+
+                {/* Collapsed Skills */}
+                {collapsed && (
+                    <div className="mt-6">
+                        <ul className="space-y-2">
+                            {skillNavigation.map((item) => {
+                                const Icon = item.icon;
+                                const isActive = pathname === item.href;
+
+                                return (
+                                    <li key={item.name}>
+                                        <Link href={item.href}>
+                                            <Button
+                                                variant="ghost"
+                                                className={cn(
+                                                    "w-full justify-center text-gray-300 hover:text-white hover:bg-gray-600 relative px-2",
+                                                    isActive && "text-white hover:text-white"
+                                                )}
+                                                style={isActive ? { backgroundColor: "#1e3a5f" } : {}}
+                                                title={item.name}
+                                            >
+                                                {isActive && (
+                                                    <div
+                                                        className="absolute left-0 top-0 bottom-0 w-1"
+                                                        style={{ backgroundColor: "#F3713B" }}
+                                                    />
+                                                )}
+                                                <Icon className="h-4 w-4" />
+                                            </Button>
+                                        </Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                )}
             </nav>
 
             <div className="p-4 border-t" style={{ borderColor: "#1e3a5f" }}>

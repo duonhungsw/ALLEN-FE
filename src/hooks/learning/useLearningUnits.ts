@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllLearningUnits, getUnitSteps, getUnitStepQuestions } from "@/shared/api/unit.api";
 import { getLearningSkill } from "@/shared/api/learning/speaking";
-import { LearningUnitsResponse, UnitStepsResponse, UnitStepQuestionsResponse, LearningSkillResponse } from "@/types/learningType";
+import { LearningUnitsResponse, UnitStepsResponse, UnitStepQuestionsResponse, LearningSkillResponse } from "@/types/learning/learningType";
 
 export const useLearningUnits = () => {
   return useQuery<LearningUnitsResponse>({
