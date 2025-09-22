@@ -140,10 +140,6 @@ export default function TopicTable({
                                             <div className="text-sm text-[#A0522D] max-w-xs truncate">
                                                 {topic.topicDecription}
                                             </div>
-                                            <div className="text-xs text-[#A0522D] flex items-center">
-                                                <span className="mr-1">ID:</span>
-                                                {topic.id}
-                                            </div>
                                         </div>
                                     </div>
                                 </td>

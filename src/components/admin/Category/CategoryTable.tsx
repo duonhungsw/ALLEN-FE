@@ -165,10 +165,6 @@ export default function CategoryTable({
                                             <div className="text-sm text-[#A0522D] max-w-xs truncate font-calistoga-regular">
                                                 {category.description}
                                             </div>
-                                            <div className="text-xs text-[#A0522D] flex items-center font-calistoga-regular">
-                                                <span className="mr-1">ID:</span>
-                                                {category.id}
-                                            </div>
                                         </div>
                                     </div>
                                 </td>

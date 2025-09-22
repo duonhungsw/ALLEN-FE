@@ -1,11 +1,9 @@
 "use client";
 
+import { useLogout } from "@/hooks/auth/useLogin";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { logout } from "@/providers/auth/reducer/authSlice";
-import { clearAllAuthData } from "@/shared/store/index";
 import { useTranslations, useLocale } from "next-intl";
 import { toast } from "sonner";
 import { useState, useRef, useEffect } from "react";
@@ -13,12 +11,11 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 import { useProfile } from "@/hooks/auth/useProfile";
 import Image from "next/image";
 import DarkModeToggle from "./DarkMode";
-import { signOut } from "next-auth/react";
 
 export default function NavBar() {
   const hasMounted = useHasMounted();
-  const dispatch = useDispatch();
   const { data: user, isLoading } = useProfile();
+  const { mutate: doLogout, isPending: isLoggingOut } = useLogout();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const router = useRouter();
@@ -67,17 +64,6 @@ export default function NavBar() {
       </div>
     );
   }
-  const handleLogout = async () => {
-    try {
-      await signOut({ redirect: false });
-      dispatch(logout());
-      clearAllAuthData();
-      toast.success(tMsg("logoutSuccess"));
-      router.push("/login");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
 
   const handleChangeLanguage = (lang: string) => {
     document.cookie = `locale=${lang}`;
@@ -99,11 +85,10 @@ export default function NavBar() {
         >
           <Link
             href={path}
-            className={`transition-colors font-bold px-3 py-2 rounded-md ${
-              pathname === path
-                ? "text-yellow-300"
-                : "text-white hover:text-gray-300"
-            }`}
+            className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === path
+              ? "text-yellow-300"
+              : "text-white hover:text-gray-300"
+              }`}
           >
             {path === "/login" ? tAuth("signIn") : tAuth("signUp")}
           </Link>
@@ -158,7 +143,8 @@ export default function NavBar() {
             )}
 
             <button
-              onClick={handleLogout}
+              onClick={() => doLogout()}
+              disabled={isLoggingOut}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               {tAuth("logout")}
@@ -195,11 +181,10 @@ export default function NavBar() {
             >
               <Link href={href}>
                 <button
-                  className={`transition-colors font-bold px-3 py-2 rounded-md ${
-                    pathname === href || pathname.startsWith(href + "/")
-                      ? "text-blue-500 font-bold"
-                      : "text-white hover:text-gray-300"
-                  }`}
+                  className={`transition-colors font-bold px-3 py-2 rounded-md ${pathname === href || pathname.startsWith(href + "/")
+                    ? "text-blue-500 font-bold"
+                    : "text-white hover:text-gray-300"
+                    }`}
                 >
                   {label}
                 </button>
