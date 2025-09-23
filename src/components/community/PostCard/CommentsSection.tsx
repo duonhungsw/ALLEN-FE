@@ -3,11 +3,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { X, Send } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { Comment, User } from "@/types/postType"
-import React, { useState } from "react"
-import { usePostComment, useFetchComment, useFetchReplyComment, useDeleteComment, useUpdateComment, usePostReaction } from "@/hooks/community/useCommunity"
+import { Comment, dataReaction, reactions, ReactionSummary, User } from "@/types/postType"
+import React, { useState, useCallback } from "react"
+import { usePostComment, useFetchComment, useFetchReplyComment, useDeleteComment, useUpdateComment, usePostReaction, useGetReaction } from "@/hooks/community/useCommunity"
 import { ReactionPicker } from "@/components/community/PostCard/Reaction"
 import { ReactionType } from "@/types/emunType"
+import CommentList from "./CommentList"
 
 interface CommentsSectionProps {
   user: User
@@ -31,12 +32,67 @@ export function CommentsSection({
   // API hooks
   const { mutate: postComment, isPending: isSubmittingComment } = usePostComment()
   const { data: comments, mutate: getComment, isPending: isLoading, error } = useFetchComment()
-  const { data: commentsReply, mutate: getCommentReply, isPending: isLoadingReply, error: errorReply } = useFetchReplyComment()
+  // const { data: commentsReply, mutate: getCommentReply, isPending: isLoadingReply, error: errorReply } = useFetchReplyComment()
   const { mutate: updateComment} = useUpdateComment()
   const { mutate: deleteComment} = useDeleteComment()
   const { mutate: postReaction} = usePostReaction()
+  const { data: dataReaction = [], mutate: getReaction } = useGetReaction()
 
-  // console.log(    showComments );
+  const calcReactions = useCallback(() => {
+    if (!dataReaction) return { summary: [], top3: [], data: [] }
+    const summary: Record<string, ReactionSummary & { items: dataReaction[] }> = {}
+    const order: string[] = []
+    dataReaction.forEach((item: dataReaction) => {
+      const type = item.reactionType as ReactionType
+      const base = reactions.find(r => r.type === type)
+      if (!base) return
+      if (!summary[type]) {
+        summary[type] = { ...base, count: 1, items: [item] }
+        order.push(type)
+      } else {
+        summary[type].count += 1
+        summary[type].items.push(item)
+      }
+    })
+    const allTypes = order.map(type => summary[type])
+    const topReactions = [...allTypes].sort((a, b) => b.count - a.count).slice(0, 3)
+    return {
+      summary: allTypes,
+      topReactions,
+      data: dataReaction || []
+    }
+  }, [dataReaction])
+
+  const reactionsData = calcReactions();
+  
+  // Callback gửi comment mới hoặc reply
+  const handleReply = (content: string, parentId: string) => {
+    if (!content.trim()) return;
+    postComment({
+      objectId: postId,
+      userId: user.id,
+      commentParentId: parentId !== postId ? parentId : undefined,
+      content,
+    }, {
+      onSuccess: () => {
+        getComment(postId);
+        // Nếu là reply, có thể cần gọi getCommentReply nếu bạn muốn load lại replies riêng biệt
+      }
+    });
+  };
+
+  // Callback reaction
+  const handleReaction = (type: string, commentId: string) => {
+    postReaction({
+      objectId: commentId,
+      reactionType: type,
+    }, {
+      onSuccess: () => {
+        // Optionally refresh reactions/comments
+      }
+    });
+  };
+
   const handleSubmitComment = () => {
     if (!newComment.trim()) return
     
@@ -90,27 +146,12 @@ export function CommentsSection({
   }
 
   const handleReactionReply = (type: ReactionType | string, commentId: string) => {
-    // console.log("reaction:", type, "commentId:", commentId);
-    // setUserReactionReply(type)
-    // console.log( "setUserReactionReply(type)",userReactionReply);
-    
-  
-    setUserReactionReplies(prev => ({
-      ...prev,
-      [commentId]: type
-    }))
-    // Gọi API nếu cần
     const normalized = (type || "Like") as ReactionType
     postReaction({
       objectId: commentId,
       reactionType: normalized
     }, {
       onSuccess: () => {
-        // getReaction(postId)
-        setUserReactionReplies(prev => ({
-          ...prev,
-          [commentId]: type
-        }))
       }
     })
   }
@@ -138,6 +179,7 @@ export function CommentsSection({
   }, [showComments, postId, getComment])
 
   if (showComments !== postId) return null
+
 
   return (
     <div className="mt-4 pt-4 border-t" style={{ borderColor: '#334048' }}>
@@ -202,183 +244,13 @@ export function CommentsSection({
       </div>
 
       {/* Comments List */}
-      <div className="space-y-4">
-        {isLoading ? (
-          <div className="text-center py-8">
-            <div className="text-gray-400 text-sm">Đang tải bình luận...</div>
-          </div>
-        ) : comments && comments.data && Array.isArray(comments.data) && comments.data.length > 0 ? (
-          comments.data.map((comment: Comment) => (
-            <div key={comment.id} className="group">
-              <div className="flex items-start space-x-3">
-                <Avatar className="h-8 w-8 flex-shrink-0">
-                  <AvatarImage src={comment.userAvatar || "/placeholder.svg"} />
-                  <AvatarFallback className="bg-[#93D333] text-black font-semibold">
-                    {comment.userName?.[0]?.toUpperCase() || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <div className="bg-[#0f1619] rounded-lg p-3 group-hover:bg-[#1a2a2f] transition-colors duration-200">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <h5 className="font-semibold text-sm text-white truncate">{comment.userName}</h5>
-                      <span className="text-xs text-gray-400">•</span>
-                      {/* <span className="text-xs text-gray-400">{comment.createdAt}</span> */}
-                    </div>
-                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
-                      {comment.content}
-                    </p>
-                  </div>
-                  <div className="flex items-center space-x-4 mt-2 ml-2">
-                    {/* <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="h-7 px-2 text-xs text-gray-400 hover:text-[#93D333] hover:bg-white/5 transition-colors duration-200"
-                    >
-                      👍 {comment.totalReaction || 0}
-                    </Button> */}
-                    <ReactionPicker
-                      onReactionSelect={(type) => handleReactionReply(type, comment.id)} 
-                      currentReaction={userReactionReplies[comment.id] || null}
-                    />
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 px-2 text-xs text-gray-400 hover:text-[#93D333] hover:bg-white/5 transition-colors duration-200"
-                      onClick={() => handleFetchReply(comment.id)}
-                    >
-                      💬 {comment.replyCount || 0}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 px-2 text-xs text-gray-400 hover:text-white hover:bg-white/5 transition-colors duration-200"
-                      onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                    >
-                      {replyingTo === comment.id ? 'Hủy' : 'Trả lời'}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Replies Section */}
-              {openReplyId === comment.id && (
-                <div className="ml-11 mt-3">
-                  {isLoadingReply && (
-                    <div className="flex items-center justify-center py-4">
-                      <div className="text-sm text-gray-400">Đang tải trả lời...</div>
-                    </div>
-                  )}
-                  {errorReply && (
-                    <div className="text-red-500 text-sm py-2">Lỗi: {errorReply.message}</div>
-                  )}
-                  {commentsReply && commentsReply.data  && Array.isArray(commentsReply.data) && commentsReply.data.length > 0 && (
-                    <div className="space-y-3">
-                      {commentsReply.data.map((reply: Comment) => (
-              //  {commentsReply && commentsReply.data && Array.isArray(commentsReply.data) && commentsReply.data.length > 0 && (
-              //    <div className="space-y-3">
-              //      {commentsReply.data.map((reply: Comment) => (
-                        <div key={reply.id} className="flex items-start space-x-3 group">
-                          <Avatar className="h-6 w-6 flex-shrink-0">
-                            <AvatarImage src={reply.userAvatar || "/placeholder.svg"} />
-                            <AvatarFallback className="bg-[#93D333] text-black text-xs font-semibold">
-                              {reply.userName?.[0]?.toUpperCase() || 'U'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 min-w-0">
-                            <div className="bg-[#0f1619] rounded-lg p-2 group-hover:bg-[#1a2a2f] transition-colors duration-200">
-                              <div className="flex items-center space-x-2 mb-1">
-                                <h5 className="font-semibold text-xs text-white truncate">{reply.userName}</h5>
-                                <span className="text-xs text-gray-400">•</span>
-                                <span className="text-xs text-gray-400">{reply.createdAt}</span>
-                              </div>
-                              <p className="text-xs text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
-                                {reply.content}
-                              </p>
-                            </div>
-                            <div className="flex items-center space-x-3 mt-1 ml-2">
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-6 px-2 text-xs text-gray-400 hover:text-[#93D333] hover:bg-white/5 transition-colors duration-200"
-                              >
-                                👍 {reply.totalReaction || 0}
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {commentsReply && commentsReply.data && Array.isArray(commentsReply.data) && commentsReply.data.length === 0 && !isLoadingReply && (
-                    <div className="text-sm text-gray-400 py-2">Chưa có trả lời nào.</div>
-                  )}
-                </div>
-              )}
-
-              {/* Reply Input */}
-              {replyingTo === comment.id && (
-                <div className="ml-11 mt-3">
-                  <div className="bg-[#0f1619] rounded-lg p-3">
-                    <div className="flex items-start space-x-2">
-                      <Avatar className="h-6 w-6 flex-shrink-0">
-                        <AvatarImage src={user?.picture} />
-                        <AvatarFallback className="bg-[#93D333] text-black text-xs font-semibold">
-                          {user?.name?.[0]?.toUpperCase() || 'U'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 space-y-2">
-                        <div className="flex space-x-2">
-                          <Input
-                            placeholder={tPostCard("replyPlaceholder") || "Viết trả lời..."}
-                            value={replyContent}
-                            onChange={(e) => setReplyContent(e.target.value)}
-                            onKeyPress={(e) => handleKeyPress(e, () => handleSubmitReply(comment.id))}
-                            className="flex-1 h-8 text-sm bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400 focus:ring-2 focus:ring-[#93D333] focus:border-transparent"
-                            maxLength={300}
-                          />
-                          <Button
-                            onClick={() => handleSubmitReply(comment.id)}
-                            disabled={!replyContent.trim()}
-                            size="sm"
-                            className="bg-[#93D333] hover:bg-[#7bb32a] text-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                          >
-                            <Send className="h-3 w-3" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="ghost" 
-                            className="text-gray-400 hover:text-white hover:bg-white/10 transition-colors duration-200" 
-                            onClick={() => setReplyingTo(null)}
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        </div>
-                        {replyContent.length > 0 && (
-                          <div className="flex justify-between items-center text-xs text-gray-400">
-                            <span>{replyContent.length}/300 ký tự</span>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setReplyContent("")}
-                              className="h-5 px-2 text-xs text-gray-400 hover:text-white hover:bg-white/10"
-                            >
-                              Xóa
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-8">
-            <div className="text-gray-400 text-sm">Chưa có bình luận nào.</div>
-          </div>
-        )}
-      </div>
+      <CommentList
+        comments={comments?.data || []}
+        user={user}
+        postId={postId}
+        onReply={handleReply}
+        onReaction={handleReaction}
+      />
     </div>
   )
 }

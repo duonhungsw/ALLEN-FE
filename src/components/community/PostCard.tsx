@@ -32,6 +32,8 @@ export function PostCard({ post, user }: PostCardProps) {
     if (post.id) {
       getReaction(post.id)
     }
+    console.log("run");
+    
   }, [post.id, getReaction])
 
   // Gọi API khi cần (ví dụ khi bấm nút hoặc khi mount)
@@ -48,25 +50,6 @@ export function PostCard({ post, user }: PostCardProps) {
     const newReaction = wasReacted ? null : type
     setUserReaction(newReaction)
   }
-
-  // const getLevelColor = (level: string) => {
-  //   switch (level) {
-  //     case "A1":
-  //       return "bg-green-500"
-  //     case "A2":
-  //       return "bg-green-500"
-  //     case "B1":
-  //       return "bg-blue-500"
-  //     case "B2":
-  //       return "bg-blue-500"
-  //     case "C1":
-  //       return "bg-purple-500"
-  //     case "C2":
-  //       return "bg-purple-500"
-  //     default:
-  //       return "bg-gray-500"
-  //   }
-  // }
 
   const calcReactions = () => {
     if (!dataReaction) return { summary: [], top3: [] }
@@ -88,10 +71,8 @@ export function PostCard({ post, user }: PostCardProps) {
       }
     })
   
-    // Giữ nguyên thứ tự xuất hiện
     const allTypes = order.map(type => summary[type])
   
-    // Lấy top 3 theo count (nhiều nhất)
     const topReactions = [...allTypes]
       .sort((a, b) => b.count - a.count)
       .slice(0, 3)
@@ -113,7 +94,6 @@ export function PostCard({ post, user }: PostCardProps) {
             userName={post.userName}
             userAvatar={post.userAvatar}
             createdAt={post.createdAt}
-            // points={post.author?.points || 0}
             privacy={post.privacy}
             level={level.A1}
           />
@@ -137,7 +117,7 @@ export function PostCard({ post, user }: PostCardProps) {
               />
             </div>
             <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>{tPostCard("comments")}</span>
+              <span>{post.totalReaction} {tPostCard("comments")}</span>
               <span>{tPostCard("shares")}</span>
             </div>
           </div>
@@ -146,7 +126,6 @@ export function PostCard({ post, user }: PostCardProps) {
           <ActionButtons
             post={post}
             userId={user.id}
-            userReaction={userReaction}
             setUserReaction={setUserReaction}
             onReaction={handleReaction}
             onShowComments={handleFetchComment}

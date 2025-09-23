@@ -11,7 +11,6 @@ import { ApiPost } from "@/types/postType"
 interface ActionButtonsProps {
   post: ApiPost
   userId: string
-  userReaction: string | null
   setUserReaction: Dispatch<SetStateAction<string | null>>
   onReaction: (type: string) => void
   onShowComments: () => void
@@ -19,7 +18,7 @@ interface ActionButtonsProps {
   getReaction: UseMutateFunction<string, Error, string, unknown>
 }
 
-export function ActionButtons({ post, userId, userReaction, setUserReaction, onShowComments, onShare, getReaction}: ActionButtonsProps) {
+export function ActionButtons({ post, userId, setUserReaction, onShowComments, onShare, getReaction}: ActionButtonsProps) {
   const tPostCard = useTranslations("PostCard")
   const {mutate: postReaction} = usePostReaction()
   
@@ -41,7 +40,6 @@ export function ActionButtons({ post, userId, userReaction, setUserReaction, onS
         postId={post.id}
         userId={userId}
         onReactionSelect={handleReaction} 
-        currentReaction={userReaction}
       />
       <div className="flex items-center space-x-1">
         <Button

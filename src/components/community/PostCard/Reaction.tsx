@@ -9,16 +9,28 @@ import { useGetReactionByUser } from "@/hooks/community/useCommunity"
 
 interface ReactionPickerProps {
   onReactionSelect: (type: ReactionType, commentId?: string) => void
-  currentReaction?: string | null
   postId: string
   userId: string
   className?: string
+  onReactionUpdate?: () => void
 }
 
-export function ReactionPicker({ postId, userId, onReactionSelect, currentReaction, className }: ReactionPickerProps) {
+export function ReactionPicker({ postId, userId, onReactionSelect, className, onReactionUpdate }: ReactionPickerProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
+  const [userReaction, setUserReaction] = useState<string | null>(null);
   const {data: currentReactionData, mutate: getCurrentReaction} = useGetReactionByUser()
+
+  useEffect(() => {
+    if (currentReactionData?.reactionType) {
+      setUserReaction(currentReactionData.reactionType);
+    } else {
+      setUserReaction(null);
+    }
+    if (onReactionUpdate) {
+      onReactionUpdate();
+    }
+  }, [currentReactionData, onReactionUpdate]);
 
   useEffect(() => {
     if (postId && userId) {
@@ -46,15 +58,22 @@ export function ReactionPicker({ postId, userId, onReactionSelect, currentReacti
     }, 300)
   }
 
-  const handleReactionClick = (type: ReactionType) => {
-    onReactionSelect(type)
-    setIsVisible(false)
+const handleReactionClick = (type: ReactionType) => {
+  if (userReaction === type) {
+    setUserReaction(null);
+    onReactionSelect(type); // delete
+  } else {
+    setUserReaction(type);
+    onReactionSelect(type); // create/update
   }
+  setIsVisible(false);
+  if (onReactionUpdate) {
+    console.log('Gọi lại getReaction do user click reaction');
+    onReactionUpdate();
+  }
+};
 
-  const currentReactionObj = reactions.find(
-    (r) => r.type === (currentReactionData?.reactionType || currentReaction)
-  )
-
+const currentReactionObj = reactions.find((r) => r.type === userReaction);
   return (
     <div className={cn("relative", className)}>
       {/* Main Like Button */}
@@ -93,7 +112,7 @@ export function ReactionPicker({ postId, userId, onReactionSelect, currentReacti
               variant="ghost"
               size="sm"
               className="h-12 w-12 p-0 hover:scale-125 transition-transform duration-200 rounded-full"
-              onClick={() => handleReactionClick(reaction.type)}
+              onClick={() => handleReactionClick(reaction.type as ReactionType)}
             >
               <span className="text-2xl">{reaction.emoji}</span>
             </Button>
