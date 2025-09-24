@@ -77,14 +77,6 @@ export interface UpdateCommentPayload {
   };
 }
 
-// export const reactions = [
-//   { type: "like", icon: ThumbsUp, color: "text-blue-600", emoji: "👍" },
-//   { type: "love", icon: Heart, color: "text-red-600", emoji: "❤️" },
-//   { type: "haha", icon: Smile, color: "text-yellow-500", emoji: "😂" },
-//   { type: "wow", icon: Laugh, color: "text-yellow-600", emoji: "😮" },
-//   { type: "sad", icon: Frown, color: "text-blue-500", emoji: "😢" },
-//   { type: "angry", icon: Angry, color: "text-red-500", emoji: "😠" },
-// ]
 export const reactions: Reaction[] = [
   { type: "Like", emoji: "👍", label: "Thích", color: "text-blue-600" },
   { type: "Love", emoji: "❤️", label: "Yêu thích", color: "text-red-600" },

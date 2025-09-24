@@ -49,7 +49,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   };
 
   return (
-    <div className="group">
+    <div>
       <div className="flex items-start space-x-3">
         <Avatar className="h-8 w-8 flex-shrink-0">
           <AvatarImage src={comment.userAvatar || "/placeholder.svg"} />
@@ -58,7 +58,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <div className="bg-[#0f1619] rounded-lg p-3 group-hover:bg-[#1a2a2f] transition-colors duration-200">
+          <div className="bg-[#0f1619] rounded-lg p-3">
             <div className="flex items-center space-x-2 mb-1">
               <h5 className="font-semibold text-sm text-white truncate">{comment.userName}</h5>
               <span className="text-xs text-gray-400">•</span>
@@ -78,7 +78,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 px-2 text-xs text-gray-400 hover:text-[#93D333] hover:bg-white/5 transition-colors duration-200"
+              className="h-7 px-2 text-xs text-gray-400"
               onClick={handleShowReplies}
             >
               Show comment
@@ -86,7 +86,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 px-2 text-xs text-gray-400 hover:text-white hover:bg-white/5 transition-colors duration-200"
+              className="h-7 px-2 text-xs text-gray-400"
               onClick={() => setShowReplyInput((prev) => !prev)}
             >
               {showReplyInput ? "Hủy" : "Trả lời"}
@@ -130,7 +130,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="text-gray-400 hover:text-white hover:bg-white/10 transition-colors duration-200"
+                        className="text-gray-400"
                         onClick={() => setShowReplyInput(false)}
                       >
                         <X className="h-3 w-3" />
@@ -143,7 +143,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                           variant="ghost"
                           size="sm"
                           onClick={() => setReplyContent("")}
-                          className="h-5 px-2 text-xs text-gray-400 hover:text-white hover:bg-white/10"
+                          className="h-5 px-2 text-xs text-gray-400"
                         >
                           Xóa
                         </Button>

@@ -60,6 +60,15 @@ export const createPost = async (payload: CreatePostPayload) => {
   return response.data;
 };
 
+export const deletePost = async (postId: string) => {
+  const response = await api.delete(`${APP_URL}/posts/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  return response.data;
+};
+
 export const getComment = async (commentID: string) => {
   const response = await api.get(`${APP_URL}/comments/root/${commentID}`, {
     headers: {

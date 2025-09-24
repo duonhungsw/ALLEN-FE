@@ -38,34 +38,31 @@ export function CommentsSection({
   const { mutate: postReaction} = usePostReaction()
   const { data: dataReaction = [], mutate: getReaction } = useGetReaction()
 
-  const calcReactions = useCallback(() => {
-    if (!dataReaction) return { summary: [], top3: [], data: [] }
-    const summary: Record<string, ReactionSummary & { items: dataReaction[] }> = {}
-    const order: string[] = []
-    dataReaction.forEach((item: dataReaction) => {
-      const type = item.reactionType as ReactionType
-      const base = reactions.find(r => r.type === type)
-      if (!base) return
-      if (!summary[type]) {
-        summary[type] = { ...base, count: 1, items: [item] }
-        order.push(type)
-      } else {
-        summary[type].count += 1
-        summary[type].items.push(item)
-      }
-    })
-    const allTypes = order.map(type => summary[type])
-    const topReactions = [...allTypes].sort((a, b) => b.count - a.count).slice(0, 3)
-    return {
-      summary: allTypes,
-      topReactions,
-      data: dataReaction || []
-    }
-  }, [dataReaction])
+  // const calcReactions = useCallback(() => {
+  //   if (!dataReaction) return { summary: [], top3: [], data: [] }
+  //   const summary: Record<string, ReactionSummary & { items: dataReaction[] }> = {}
+  //   const order: string[] = []
+  //   dataReaction.forEach((item: dataReaction) => {
+  //     const type = item.reactionType as ReactionType
+  //     const base = reactions.find(r => r.type === type)
+  //     if (!base) return
+  //     if (!summary[type]) {
+  //       summary[type] = { ...base, count: 1, items: [item] }
+  //       order.push(type)
+  //     } else {
+  //       summary[type].count += 1
+  //       summary[type].items.push(item)
+  //     }
+  //   })
+  //   const allTypes = order.map(type => summary[type])
+  //   const topReactions = [...allTypes].sort((a, b) => b.count - a.count).slice(0, 3)
+  //   return {
+  //     summary: allTypes,
+  //     topReactions,
+  //     data: dataReaction || []
+  //   }
+  // }, [dataReaction])
 
-  const reactionsData = calcReactions();
-  
-  // Callback gửi comment mới hoặc reply
   const handleReply = (content: string, parentId: string) => {
     if (!content.trim()) return;
     postComment({
@@ -109,60 +106,60 @@ export function CommentsSection({
     })
   }
 
-  const handleSubmitReply = (commentId: string) => {
-    if (!replyContent.trim()) return
+  // const handleSubmitReply = (commentId: string) => {
+  //   if (!replyContent.trim()) return
     
-    postComment({
-      objectId: postId,
-      userId: user.id,
-      commentParentId: commentId,
-      content: replyContent
-    }, {
-      onSuccess: () => {
-        setReplyContent("")
-        setReplyingTo(null)
-        // Refresh replies after posting
-        getCommentReply(commentId)
-      }
-    })
-  }
+  //   postComment({
+  //     objectId: postId,
+  //     userId: user.id,
+  //     commentParentId: commentId,
+  //     content: replyContent
+  //   }, {
+  //     onSuccess: () => {
+  //       setReplyContent("")
+  //       setReplyingTo(null)
+  //       // Refresh replies after posting
+  //       getCommentReply(commentId)
+  //     }
+  //   })
+  // }
 
-  const handleUpdateComment = (commentId: string) => {
-    updateComment({
-      commentId: commentId,
-      data:{
-        userId: user.id,
-        content: updateContent
-      }
-    }, {
-      onSuccess: () => {
-        setUpdateContent("")
-      }
-    })
-  }
+  // const handleUpdateComment = (commentId: string) => {
+  //   updateComment({
+  //     commentId: commentId,
+  //     data:{
+  //       userId: user.id,
+  //       content: updateContent
+  //     }
+  //   }, {
+  //     onSuccess: () => {
+  //       setUpdateContent("")
+  //     }
+  //   })
+  // }
 
-  const handleDeleteComment = (commentId: string) => {
-    deleteComment(commentId);
-  }
+  // const handleDeleteComment = (commentId: string) => {
+  //   deleteComment(commentId);
+  // }
 
-  const handleReactionReply = (type: ReactionType | string, commentId: string) => {
-    const normalized = (type || "Like") as ReactionType
-    postReaction({
-      objectId: commentId,
-      reactionType: normalized
-    }, {
-      onSuccess: () => {
-      }
-    })
-  }
-  const handleFetchReply = (commentId: string) => {
-    if (openReplyId !== commentId) {
-      getCommentReply(commentId)
-      setOpenReplyId(commentId)
-    } else {
-      setOpenReplyId(null)
-    }
-  }
+  // const handleReactionReply = (type: ReactionType | string, commentId: string) => {
+  //   const normalized = (type || "Like") as ReactionType
+  //   postReaction({
+  //     objectId: commentId,
+  //     reactionType: normalized
+  //   }, {
+  //     onSuccess: () => {
+  //     }
+  //   })
+  // }
+  // const handleFetchReply = (commentId: string) => {
+  //   if (openReplyId !== commentId) {
+  //     getCommentReply(commentId)
+  //     setOpenReplyId(commentId)
+  //   } else {
+  //     setOpenReplyId(null)
+  //   }
+  // }
 
   const handleKeyPress = (e: React.KeyboardEvent, action: () => void) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -192,6 +189,14 @@ export function CommentsSection({
         <div className="text-red-500 text-sm py-2">Lỗi: {error.message}</div>
       )}
       
+      {/* Comments List */}
+      <CommentList
+        comments={comments?.data || []}
+        user={user}
+        postId={postId}
+        onReply={handleReply}
+        onReaction={handleReaction}
+      />
       {/* Comment Input Section */}
       <div className="bg-[#0f1619] rounded-lg p-4 mb-4">
         <div className="flex items-start space-x-3">
@@ -243,14 +248,6 @@ export function CommentsSection({
         </div>
       </div>
 
-      {/* Comments List */}
-      <CommentList
-        comments={comments?.data || []}
-        user={user}
-        postId={postId}
-        onReply={handleReply}
-        onReaction={handleReaction}
-      />
     </div>
   )
 }

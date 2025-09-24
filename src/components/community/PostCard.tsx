@@ -91,6 +91,7 @@ export function PostCard({ post, user }: PostCardProps) {
         <CardContent className="p-6">
           {/* Post Header */}
           <PostHeader
+            postId={post.id}
             userName={post.userName}
             userAvatar={post.userAvatar}
             createdAt={post.createdAt}
@@ -172,7 +173,7 @@ export function PostCard({ post, user }: PostCardProps) {
       />
 
       {/* Reaction Modal */}
-      <ReactionModal open={showReactionModal} onOpenChange={setShowReactionModal} topReactions={calcReactions()} />
+      <ReactionModal open={showReactionModal} onOpenChange={()=>setShowReactionModal(false)} topReactions={calcReactions()} />
     </>
   )
 }
