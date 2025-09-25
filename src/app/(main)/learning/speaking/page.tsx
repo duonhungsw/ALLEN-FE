@@ -107,7 +107,7 @@ export default function SpeakingPage() {
   });
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#F5F3EA" }}>
+    <div className="min-h-screen bg-[#F5F3EA]">
       <div className="container mx-auto px-6 py-8">
         <Card
           className="mb-6 border-0 shadow-sm"
@@ -146,19 +146,18 @@ export default function SpeakingPage() {
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab}>
           <TabsList
-            className="grid w-full grid-cols-2 border mb-8"
-            style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB" }}
+            className="grid w-full grid-cols-2 border mb-8 bg-white border-slate-200"
           >
             <TabsTrigger
               value="pronunciation"
-              className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-gray-600"
+              className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-slate-700"
             >
               <Volume2 className="h-5 w-5 mr-2" />
               Luyện phát âm
             </TabsTrigger>
             <TabsTrigger
               value="conversation"
-              className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-gray-600"
+              className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-slate-700"
             >
               <MessageCircle className="h-5 w-5 mr-2" />
               Hội thoại AI
@@ -168,12 +167,11 @@ export default function SpeakingPage() {
           <TabsContent value="pronunciation" className="mt-6">
             <div className="mb-6">
               <h2
-                className="text-2xl font-bold mb-3"
-                style={{ color: "#142F50" }}
+                className="text-2xl font-bold mb-3 text-slate-800"
               >
                 Chọn chủ đề luyện phát âm
               </h2>
-              <p className="text-gray-600">
+              <p className="text-slate-700">
                 Chọn một chủ đề để bắt đầu luyện phát âm với các bài học có cấu
                 trúc
               </p>
@@ -257,12 +255,11 @@ export default function SpeakingPage() {
                               {category.icon}
                             </motion.div>
                             <h3
-                              className="text-xl font-bold mb-2"
-                              style={{ color: "#142F50" }}
+                              className="text-xl font-bold mb-2 text-slate-800"
                             >
                               {category.name}
                             </h3>
-                            <p className="text-gray-600 mb-4">
+                            <p className="text-slate-700 mb-4">
                               {category.description}
                             </p>
 
@@ -285,7 +282,7 @@ export default function SpeakingPage() {
                               </Badge>
                             </div>
 
-                            <div className="text-sm text-gray-500 mb-4">
+                            <div className="text-sm text-slate-600 mb-4">
                               <Clock className="h-4 w-4 inline mr-1" />
                               {category.duration}
                             </div>
@@ -295,8 +292,7 @@ export default function SpeakingPage() {
                               whileTap={{ scale: 0.98 }}
                             >
                               <Button
-                                className="w-full text-white border-0 hover:opacity-90 cursor-pointer"
-                                style={{ backgroundColor: "#93D333" }}
+                                className="w-full text-white border-0 hover:opacity-90 cursor-pointer bg-lime-500"
                               >
                                 Bắt đầu luyện tập
                               </Button>
@@ -314,12 +310,11 @@ export default function SpeakingPage() {
           <TabsContent value="conversation" className="mt-6">
             <div className="mb-6">
               <h2
-                className="text-2xl font-bold mb-3"
-                style={{ color: "#142F50" }}
+                className="text-2xl font-bold mb-3 text-slate-800"
               >
                 Hội thoại với AI
               </h2>
-              <p className="text-gray-600">
+              <p className="text-slate-700">
                 Thực hành giao tiếp thực tế với AI trong các tình huống khác
                 nhau
               </p>
@@ -444,16 +439,15 @@ export default function SpeakingPage() {
                           transition={{ delay: 0.2 }}
                         >
                           <h3
-                            className="text-xl font-bold mb-2"
-                            style={{ color: "#142F50" }}
+                            className="text-xl font-bold mb-2 text-slate-800"
                           >
                             {topic.title}
                           </h3>
-                          <p className="text-gray-600 mb-4">
+                          <p className="text-slate-700 mb-4">
                             {topic.description}
                           </p>
 
-                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm text-gray-500">
+                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm text-slate-600">
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-1" />
                               {topic.duration}
@@ -488,8 +482,7 @@ export default function SpeakingPage() {
                               whileTap={{ scale: 0.98 }}
                             >
                               <Button
-                                className="w-full text-white border-0 hover:opacity-90 cursor-pointer"
-                                style={{ backgroundColor: "#93D333" }}
+                                className="w-full text-white border-0 hover:opacity-90 cursor-pointer bg-lime-500"
                               >
                                 <MessageCircle className="h-4 w-4 mr-2" />
                                 {topic.completed
@@ -509,13 +502,11 @@ export default function SpeakingPage() {
         </Tabs>
 
         <Card
-          className="mt-12 border shadow-sm"
-          style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB" }}
+          className="mt-12 border shadow-sm bg-white border-slate-200"
         >
           <CardHeader>
             <CardTitle
-              className="text-2xl flex items-center"
-              style={{ color: "#142F50" }}
+              className="text-2xl flex items-center text-slate-800"
             >
               <Target className="h-5 w-5 mr-2" style={{ color: "#F3713B" }} />
               Mẹo luyện nói hiệu quả
@@ -525,8 +516,7 @@ export default function SpeakingPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <h4
-                  className="font-semibold text-lg flex items-center"
-                  style={{ color: "#142F50" }}
+                  className="font-semibold text-lg flex items-center text-slate-800"
                 >
                   <Volume2
                     className="h-5 w-5 mr-2"
@@ -537,34 +527,31 @@ export default function SpeakingPage() {
                 <div className="space-y-3">
                   <div className="flex items-start space-x-3">
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ backgroundColor: "#F3713B" }}
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#F3713B]"
                     >
                       <span className="text-white text-sm font-bold">1</span>
                     </div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Nghe kỹ âm mẫu trước khi nói và lặp lại nhiều lần
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ backgroundColor: "#F3713B" }}
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#F3713B]"
                     >
                       <span className="text-white text-sm font-bold">2</span>
                     </div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Nói chậm và rõ ràng, tập trung vào từng âm
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ backgroundColor: "#F3713B" }}
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#F3713B]"
                     >
                       <span className="text-white text-sm font-bold">3</span>
                     </div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Chú ý đến trọng âm và ngữ điệu của câu
                     </p>
                   </div>
@@ -573,8 +560,7 @@ export default function SpeakingPage() {
 
               <div className="space-y-4">
                 <h4
-                  className="font-semibold text-lg flex items-center"
-                  style={{ color: "#142F50" }}
+                  className="font-semibold text-lg flex items-center text-slate-800"
                 >
                   <MessageCircle
                     className="h-5 w-5 mr-2"
@@ -585,34 +571,31 @@ export default function SpeakingPage() {
                 <div className="space-y-3">
                   <div className="flex items-start space-x-3">
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ backgroundColor: "#F3713B" }}
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#F3713B]"
                     >
                       <span className="text-white text-sm font-bold">1</span>
                     </div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Đừng ngại mắc lỗi, AI sẽ giúp bạn cải thiện
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ backgroundColor: "#F3713B" }}
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#F3713B]"
                     >
                       <span className="text-white text-sm font-bold">2</span>
                     </div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Trả lời tự nhiên như nói chuyện thật
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ backgroundColor: "#F3713B" }}
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#F3713B]"
                     >
                       <span className="text-white text-sm font-bold">3</span>
                     </div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Lắng nghe phản hồi và áp dụng gợi ý
                     </p>
                   </div>

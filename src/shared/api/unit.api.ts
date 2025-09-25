@@ -20,6 +20,14 @@ export interface LearningUnitsResponse {
   data: LearningUnit[];
 }
 
+export interface LearningUnitPayload {
+  skip?: number;
+  top?: number;
+  needTotalCount?: boolean;
+  skillType?: string;
+  level?: string;
+}
+
 export const getAllLearningUnits = async () => {
   try {
     const response = await api.get(`${APP_URL}/learningunits`, {
@@ -36,13 +44,6 @@ export const getAllLearningUnits = async () => {
   }
 };
 
-export interface LearningUnitPayload {
-  skip?: number;
-  top?: number;
-  needTotalCount?: boolean;
-  skillType?: string;
-  level?: string;
-}
 
 export const getAllUnit = async (payload: LearningUnitPayload) => {
   const response = await api.post(`${APP_URL}/learningunits`, payload);

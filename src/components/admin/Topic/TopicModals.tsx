@@ -38,8 +38,6 @@ interface TopicModalsProps {
     topicDescription: string;
     onTopicDescriptionChange: (value: string) => void;
 
-    // Active skill type
-    activeSkillType: string;
 }
 
 export default function TopicModals({
@@ -59,8 +57,7 @@ export default function TopicModals({
     topicName,
     onTopicNameChange,
     topicDescription,
-    onTopicDescriptionChange,
-    activeSkillType
+    onTopicDescriptionChange
 }: TopicModalsProps) {
     return (
         <>
@@ -74,8 +71,8 @@ export default function TopicModals({
                             </div>
                             <DialogTitle className="text-xl font-bold text-[#8B4513] font-calistoga-regular">Tạo chủ đề mới</DialogTitle>
                         </div>
-                        <DialogDescription className="text-[#A0522D]">
-                            Tạo chủ đề mới cho kỹ năng <span className="font-semibold text-[#8B4513] font-calistoga-regular">{activeSkillType}</span>
+                        <DialogDescription className="text-[#A0522D] font-calistoga-regular">
+                            Nhập thông tin chủ đề mới.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
@@ -138,8 +135,8 @@ export default function TopicModals({
                             </div>
                             <DialogTitle className="text-xl font-bold text-[#8B4513] font-calistoga-regular">Chỉnh sửa chủ đề</DialogTitle>
                         </div>
-                        <DialogDescription className="text-[#A0522D]">
-                            Chỉnh sửa thông tin chủ đề <span className="font-semibold text-[#8B4513] font-calistoga-regular">{selectedTopic?.topicName}</span>
+                        <DialogDescription className="text-[#A0522D] font-calistoga-regular">
+                            Chỉnh sửa thông tin chủ đề <span className="font-semibold text-[#8B4513]">{selectedTopic?.topicName}</span>
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">

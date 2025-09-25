@@ -44,3 +44,8 @@ export const deleteFile = async (fileUrl: string) => {
   });
   return response.data;
 }
+
+export const  summitTextSpeaking = async (payload: { transcriptId: string ; text: string }) => {
+  const response = await api.post(`${APP_URL}/speakings/submit`, payload);
+  return response.data;
+}
