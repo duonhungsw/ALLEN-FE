@@ -18,7 +18,6 @@ export interface CategoryResponse {
 
 export const getAllCategorys = async (filters: CategoryFilters): Promise<CategoryResponse> => {
   const params: any = {};
-  // SkillType là bắt buộc
   params.SkillType = filters.SkillType;
   if (filters?.Top) params['QueryInfo.Top'] = filters.Top;
   if (filters?.Skip) params['QueryInfo.Skip'] = filters.Skip;

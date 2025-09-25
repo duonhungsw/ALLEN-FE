@@ -2,7 +2,7 @@ import api from "../index";
 import { APP_URL } from "../../constants/apiConstants";
 
 export interface TopicFilters {
-    SkillType: 'Speaking' | 'Listening' | 'Writing' | 'Reading';    
+    SkillType?: 'Speaking' | 'Listening' | 'Writing' | 'Reading';    
     Top?: number;
     Skip?: number;
     SearchText?: string;
@@ -18,7 +18,7 @@ export interface TopicResponse {
 
 export const getAllTopics = async (filters: TopicFilters): Promise<TopicResponse> => {
     const params: any = {};
-    params.SkillType = filters.SkillType;
+    if (filters?.SkillType) params.SkillType = filters.SkillType;
     if (filters?.Top) params['QueryInfo.Top'] = filters.Top;
     if (filters?.Skip) params['QueryInfo.Skip'] = filters.Skip;
     if (filters?.SearchText) params['QueryInfo.SearchText'] = filters.SearchText;
