@@ -1,6 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Search, Filter } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useDebounceSearch } from "@/hooks/useDebounceSearch";
 import {
   useAdminTopics,
@@ -10,22 +14,16 @@ import {
 } from "@/hooks/admin/useAdminTopic";
 
 import TopicHeader from "@/components/admin/Topic/TopicHeader";
-import SkillTypeTabs from "@/components/admin/Topic/SkillTypeTabs";
-import TopicFilters from "@/components/admin/Topic/TopicFilters";
 import TopicTable from "@/components/admin/Topic/TopicTable";
 import TopicPagination from "@/components/admin/Topic/TopicPagination";
 import TopicModals from "@/components/admin/Topic/TopicModals";
 import { TopicType } from "@/types/admin/topic";
 
 export default function TopicManagement() {
-  const [activeSkillType, setActiveSkillType] = useState<
-    "Speaking" | "Listening" | "Writing" | "Reading"
-  >("Speaking");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [levelFilter, setLevelFilter] = useState("all");
+
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(7);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
@@ -37,10 +35,12 @@ export default function TopicManagement() {
 
   const { searchInput, setSearchInput, searchTerm } = useDebounceSearch({
     delay: 500,
+    onSearch: () => {
+      setCurrentPage(1);
+    },
   });
 
   const filters = {
-    SkillType: activeSkillType,
     Top: itemsPerPage,
     Skip: (currentPage - 1) * itemsPerPage,
     SearchText: searchTerm,
@@ -179,16 +179,13 @@ export default function TopicManagement() {
 
   const handleResetFilters = () => {
     clearSearch();
-    setStatusFilter("all");
-    setLevelFilter("all");
-    setActiveSkillType("Speaking");
     setCurrentPage(1);
   };
 
-  // Reset page when filters change
+
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeSkillType, searchTerm, statusFilter, levelFilter]);
+  }, [searchTerm]);
 
   if (isLoading) {
     return (
@@ -211,26 +208,44 @@ export default function TopicManagement() {
         isCreating={createTopicMutation.isPending}
       />
 
-      <SkillTypeTabs
-        activeSkillType={activeSkillType}
-        onSkillTypeChange={(value) => {
-          setActiveSkillType(value);
-          setCurrentPage(1);
-        }}
-      />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-[#D2B48C]/30"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="relative md:col-span-3">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#8B4513] w-4 h-4" />
+            <Input
+              placeholder="Tìm kiếm theo tên hoặc mô tả... (tự động search)"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="pl-10 border-[#D2B48C] focus:border-[#8B4513] focus:ring-[#8B4513] text-[#8B4513] placeholder:text-[#A0522D] placeholder:font-medium font-calistoga-regular"
+            />
+          </div>
 
-      <TopicFilters
-        searchInput={searchInput}
-        onSearchChange={setSearchInput}
-        statusFilter={statusFilter}
-        onStatusFilterChange={setStatusFilter}
-        levelFilter={levelFilter}
-        onLevelFilterChange={setLevelFilter}
-        selectedTopics={selectedTopics}
-        onDeleteSelected={handleDeleteSelectedTopics}
-        onResetFilters={handleResetFilters}
-        isDeleting={deleteTopicMutation.isPending}
-      />
+          <div className="flex space-x-2">
+            {selectedTopics.length > 0 && (
+              <Button
+                variant="destructive"
+                className="text-white font-calistoga-regular"
+                onClick={handleDeleteSelectedTopics}
+                disabled={deleteTopicMutation.isPending}
+              >
+                {deleteTopicMutation.isPending ? "Đang xóa..." : `Xóa (${selectedTopics.length})`}
+              </Button>
+            )}
+            <Button
+              className="bg-[#8B4513] hover:bg-[#A0522D] text-white font-calistoga-regular"
+              onClick={handleResetFilters}
+            >
+              <Filter className="w-4 h-4 mr-2" />
+              Reset
+            </Button>
+          </div>
+        </div>
+      </motion.div>
 
       <TopicTable
         topics={topics}
@@ -274,7 +289,6 @@ export default function TopicManagement() {
         onTopicNameChange={setTopicName}
         topicDescription={topicDescription}
         onTopicDescriptionChange={setTopicDescription}
-        activeSkillType={activeSkillType}
       />
     </div>
   );

@@ -128,8 +128,8 @@ export default function ConversationPage({ params }: { params: { id: string } })
 
     if (showSetup) {
         return (
-            <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#141F23' }}>
-                <Card className="w-full max-w-2xl border-0" style={{ backgroundColor: '#1a2a2f' }}>
+            <div className="min-h-screen flex items-center justify-center p-4 bg-[#F5F3EA]">
+                <Card className="w-full max-w-2xl border-0 bg-white">
                     <CardContent className="p-8">
                         <div className="text-center mb-8">
                             <img
@@ -137,42 +137,41 @@ export default function ConversationPage({ params }: { params: { id: string } })
                                 alt={currentTopic?.title}
                                 className="w-64 h-48 mx-auto rounded-lg mb-6 object-cover"
                             />
-                            <h1 className="text-2xl font-bold mb-2 text-white">Gặp người bạn mới trong buổi tiệc</h1>
-                            <h2 className="text-xl mb-4" style={{ color: '#93D333' }}>Trò chuyện với AI - Làm Nhiệm Vụ</h2>
-                            <p className="text-gray-300 mb-6">
+                            <h1 className="text-2xl font-bold mb-2 text-slate-800">Gặp người bạn mới trong buổi tiệc</h1>
+                            <h2 className="text-xl mb-4 text-slate-700">Trò chuyện với AI - Làm Nhiệm Vụ</h2>
+                            <p className="text-slate-600 mb-6">
                                 Robert là người bạn mới gặp trong một buổi tiệc. Bạn muốn làm quen và giới thiệu bản thân. Bạn và Robert
                                 đừng nói chuyện bên cạnh bàn tiệc nhỏ. 🍸
                             </p>
                         </div>
 
                         <div className="mb-6">
-                            <h3 className="text-lg font-semibold mb-4" style={{ color: '#93D333' }}>Nhiệm vụ</h3>
+                            <h3 className="text-lg font-semibold mb-4 text-slate-800">Nhiệm vụ</h3>
                             <div className="space-y-3">
-                                <div className="flex items-center space-x-3 p-3 rounded-lg" style={{ backgroundColor: '#141F23' }}>
-                                    <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
+                                <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
+                                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-lime-500">
                                         <span className="text-white text-sm">🎯</span>
                                     </div>
-                                    <span className="text-white">Hãy chia sẻ tên của bạn.</span>
+                                    <span className="text-slate-700">Hãy chia sẻ tên của bạn.</span>
                                 </div>
-                                <div className="flex items-center space-x-3 p-3 rounded-lg" style={{ backgroundColor: '#141F23' }}>
-                                    <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
+                                <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
+                                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-lime-500">
                                         <span className="text-white text-sm">🎯</span>
                                     </div>
-                                    <span className="text-white">Cho người bạn mới biết bạn đến từ đâu.</span>
+                                    <span className="text-slate-700">Cho người bạn mới biết bạn đến từ đâu.</span>
                                 </div>
-                                <div className="flex items-center space-x-3 p-3 rounded-lg" style={{ backgroundColor: '#141F23' }}>
-                                    <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#93D333' }}>
+                                <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
+                                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-lime-500">
                                         <span className="text-white text-sm">🎯</span>
                                     </div>
-                                    <span className="text-white">Chia sẻ nghề nghiệp của bạn.</span>
+                                    <span className="text-slate-700">Chia sẻ nghề nghiệp của bạn.</span>
                                 </div>
                             </div>
                         </div>
 
                         <div className="flex space-x-4">
                             <Button
-                                className="flex-1 text-white border-0 hover:opacity-90 text-lg py-3 cursor-pointer"
-                                style={{ backgroundColor: '#93D333' }}
+                                className="flex-1 text-white border-0 hover:opacity-90 text-lg py-3 cursor-pointer bg-lime-500"
                                 onClick={() => {
                                     setPrompt(currentTopic?.defaultPrompt || "")
                                     startConversation()
@@ -180,7 +179,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
                             >
                                 Bắt đầu bài học
                             </Button>
-                            <Button variant="outline" className="flex-1 text-lg py-3 border-gray-600 text-white hover:bg-gray-700 cursor-pointer">
+                            <Button variant="outline" className="flex-1 text-lg py-3 border-slate-200 text-slate-700 hover:bg-lime-50 cursor-pointer">
                                 Lịch sử trò chuyện
                             </Button>
                         </div>
@@ -191,26 +190,26 @@ export default function ConversationPage({ params }: { params: { id: string } })
     }
 
     return (
-        <div className="min-h-screen text-white" style={{ backgroundColor: '#141F23' }}>
-            <div className="px-6 py-4" style={{ backgroundColor: '#141F23' }}>
+        <div className="min-h-screen text-slate-800 bg-[#F5F3EA]">
+            <div className="px-6 py-4 bg-[#F5F3EA]">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         <Link href="/learning/speaking">
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 cursor-pointer">
+                            <Button variant="outline" size="sm" className="text-slate-700 hover:text-slate-800 border-slate-200 hover:bg-lime-50 cursor-pointer">
                                 <ArrowLeft className="h-4 w-4 mr-2" />
                                 Quay lại
                             </Button>
                         </Link>
                         <div>
-                            <h1 className="text-xl font-bold">Làm nhiệm vụ cùng AI</h1>
-                            <div className="flex items-center space-x-2 text-sm text-gray-400">
+                            <h1 className="text-xl font-bold text-slate-800">Làm nhiệm vụ cùng AI</h1>
+                            <div className="flex items-center space-x-2 text-sm text-slate-600">
                                 <span>✅ 0/3</span>
                             </div>
                         </div>
                     </div>
 
                     <div className="flex items-center space-x-4">
-                        <div className="px-3 py-1 rounded-full font-mono text-white" style={{ backgroundColor: '#93D333' }}>⏱️ {formatTime(timeLeft)}</div>
+                        <div className="px-3 py-1 rounded-full font-mono text-white bg-lime-500">⏱️ {formatTime(timeLeft)}</div>
                     </div>
                 </div>
             </div>
@@ -219,8 +218,8 @@ export default function ConversationPage({ params }: { params: { id: string } })
                 <div className="flex-1 flex flex-col">
                     <div className="flex-1 overflow-y-auto p-6 space-y-4">
                         <div className="text-center mb-6">
-                            <h2 className="text-lg font-semibold mb-2" style={{ color: '#93D333' }}>Tình huống</h2>
-                            <p className="text-gray-300">
+                            <h2 className="text-lg font-semibold mb-2 text-slate-800">Tình huống</h2>
+                            <p className="text-slate-700">
                                 Robert là người bạn mới gặp trong một buổi tiệc. Bạn muốn làm quen và giới thiệu bản thân. Bạn và Robert
                                 đừng nói chuyện bên cạnh bàn tiệc nhỏ. 🍸
                             </p>
@@ -233,19 +232,15 @@ export default function ConversationPage({ params }: { params: { id: string } })
                                         className={`flex items-start space-x-3 max-w-xs ${msg.role === "user" ? "flex-row-reverse space-x-reverse" : ""}`}
                                     >
                                         <div
-                                            className={`w-10 h-10 rounded-full flex items-center justify-center ${msg.role === "user" ? "text-white" : "bg-gray-600"
-                                                }`}
-                                            style={{ backgroundColor: msg.role === "user" ? '#93D333' : '#6B7280' }}
+                                            className={`w-10 h-10 rounded-full flex items-center justify-center ${msg.role === "user" ? "text-white bg-lime-500" : "bg-slate-400"}`}
                                         >
                                             {msg.role === "user" ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
                                         </div>
                                         <div
-                                            className={`p-3 rounded-lg ${msg.role === "user" ? "text-white" : "bg-gray-700 text-gray-100"
-                                                }`}
-                                            style={{ backgroundColor: msg.role === "user" ? '#93D333' : '#374151' }}
+                                            className={`p-3 rounded-lg ${msg.role === "user" ? "text-white bg-lime-500" : "bg-white text-slate-800 border border-slate-200"}`}
                                         >
                                             <p>{msg.message}</p>
-                                            <p className="text-xs opacity-70 mt-1">{msg.timestamp}</p>
+                                            <p className="text-xs text-slate-500 mt-1">{msg.timestamp}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -254,16 +249,16 @@ export default function ConversationPage({ params }: { params: { id: string } })
 
                         {conversation.length > 0 && (
                             <div className="flex justify-center">
-                                <div className="rounded-lg p-4 flex items-center space-x-3" style={{ backgroundColor: '#1a2a2f' }}>
+                                <div className="rounded-lg p-4 flex items-center space-x-3 bg-white border border-slate-200">
                                     <img src="/placeholder.svg?height=40&width=40" alt="Robert" className="w-10 h-10 rounded-full" />
                                     <div className="flex-1">
-                                        <p className="text-white">Hi! My name is Robert. What is your name?</p>
+                                        <p className="text-slate-800">Hi! My name is Robert. What is your name?</p>
                                     </div>
                                     <div className="flex space-x-2">
-                                        <Button size="sm" className="text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
+                                        <Button size="sm" className="text-white border-0 hover:opacity-90 cursor-pointer bg-lime-500">
                                             <Volume2 className="h-4 w-4" />
                                         </Button>
-                                        <Button size="sm" variant="outline" className="border-gray-600 text-white hover:bg-gray-700 cursor-pointer">
+                                        <Button size="sm" variant="outline" className="border-slate-200 text-slate-700 hover:bg-lime-50 cursor-pointer">
                                             🔄
                                         </Button>
                                     </div>
@@ -272,20 +267,18 @@ export default function ConversationPage({ params }: { params: { id: string } })
                         )}
                     </div>
 
-                    <div className="border-t p-6" style={{ backgroundColor: '#1a2a2f', borderColor: '#374151' }}>
+                    <div className="border-t p-6 bg-white border-slate-200">
                         <div className="flex items-center space-x-4">
                             <Button
                                 size="sm"
                                 variant="outline"
-                                className="border-gray-600 text-white hover:bg-gray-700 bg-transparent cursor-pointer"
+                                className="border-slate-200 text-slate-700 hover:bg-lime-50 bg-transparent cursor-pointer"
                             >
                                 💬
                             </Button>
 
                             <Button
-                                className={`w-16 h-16 rounded-full cursor-pointer ${isRecording ? "animate-pulse" : ""
-                                    }`}
-                                style={{ backgroundColor: isRecording ? '#EF4444' : '#93D333' }}
+                                className={`w-16 h-16 rounded-full cursor-pointer ${isRecording ? "animate-pulse" : ""} ${isRecording ? 'bg-red-500' : 'bg-lime-500'}`}
                                 onClick={handleVoiceInput}
                             >
                                 {isRecording ? <MicOff className="h-6 w-6" /> : <Mic className="h-6 w-6" />}
@@ -294,21 +287,21 @@ export default function ConversationPage({ params }: { params: { id: string } })
                             <Button
                                 size="sm"
                                 variant="outline"
-                                className="border-gray-600 text-white hover:bg-gray-700 bg-transparent cursor-pointer"
+                                className="border-slate-200 text-slate-700 hover:bg-lime-50 bg-transparent cursor-pointer"
                             >
                                 💡
                             </Button>
                         </div>
 
                         <div className="text-center mt-4">
-                            <p className="text-gray-400">{isRecording ? "Đang nghe..." : "Nhấn Enter"}</p>
+                            <p className="text-slate-600">{isRecording ? "Đang nghe..." : "Nhấn Enter"}</p>
                         </div>
 
                         {currentMessage && (
-                            <div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: '#141F23' }}>
-                                <p className="text-white">{currentMessage}</p>
+                            <div className="mt-4 p-3 rounded-lg bg-white border border-slate-200">
+                                <p className="text-slate-800">{currentMessage}</p>
                                 <div className="flex justify-end mt-2">
-                                    <Button size="sm" onClick={sendMessage} className="text-white border-0 hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#93D333' }}>
+                                    <Button size="sm" onClick={sendMessage} className="text-white border-0 hover:opacity-90 cursor-pointer bg-lime-500">
                                         <Send className="h-4 w-4 mr-1" />
                                         Gửi
                                     </Button>
@@ -318,32 +311,32 @@ export default function ConversationPage({ params }: { params: { id: string } })
                     </div>
                 </div>
 
-                <div className="w-80 border-l p-6" style={{ backgroundColor: '#1a2a2f', borderColor: '#374151' }}>
-                    <h3 className="text-lg font-semibold mb-4" style={{ color: '#93D333' }}>Nhiệm vụ</h3>
+                <div className="w-80 border-l p-6 bg-white border-slate-200">
+                    <h3 className="text-lg font-semibold mb-4 text-slate-800">Nhiệm vụ</h3>
                     <div className="space-y-3">
-                        <div className="flex items-center space-x-3 p-3 rounded-lg" style={{ backgroundColor: '#141F23' }}>
-                            <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6B7280' }}>
+                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
+                            <div className="w-6 h-6 rounded-full flex items-center justify-center bg-slate-400">
                                 <span className="text-white text-sm">✓</span>
                             </div>
-                            <span className="text-gray-300">Hãy chia sẻ tên của bạn.</span>
+                            <span className="text-slate-700">Hãy chia sẻ tên của bạn.</span>
                         </div>
-                        <div className="flex items-center space-x-3 p-3 rounded-lg" style={{ backgroundColor: '#141F23' }}>
-                            <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6B7280' }}>
+                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
+                            <div className="w-6 h-6 rounded-full flex items-center justify-center bg-slate-400">
                                 <span className="text-white text-sm">✓</span>
                             </div>
-                            <span className="text-gray-300">Cho người bạn mới biết bạn đến từ đâu.</span>
+                            <span className="text-slate-700">Cho người bạn mới biết bạn đến từ đâu.</span>
                         </div>
-                        <div className="flex items-center space-x-3 p-3 rounded-lg" style={{ backgroundColor: '#141F23' }}>
-                            <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6B7280' }}>
+                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
+                            <div className="w-6 h-6 rounded-full flex items-center justify-center bg-slate-400">
                                 <span className="text-white text-sm">✓</span>
                             </div>
-                            <span className="text-gray-300">Chia sẻ nghề nghiệp của bạn.</span>
+                            <span className="text-slate-700">Chia sẻ nghề nghiệp của bạn.</span>
                         </div>
                     </div>
 
                     <div className="mt-8">
-                        <h4 className="font-semibold mb-3 text-white">Gợi ý</h4>
-                        <div className="space-y-2 text-sm text-gray-400">
+                        <h4 className="font-semibold mb-3 text-slate-800">Gợi ý</h4>
+                        <div className="space-y-2 text-sm text-slate-600">
                             <p>• Nói chậm và rõ ràng</p>
                             <p>• Sử dụng câu đơn giản</p>
                             <p>• Đừng ngại lặp lại</p>
