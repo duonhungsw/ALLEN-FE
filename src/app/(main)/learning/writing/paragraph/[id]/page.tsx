@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Languages, Send, RotateCcw } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export default function ParagraphExercisePage({ params }: { params: { id: string } }) {
   const resolvedParams = params
@@ -21,7 +22,7 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
     text: string;
   } | null>(null)
   const [isGeneratingFeedback, setIsGeneratingFeedback] = useState(false)
-
+  const tParagraphExercise = useTranslations("Writing.ParagraphExercise")
   const exercise = {
     id: resolvedParams.id,
     title: "My Daily Routine",
@@ -57,19 +58,16 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
 
     if (score >= 90) {
       color = "text-green-600"
-      status = "Xuất sắc"
-      feedbackText =
-        "Bài dịch của bạn rất tốt! Ngữ pháp chính xác, từ vựng phù hợp và cấu trúc câu tự nhiên. Bạn đã nắm vững cách diễn đạt thói quen hàng ngày trong tiếng Anh. Tiếp tục duy trì phong độ này!"
+      status = tParagraphExercise("feedback.status.excellent")
+      feedbackText = tParagraphExercise("feedback.text.excellent")
     } else if (score >= 60) {
       color = "text-yellow-600"
-      status = "Cần cải thiện"
-      feedbackText =
-        "Bài dịch của bạn ở mức khá tốt. Tuy nhiên, có một số lỗi nhỏ về ngữ pháp và cách dùng từ. Hãy chú ý đến thì của động từ và cách diễn đạt thời gian. Với một chút luyện tập thêm, bạn sẽ cải thiện đáng kể."
+      status = tParagraphExercise("feedback.status.good")
+      feedbackText =tParagraphExercise("feedback.text.good")
     } else {
       color = "text-red-600"
-      status = "Cần cải thiện nhiều"
-      feedbackText =
-        "Bài dịch của bạn cần được cải thiện. Có khá nhiều lỗi về ngữ pháp, từ vựng và cấu trúc câu. Hãy ôn lại các thì cơ bản và cách diễn đạt thói quen. Đừng nản lòng, hãy tiếp tục luyện tập!"
+      status = tParagraphExercise("feedback.status.bad")
+      feedbackText =tParagraphExercise("feedback.text.bad")
     }
 
     setFeedback({
@@ -138,7 +136,7 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
           <Link href="/learning/writing">
             <Button variant="ghost" size="sm" className="mr-4 text-white hover:bg-gray-700">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Quay lại
+              {tParagraphExercise("back")}
             </Button>
           </Link>
           <div className="flex-1">
@@ -153,14 +151,14 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
               <Languages className="h-5 w-5" style={{ color: '#93D333' }} />
-              <span className="font-medium text-white">Chế độ dịch:</span>
+              <span className="font-medium text-white">{tParagraphExercise("mode")}</span>
               <Select value={translationMode} onValueChange={setTranslationMode}>
                 <SelectTrigger className="w-48 bg-gray-700 border-gray-600 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-700 border-gray-600">
-                  <SelectItem value="vi-en" className="text-white hover:bg-gray-600">Việt → Anh</SelectItem>
-                  <SelectItem value="en-vi" className="text-white hover:bg-gray-600">Anh → Việt</SelectItem>
+                  <SelectItem value="vi-en" className="text-white hover:bg-gray-600">{tParagraphExercise("modeViEn")}</SelectItem>
+                  <SelectItem value="en-vi" className="text-white hover:bg-gray-600">{tParagraphExercise("modeEnVi")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -184,11 +182,11 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
           {/* Translation Input */}
           <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
             <CardHeader>
-              <CardTitle className="text-lg text-white">Bản dịch của bạn</CardTitle>
+              <CardTitle className="text-lg text-white">{tParagraphExercise("yourAnswer")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
-                placeholder="Nhập bản dịch của bạn..."
+                placeholder={tParagraphExercise("placeholder")}
                 value={userAnswer}
                 onChange={(e) => setUserAnswer(e.target.value)}
                 disabled={isSubmitted}
@@ -205,12 +203,12 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
                     style={{ backgroundColor: '#93D333' }}
                   >
                     <Send className="h-4 w-4 mr-2" />
-                    Nộp bài
+                    {tParagraphExercise("submit")}
                   </Button>
                 ) : (
                   <Button onClick={handleReset} variant="outline" className="text-white border-gray-600 hover:bg-gray-700">
                     <RotateCcw className="h-4 w-4 mr-2" />
-                    Làm lại
+                    {tParagraphExercise("reset")}
                   </Button>
                 )}
               </div>
@@ -223,7 +221,7 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
           <Card className="mt-6" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-white">
-                <span>Phản hồi từ AI</span>
+                <span>{tParagraphExercise("feedback.title")}</span>
                 {feedback && (
                   <div className="flex items-center space-x-2">
                     <span className={`text-2xl font-bold ${feedback.color}`}>{feedback.score}/100</span>
@@ -242,7 +240,7 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
               {isGeneratingFeedback ? (
                 <div className="flex items-center space-x-3">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2" style={{ borderColor: '#93D333' }}></div>
-                  <span className="text-gray-300">AI đang phân tích bài làm của bạn...</span>
+                  <span className="text-gray-300">{tParagraphExercise("feedback.loading")}</span>
                 </div>
               ) : feedback ? (
                 <div className="space-y-4">
@@ -262,7 +260,7 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
 
                   {/* Sample correct translation */}
                   <div className="p-4 rounded-lg border" style={{ backgroundColor: '#2a3a3f', borderColor: '#93D333' }}>
-                    <h4 className="font-semibold text-white mb-2">Bản dịch tham khảo:</h4>
+                    <h4 className="font-semibold text-white mb-2">{tParagraphExercise("sample")}</h4>
                     <p className="text-gray-300">
                       {translationMode === "vi-en"
                         ? "I wake up at 6 AM every day. After brushing my teeth and washing my face, I exercise for 30 minutes. Then I have breakfast and go to work at 8 AM."
@@ -278,26 +276,24 @@ export default function ParagraphExercisePage({ params }: { params: { id: string
         {/* Tips */}
         <Card className="mt-6" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
           <CardHeader>
-            <CardTitle className="text-white">Mẹo dịch hiệu quả</CardTitle>
+            <CardTitle className="text-white">{tParagraphExercise("tips.title")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold mb-2 text-white">Việt → Anh</h4>
+                <h4 className="font-semibold mb-2 text-white">{tParagraphExercise("tips.viEn.title")}</h4>
                 <ul className="text-sm text-gray-300 space-y-1">
-                  <li>• Chú ý thì của động từ</li>
-                  <li>• Sử dụng giới từ chính xác</li>
-                  <li>• Tránh dịch từng từ một</li>
-                  <li>• Đảm bảo câu tự nhiên</li>
+                  {tParagraphExercise.raw("tips.viEn.items").map((tip: string, i: number) => (
+                    <li key={i}>• {tip}</li>
+                  ))}
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2 text-white">Anh → Việt</h4>
+                <h4 className="font-semibold mb-2 text-white">{tParagraphExercise("tips.enVi.title")}</h4>
                 <ul className="text-sm text-gray-300 space-y-1">
-                  <li>• Hiểu ý nghĩa tổng thể</li>
-                  <li>• Dùng từ Việt phù hợp</li>
-                  <li>• Giữ nguyên ý nghĩa gốc</li>
-                  <li>• Câu Việt trôi chảy</li>
+                  {tParagraphExercise.raw("tips.enVi.items").map((tip: string, i: number) => (
+                    <li key={i}>• {tip}</li>
+                  ))}
                 </ul>
               </div>
             </div>

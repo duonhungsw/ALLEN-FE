@@ -8,8 +8,10 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Languages, Send, RotateCcw } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export default function SentenceExercisePage({ params }: { params: Promise<{ id: string }> }) {
+  const tWriting = useTranslations("Writing.SentenceExercise")
   const resolvedParams = use(params)
   const [translationMode, setTranslationMode] = useState("vi-en")
   const [userAnswer, setUserAnswer] = useState("")
@@ -133,7 +135,7 @@ export default function SentenceExercisePage({ params }: { params: Promise<{ id:
           <Link href="/learning/writing">
             <Button variant="ghost" size="sm" className="mr-4 text-white hover:bg-gray-700">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Quay lại
+              {tWriting("back")}
             </Button>
           </Link>
           <div className="flex-1">
@@ -148,14 +150,14 @@ export default function SentenceExercisePage({ params }: { params: Promise<{ id:
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
               <Languages className="h-5 w-5" style={{ color: '#93D333' }} />
-              <span className="font-medium text-white">Chế độ dịch:</span>
+              <span className="font-medium text-white">{tWriting("mode")}</span>
               <Select value={translationMode} onValueChange={setTranslationMode}>
                 <SelectTrigger className="w-48 bg-gray-700 border-gray-600 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-700 border-gray-600">
-                  <SelectItem value="vi-en" className="text-white hover:bg-gray-600">Việt → Anh</SelectItem>
-                  <SelectItem value="en-vi" className="text-white hover:bg-gray-600">Anh → Việt</SelectItem>
+                  <SelectItem value="vi-en" className="text-white hover:bg-gray-600">{tWriting("modeViEn")}</SelectItem>
+                  <SelectItem value="en-vi" className="text-white hover:bg-gray-600">{tWriting("modeEnVi")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -173,7 +175,7 @@ export default function SentenceExercisePage({ params }: { params: Promise<{ id:
             </div>
 
             <Input
-              placeholder="Nhập câu dịch của bạn..."
+              placeholder={tWriting("inputPlaceholder")}
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
               disabled={isSubmitted}
@@ -184,12 +186,12 @@ export default function SentenceExercisePage({ params }: { params: Promise<{ id:
               {!isSubmitted ? (
                 <Button onClick={handleSubmit} disabled={!userAnswer.trim()} className="text-white" style={{ backgroundColor: '#93D333' }}>
                   <Send className="h-4 w-4 mr-2" />
-                  Nộp bài
+                  {tWriting("submit")}
                 </Button>
               ) : (
                 <Button onClick={handleReset} variant="outline" className="text-white border-gray-600 hover:bg-gray-700">
                   <RotateCcw className="h-4 w-4 mr-2" />
-                  Làm lại
+                  {tWriting("reset")}
                 </Button>
               )}
             </div>
@@ -201,7 +203,7 @@ export default function SentenceExercisePage({ params }: { params: Promise<{ id:
           <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-white">
-                <span>Phản hồi từ AI</span>
+                <span>{tWriting("aiFeedback")}</span>
                 {feedback && (
                   <div className="flex items-center space-x-2">
                     <span className={`text-2xl font-bold ${feedback.color}`}>{feedback.score}/100</span>
@@ -220,7 +222,7 @@ export default function SentenceExercisePage({ params }: { params: Promise<{ id:
               {isGeneratingFeedback ? (
                 <div className="flex items-center space-x-3">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2" style={{ borderColor: '#93D333' }}></div>
-                  <span className="text-gray-300">AI đang phân tích câu dịch của bạn...</span>
+                  <span className="text-gray-300">{tWriting("aiAnalyzing")}</span>
                 </div>
               ) : feedback ? (
                 <div className="space-y-4">
@@ -239,7 +241,7 @@ export default function SentenceExercisePage({ params }: { params: Promise<{ id:
                   </div>
 
                   <div className="p-4 rounded-lg border" style={{ backgroundColor: '#2a3a3f', borderColor: '#93D333' }}>
-                    <h4 className="font-semibold text-white mb-2">Câu dịch tham khảo:</h4>
+                    <h4 className="font-semibold text-white mb-2">{tWriting("reference")}</h4>
                     <p className="text-gray-300 text-lg">
                       {translationMode === "vi-en"
                         ? "Good morning! How are you doing today?"

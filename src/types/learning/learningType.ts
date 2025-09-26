@@ -1,5 +1,5 @@
 export interface Category {
-    id: number
+    id: string
     name: string
     description: string
     icon: string
@@ -12,7 +12,7 @@ export interface Category {
 }
 
 export interface Topic {
-    id: number
+    id: string
     title: string
     description: string
     difficulty: string
@@ -153,4 +153,14 @@ export interface LearningSkillData {
 
 export interface LearningSkillResponse {
     data: LearningSkillData[];
+}
+
+export interface LearningSkillPayload {
+  skillType: string;
+  Top?: string;
+  Skip?: string;
+  SearchText?: string;
+  OrderType?: string;
+  OrderBy?: string;
+  NeedTotalCount?: string;
 }

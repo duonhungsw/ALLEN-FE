@@ -1,8 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Calistoga&display=swap");
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-calistoga-regular: 'Calistoga Regular', serif;
+  --font-inter-medium: 'Inter Medium', serif;
 }
 
 @theme inline {
@@ -31,4 +34,29 @@ body {
       cursor: none !important;
     }
   }
+}
+
+.font-calistoga-regular {
+  font-family: var(--font-calistoga-regular);
+}
+
+.font-inter-medium {
+  font-family: var(--font-inter-medium);
+}
+
+@font-face {
+  font-family: 'Calistoga Regular';
+  src: url('/fonts/Calistoga-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter Medium';
+  src: url('/fonts/Inter-Medium.otf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  line-height: 24px;
+  font-display: swap;
 }

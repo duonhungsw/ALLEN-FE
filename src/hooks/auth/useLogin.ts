@@ -1,18 +1,17 @@
 import { setUser } from "@/providers/auth/reducer/authSlice";
 import { AppDispatch } from "@/providers/store";
-import { login } from "@/shared/api/auth.api";
+import { login, logout } from "@/shared/api/auth.api";
 import { setCookie } from "@/utils/cookies";
 import { extractErrorMessage } from "@/utils/ErrorHandle";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { parseJwt } from "@/utils/jwt";
-import { setStorageData } from "@/shared/store";
+import { clearAllAuthData, getAccessToken, setStorageData } from "@/shared/store";
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
+
 
   return useMutation({
     mutationFn: login,
@@ -40,7 +39,12 @@ export const useLogin = () => {
 
       dispatch(setUser(userInfo));
       toast.success("Đăng nhập thành công!");
-      router.push("/");
+      const userRole = userInfo["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      if (userRole === "Admin") {
+        window.location.href = "/admin/users";
+      } else {
+        window.location.href = "/home";
+      }
     },
     onError: (error) => {
       const msg = extractErrorMessage(error);
@@ -48,3 +52,24 @@ export const useLogin = () => {
     },
   });
 };
+
+export const useLogout = () => {
+  return useMutation({
+    mutationFn: async () => {
+      const token = getAccessToken();
+      if (!token) return;
+      return await logout({ token });
+    },
+    onSuccess: () => {
+      clearAllAuthData();
+      toast.success("Đã đăng xuất");
+      window.location.href = "/login";
+    },
+    onError: (error) => {
+      clearAllAuthData();
+      const msg = extractErrorMessage(error);
+      toast.error(msg);
+      window.location.href = "/login";
+    },
+  });
+}

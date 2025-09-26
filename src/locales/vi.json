@@ -8,7 +8,7 @@
     "logout": "Đăng xuất",
     "profile": "Hồ sơ",
     "instructor": "Giảng viên",
-    "welcomeBack": "Chào mừng trở lại!",
+    "welcomeBack": "Nhập thông tin tài khoản của bạn!",
     "signInto": "Đăng nhập vào",
     "loginToAllen": "Đăng nhập vào Allen",
     "enterCredentials": "Nhập thông tin đăng nhập để truy cập tài khoản",
@@ -206,6 +206,137 @@
     },
     "points": "điểm",
     "you": "Bạn"
+  },
+  "Writing": {
+    "ParagraphExercise": {
+      "back": "Quay lại",
+      "mode": "Chế độ dịch:",
+      "modes": {
+        "vi-en": "Việt → Anh",
+        "en-vi": "Anh → Việt"
+      },
+      "yourTranslation": "Bản dịch của bạn",
+      "submit": "Nộp bài",
+      "retry": "Làm lại",
+      "aiFeedback": "Phản hồi từ AI",
+      "analyzing": "AI đang phân tích bài làm của bạn...",
+      "reference": "Bản dịch tham khảo:",
+      "tips": {
+        "title": "Mẹo dịch hiệu quả",
+        "vi-en": {
+          "title": "Việt → Anh",
+          "items": [
+            "Chú ý thì của động từ",
+            "Sử dụng giới từ chính xác",
+            "Tránh dịch từng từ một",
+            "Đảm bảo câu tự nhiên"
+          ]
+        },
+        "en-vi": {
+          "title": "Anh → Việt",
+          "items": [
+            "Hiểu ý nghĩa tổng thể",
+            "Dùng từ Việt phù hợp",
+            "Giữ nguyên ý nghĩa gốc",
+            "Câu Việt trôi chảy"
+          ]
+        }
+      },
+      "feedbackStatus": {
+        "excellent": "Xuất sắc",
+        "good": "Cần cải thiện",
+        "bad": "Cần cải thiện nhiều"
+      }
+    },
+    "SentenceExercise": {
+      "back": "Quay lại",
+      "mode": "Chế độ dịch:",
+      "modeViEn": "Việt → Anh",
+      "modeEnVi": "Anh → Việt",
+      "submit": "Nộp bài",
+      "reset": "Làm lại",
+      "inputPlaceholder": "Nhập câu dịch của bạn...",
+      "aiFeedback": "Phản hồi từ AI",
+      "aiAnalyzing": "AI đang phân tích câu dịch của bạn...",
+      "reference": "Câu dịch tham khảo:"
+    },
+    "WritingPage": {
+      "header": {
+        "title": "Luyện Viết",
+        "subtitle": "Cải thiện kỹ năng viết tiếng Anh với AI feedback",
+        "back": "Quay lại"
+      },
+      "stats": {
+        "completed": "Bài đã hoàn thành",
+        "averageScore": "Điểm trung bình",
+        "wordsWritten": "Từ đã viết"
+      },
+      "tabs": {
+        "paragraph": "Đoạn văn",
+        "sentence": "Câu",
+        "ielts": "IELTS"
+      },
+      "filters": {
+        "level": "Trình độ",
+        "category": "Chủ đề",
+        "status": "Trạng thái",
+        "task": "Task",
+        "chartType": "Loại biểu đồ",
+        "all": "Tất cả",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "available": "Có thể làm",
+        "completed": "Hoàn thành",
+        "in-progress": "Đang làm",
+        "lifestyle": "Lối sống",
+        "environment": "Môi trường",
+        "technology": "Công nghệ",
+        "communication": "Giao tiếp",
+        "grammar": "Ngữ pháp",
+        "task1": "Task 1",
+        "task2": "Task 2",
+        "line": "Biểu đồ đường",
+        "bar": "Biểu đồ cột",
+        "pie": "Biểu đồ tròn",
+        "mixed": "Biểu đồ hỗn hợp",
+        "table": "Bảng"
+      },
+      "buttons": {
+        "start": "Bắt đầu",
+        "redo": "Làm lại"
+      },
+      "tips": {
+        "title": "Mẹo viết hiệu quả",
+        "paragraph": {
+          "title": "Đoạn văn",
+          "items": [
+            "Bắt đầu với câu chủ đề rõ ràng",
+            "Sử dụng từ nối để liên kết ý tưởng",
+            "Kết thúc với câu tóm tắt",
+            "Kiểm tra ngữ pháp và chính tả"
+          ]
+        },
+        "sentence": {
+          "title": "Câu",
+          "items": [
+            "Chú ý thì của động từ",
+            "Sử dụng từ vựng phù hợp",
+            "Cấu trúc câu đa dạng",
+            "Tránh lặp từ không cần thiết"
+          ]
+        },
+        "ielts": {
+          "title": "IELTS",
+          "items": [
+            "Task 1: Mô tả chính xác dữ liệu",
+            "Task 2: Lập luận logic và rõ ràng",
+            "Quản lý thời gian hiệu quả",
+            "Sử dụng từ vựng học thuật"
+          ]
+        }
+      }
+    }
   },
   "Reading": {
     "full": {

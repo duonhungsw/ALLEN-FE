@@ -25,7 +25,7 @@ import { toast } from "sonner";
 import { useProfile } from "@/hooks/auth/useProfile";
 
 const navigation = [
-  { name: "Trang chủ", href: "/", icon: Home },
+  { name: "Home", href: "/home", icon: Home },
   { name: "Lộ trình học", href: "/learning/course", icon: BookOpen },
   { name: "Luyện nghe", href: "/learning/listening", icon: Headphones },
   { name: "Luyện nói", href: "/learning/speaking", icon: Mic },
