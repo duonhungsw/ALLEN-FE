@@ -1,431 +1,506 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft, PenTool, FileText, Target } from "lucide-react"
-import { useTranslations } from "next-intl"
-
-interface BaseExercise {
-  id: number
-  title: string
-  description: string
-  level: string
-  category: string
-  status: string
-  estimatedTime: string
-  difficulty: string
-}
-
-interface IeltsExercise extends BaseExercise {
-  chartType: string | null
-}
+import { useState } from "react";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  MessageCircle,
+  Volume2,
+  Star,
+  TrendingUp,
+  Search,
+  Users,
+  Clock,
+  Target,
+} from "lucide-react";
+import {
+  Category,
+  Topic,
+  filterCategories,
+  filterTopics,
+  LearningSkillData,
+} from "@/types/learning/learningType";
+import { useLearningSkill } from "@/hooks/learning/useLearningUnits";
+import { motion } from "framer-motion";
 
 export default function WritingPage() {
-  const tWritingPage = useTranslations("Writing.WritingPage")
-  const [selectedTab, setSelectedTab] = useState("paragraph")
-  const [selectedLevel, setSelectedLevel] = useState("beginner")
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [selectedStatus, setSelectedStatus] = useState("all")
+  const [selectedTab, setSelectedTab] = useState("pronunciation");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("all");
 
-  const [selectedTask, setSelectedTask] = useState("task1")
-  const [selectedChartType, setSelectedChartType] = useState("all")
+  const { data: writingData, isLoading, error } = useLearningSkill("writing");
 
-  const paragraphExercises: BaseExercise[] = [
-    {
-      id: 1,
-      title: "My Daily Routine",
-      description: "Viết về thói quen hàng ngày của bạn",
-      level: "beginner",
-      category: "lifestyle",
-      status: "available",
-      estimatedTime: "15 phút",
-      difficulty: "Dễ",
-    },
-    {
-      id: 2,
-      title: "Environmental Protection",
-      description: "Thảo luận về bảo vệ môi trường",
-      level: "intermediate",
-      category: "environment",
-      status: "completed",
-      estimatedTime: "20 phút",
-      difficulty: "Trung bình",
-    },
-    {
-      id: 3,
-      title: "Technology Impact",
-      description: "Tác động của công nghệ đến cuộc sống",
-      level: "advanced",
-      category: "technology",
-      status: "available",
-      estimatedTime: "25 phút",
-      difficulty: "Khó",
-    },
-  ]
+  const pronunciationCategories: Category[] =
+    writingData?.data?.map((item: LearningSkillData, index: number) => ({
+      id: item.id || `fallback-${index + 1}`,
+      name: item.title || "Writing Practice",
+      description: `Luyện tập ${item.skillType} - Level ${item.level}`,
+      icon: "💬",
+      lessons: item.unitSteps?.length || 0,
+      level: item.level || "Beginner",
+      difficulty:
+        item.level === "A1" ? "Dễ" : item.level === "A2" ? "Trung bình" : "Khó",
+      duration: "15 phút",
+    })) || [];
 
-  const sentenceExercises: BaseExercise[] = [
-    {
-      id: 1,
-      title: "Basic Greetings",
-      description: "Câu chào cơ bản trong tiếng Anh",
-      level: "beginner",
-      category: "communication",
-      status: "available",
-      estimatedTime: "5 phút",
-      difficulty: "Dễ",
-    },
-    {
-      id: 2,
-      title: "Complex Sentences",
-      description: "Luyện tập câu phức trong tiếng Anh",
-      level: "intermediate",
-      category: "grammar",
-      status: "available",
-      estimatedTime: "10 phút",
-      difficulty: "Trung bình",
-    },
-  ]
+  const conversationTopics: Topic[] =
+    writingData?.data?.map((item: LearningSkillData, index: number) => ({
+      id: item.id || `fallback-${index + 1}`,
+      title: item.title || "Speaking Practice",
+      description: `Luyện tập ${item.skillType} - Level ${item.level}`,
+      duration: "10-15 phút",
+      difficulty:
+        item.level === "A1" ? "Dễ" : item.level === "A2" ? "Trung bình" : "Khó",
+      participants: Math.floor(Math.random() * 200) + 50,
+      rating: 4.5 + Math.random() * 0.5,
+      image: "/placeholder.svg?height=200&width=300&text=Speaking",
+      completed: false,
+      lastScore: null,
+    })) || [];
 
-  const ieltsExercises: IeltsExercise[] = [
-    {
-      id: 1,
-      title: "Line Chart Analysis",
-      description: "Phân tích biểu đồ đường về dân số",
-      level: "intermediate",
-      category: "task1",
-      chartType: "line",
-      status: "available",
-      estimatedTime: "20 phút",
-      difficulty: "Trung bình",
-    },
-    {
-      id: 2,
-      title: "Bar Chart Comparison",
-      description: "So sánh dữ liệu qua biểu đồ cột",
-      level: "intermediate",
-      category: "task1",
-      chartType: "bar",
-      status: "available",
-      estimatedTime: "20 phút",
-      difficulty: "Trung bình",
-    },
-    {
-      id: 3,
-      title: "Opinion Essay",
-      description: "Viết bài luận bày tỏ quan điểm",
-      level: "advanced",
-      category: "task2",
-      chartType: null,
-      status: "available",
-      estimatedTime: "40 phút",
-      difficulty: "Khó",
-    },
-  ]
-
-  const getExercises = (): (BaseExercise | IeltsExercise)[] => {
-    let exercises: (BaseExercise | IeltsExercise)[] = []
-    switch (selectedTab) {
-      case "paragraph":
-        exercises = paragraphExercises
-        break
-      case "sentence":
-        exercises = sentenceExercises
-        break
-      case "ielts":
-        exercises = ieltsExercises
-        break
-      default:
-        exercises = paragraphExercises
-    }
-
-    return exercises.filter((exercise) => {
-      const matchesLevel = selectedLevel === "all" || exercise.level === selectedLevel
-      const matchesCategory = selectedCategory === "all" || exercise.category === selectedCategory
-      const matchesStatus = selectedStatus === "all" || exercise.status === selectedStatus
-      const matchesTask = selectedTab !== "ielts" || selectedTask === "all" || exercise.category === selectedTask
-      const matchesChartType =
-        selectedTab !== "ielts" || selectedChartType === "all" || ('chartType' in exercise && exercise.chartType === selectedChartType)
-
-      return matchesLevel && matchesCategory && matchesStatus && matchesTask && matchesChartType
-    })
-  }
+  const levels = ["all", "Beginner", "Intermediate", "Advanced"];
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Dễ":
-        return "bg-green-500"
+        return "text-white";
       case "Trung bình":
-        return "bg-yellow-500"
+        return "text-white";
       case "Khó":
-        return "bg-red-500"
+        return "text-white";
       default:
-        return "bg-gray-500"
+        return "text-white";
     }
-  }
+  };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "text-green-600 border-green-600"
-      case "in-progress":
-        return "text-blue-600 border-blue-600"
-      case "available":
-        return "text-slate-600 border-slate-600"
+  const getDifficultyBgColor = (difficulty: string) => {
+    switch (difficulty) {
+      case "Dễ":
+        return "#93D333";
+      case "Trung bình":
+        return "#93D333";
+      case "Khó":
+        return "#93D333";
       default:
-        return "text-slate-600 border-slate-600"
+        return "#93D333";
     }
-  }
+  };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "completed":
-        return tWritingPage("filters.completed")
-      case "in-progress":
-        return tWritingPage("filters.in-progress")
-      case "available":
-        return tWritingPage("filters.available")
-      default:
-        return tWritingPage("filters.available")
-    }
-  }
+  const filteredCategories = filterCategories(pronunciationCategories || [], {
+    searchTerm,
+    selectedLevel,
+  });
+  const filteredTopics = filterTopics(conversationTopics || [], {
+    searchTerm,
+    selectedLevel,
+  });
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#141F23' }}>
+    <div className="min-h-screen bg-[#F5F3EA]">
       <div className="container mx-auto px-6 py-8">
-        {/* Header */}
-        <div className="flex items-center mb-6">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="mr-4 text-white hover:bg-gray-700">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-                {tWritingPage("header.back")}
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-white">{tWritingPage("header.title")}</h1>
-            <p className="text-gray-300">{tWritingPage("header.subtitle")}</p>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }} className="border">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mr-3" style={{ backgroundColor: '#93D333' }}>
-                  <PenTool className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-white">15</p>
-                  <p className="text-sm text-gray-300">{tWritingPage("stats.completed")}</p>
-                </div>
+        <Card
+          className="mb-6 border-0 shadow-sm"
+          style={{ backgroundColor: "#F5F3EA", border: "1px solid #E5E7EB" }}
+        >
+          <CardContent className="p-4">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center space-x-2">
+                <Search className="h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Tìm kiếm bài luyện nói..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-64 bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                />
               </div>
-            </CardContent>
-          </Card>
-          <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }} className="border">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mr-3" style={{ backgroundColor: '#93D333' }}>
-                  <Target className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-white">8.2</p>
-                  <p className="text-sm text-gray-300">{tWritingPage("stats.averageScore")}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }} className="border">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mr-3" style={{ backgroundColor: '#93D333' }}>
-                  <FileText className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-white">1,250</p>
-                  <p className="text-sm text-gray-300">{tWritingPage("stats.wordsWritten")}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Exercise Tabs */}
-        <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-          <TabsList className="grid w-full grid-cols-3 border-0" style={{ backgroundColor: '#1a2a2f' }}>
-            <TabsTrigger 
-              value="paragraph" 
-              className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
-            >
-              {tWritingPage("tabs.paragraph")}
-            </TabsTrigger>
-            <TabsTrigger 
-              value="sentence" 
-              className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
-            >
-              {tWritingPage("tabs.sentence")}
-            </TabsTrigger>
-            <TabsTrigger 
-              value="ielts" 
-              className="data-[state=active]:bg-[#93D333] data-[state=active]:text-white text-gray-300"
-            >
-              {tWritingPage("tabs.ielts")}
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Filters */}
-          <Card className="mt-6" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
-            <CardContent className="p-4">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block text-white">{tWritingPage("filters.level")}</label>
-                  <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="all" className="text-white hover:bg-gray-600">{tWritingPage("filters.all")}</SelectItem>
-                      <SelectItem value="beginner" className="text-white hover:bg-gray-600">{tWritingPage("filters.beginner")}</SelectItem>
-                      <SelectItem value="intermediate" className="text-white hover:bg-gray-600">{tWritingPage("filters.intermediate")}</SelectItem>
-                      <SelectItem value="advanced" className="text-white hover:bg-gray-600">{tWritingPage("filters.advanced")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block text-white">{tWritingPage("filters.category")}</label>
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="all" className="text-white hover:bg-gray-600">{tWritingPage("filters.all")}</SelectItem>
-                      <SelectItem value="lifestyle" className="text-white hover:bg-gray-600">{tWritingPage("filters.lifestyle")}</SelectItem>
-                      <SelectItem value="environment" className="text-white hover:bg-gray-600">{tWritingPage("filters.environment")}</SelectItem>
-                      <SelectItem value="technology" className="text-white hover:bg-gray-600">{tWritingPage("filters.technology")}</SelectItem>
-                      <SelectItem value="communication" className="text-white hover:bg-gray-600">{tWritingPage("filters.communication")}</SelectItem>
-                      <SelectItem value="grammar" className="text-white hover:bg-gray-600">{tWritingPage("filters.grammar")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block text-white">{tWritingPage("filters.status")}</label>
-                  <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="all" className="text-white hover:bg-gray-600">{tWritingPage("filters.all")}</SelectItem>
-                      <SelectItem value="available" className="text-white hover:bg-gray-600">{tWritingPage("filters.available")}</SelectItem>
-                      <SelectItem value="completed" className="text-white hover:bg-gray-600">{tWritingPage("filters.completed")}</SelectItem>
-                      <SelectItem value="in-progress" className="text-white hover:bg-gray-600">{tWritingPage("filters.in-progress")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* IELTS specific filters */}
-                {selectedTab === "ielts" && (
-                  <div>
-                    <label className="text-sm font-medium mb-2 block text-white">{tWritingPage("filters.task")}</label>
-                    <Select value={selectedTask} onValueChange={setSelectedTask}>
-                      <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-gray-700 border-gray-600">
-                        <SelectItem value="all" className="text-white hover:bg-gray-600">{tWritingPage("filters.all")}</SelectItem>
-                        <SelectItem value="task1" className="text-white hover:bg-gray-600">{tWritingPage("filters.task1")}</SelectItem>
-                        <SelectItem value="task2" className="text-white hover:bg-gray-600">{tWritingPage("filters.task2")}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-              </div>
-
-              {selectedTab === "ielts" && selectedTask === "task1" && (
-                <div className="mt-4">
-                  <label className="text-sm font-medium mb-2 block text-white">{tWritingPage("filters.chartType")}</label>
-                  <Select value={selectedChartType} onValueChange={setSelectedChartType}>
-                    <SelectTrigger className="w-full md:w-64 bg-gray-700 border-gray-600 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-700 border-gray-600">
-                      <SelectItem value="all" className="text-white hover:bg-gray-600">{tWritingPage("filters.all")}</SelectItem>
-                      <SelectItem value="line" className="text-white hover:bg-gray-600">{tWritingPage("filters.line")}</SelectItem>
-                      <SelectItem value="bar" className="text-white hover:bg-gray-600">{tWritingPage("filters.bar")}</SelectItem>
-                      <SelectItem value="pie" className="text-white hover:bg-gray-600">{tWritingPage("filters.pie")}</SelectItem>
-                      <SelectItem value="mixed" className="text-white hover:bg-gray-600">{tWritingPage("filters.mixed")}</SelectItem>
-                      <SelectItem value="table" className="text-white hover:bg-gray-600">{tWritingPage("filters.table")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Exercise Content */}
-          <TabsContent value={selectedTab} className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {getExercises().map((exercise) => (
-                <Card key={exercise.id} className="hover:shadow-md transition-shadow" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
-                          <h3 className="text-lg font-semibold text-white">{exercise.title}</h3>
-                          <Badge className={getDifficultyColor(exercise.difficulty)}>{exercise.difficulty}</Badge>
-                          <Badge variant="outline" className={getStatusColor(exercise.status)}>
-                            {getStatusText(exercise.status)}
-                          </Badge>
-                        </div>
-                        <p className="text-gray-300 mb-3">{exercise.description}</p>
-                        <div className="flex items-center space-x-4 text-sm text-gray-400">
-                          <span>⏱️ {exercise.estimatedTime}</span>
-                          {selectedTab === "ielts" && 'chartType' in exercise && exercise.chartType && <span>📊 {exercise.chartType}</span>}
-                        </div>
-                      </div>
-                    </div>
-                    <Link href={`/learning/writing/${selectedTab}/${exercise.id}`}>
-                      <Button className="w-full text-white" style={{ backgroundColor: '#93D333' }}>
-                        {exercise.status === "completed" ? tWritingPage("buttons.redo") : tWritingPage("buttons.start")}
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* Writing Tips */}
-        <Card className="mt-8" style={{ backgroundColor: '#1a2a2f', borderColor: '#93D333' }}>
-          <CardHeader>
-            <CardTitle className="text-white">{tWritingPage("tips.title")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {["paragraph", "sentence", "ielts"].map((tab) => (
-                <Card key={tab} className="border-0 shadow-none" style={{ backgroundColor: '#141F23' }}>
-                  <CardHeader>
-                    <CardTitle className="text-white">{tWritingPage(`tips.${tab}.title`)}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="list-disc list-inside text-gray-300 space-y-2">
-                      {(tWritingPage.raw(`tips.paragraph.items`) as string[]).map((tip, index) => (
-                        <li key={index}>{tip}</li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
+              <Select value={selectedLevel} onValueChange={setSelectedLevel}>
+                <SelectTrigger className="w-48 bg-white border-gray-300 text-gray-900">
+                  <SelectValue placeholder="Chọn cấp độ" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-gray-300">
+                  {levels.map((level) => (
+                    <SelectItem
+                      key={level}
+                      value={level}
+                      className="text-gray-900 hover:bg-gray-100"
+                    >
+                      {level === "all" ? "Tất cả cấp độ" : level}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
+
+        <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+          <TabsList
+            className="grid w-full grid-cols-2 border mb-8 bg-white border-slate-200"
+          >
+            <TabsTrigger
+              value="pronunciation"
+              className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-slate-700"
+            >
+              <Volume2 className="h-5 w-5 mr-2" />
+              Luyện phát âm
+            </TabsTrigger>
+            <TabsTrigger
+              value="conversation"
+              className="data-[state=active]:bg-[#F3713B] data-[state=active]:text-white text-slate-700"
+            >
+              <MessageCircle className="h-5 w-5 mr-2" />
+              Hội thoại AI
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="pronunciation" className="mt-6">
+            <div className="mb-6">
+              <h2
+                className="text-2xl font-bold mb-3 text-slate-800"
+              >
+                Chọn chủ đề luyện phát âm
+              </h2>
+              <p className="text-slate-700">
+                Chọn một chủ đề để bắt đầu luyện phát âm với các bài học có cấu
+                trúc
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {isLoading ? (
+                Array.from({ length: 6 }).map((_, index) => (
+                  <Card
+                    key={index}
+                    className="border animate-pulse shadow-sm"
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      borderColor: "#E5E7EB",
+                    }}
+                  >
+                    <CardContent className="p-6">
+                      <div className="text-center">
+                        <div className="w-16 h-16 rounded-full bg-gray-200 mb-4 mx-auto"></div>
+                        <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                        <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                        <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                        <div className="h-10 bg-gray-200 rounded"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : error ? (
+                // Error state
+                <div className="col-span-full text-center py-8">
+                  <p className="text-red-400 mb-4">Có lỗi khi tải dữ liệu</p>
+                  <Button
+                    onClick={() => window.location.reload()}
+                    style={{ backgroundColor: "#F3713B" }}
+                    className="text-white"
+                  >
+                    Thử lại
+                  </Button>
+                </div>
+              ) : (
+                filteredCategories.map((category, index) => (
+                  <motion.div
+                    key={category.id}
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.1,
+                      ease: "easeOut",
+                    }}
+                    whileHover={{
+                      scale: 1.05,
+                      y: -5,
+                      transition: { duration: 0.2 },
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Link href={`/learning/writing/${category.id}`}>
+                      <Card
+                        className="cursor-pointer border overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                        style={{
+                          backgroundColor: "#FFFFFF",
+                          borderColor: "#E5E7EB",
+                        }}
+                      >
+                        <CardContent className="p-6">
+                          <motion.div
+                            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            className="text-center"
+                          >
+                            <motion.div
+                              className="w-16 h-16 rounded-full flex items-center justify-center text-2xl mb-4 mx-auto"
+                              style={{ backgroundColor: "#F3713B" }}
+                              whileHover={{
+                                rotate: 360,
+                                transition: { duration: 0.6 },
+                              }}
+                            >
+                              {category.icon}
+                            </motion.div>
+                            <h3
+                              className="text-xl font-bold mb-2 text-slate-800"
+                            >
+                              {category.name}
+                            </h3>
+                            <p className="text-slate-700 mb-4">
+                              {category.description}
+                            </p>
+
+                            <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                              <span className="flex items-center">
+                                <Volume2 className="h-4 w-4 mr-1" />
+                                {category.lessons} bài
+                              </span>
+                              <Badge
+                                className={getDifficultyColor(
+                                  category.difficulty
+                                )}
+                                style={{
+                                  backgroundColor: getDifficultyBgColor(
+                                    category.difficulty
+                                  ),
+                                }}
+                              >
+                                {category.difficulty}
+                              </Badge>
+                            </div>
+
+                            <div className="text-sm text-slate-600 mb-4">
+                              <Clock className="h-4 w-4 inline mr-1" />
+                              {category.duration}
+                            </div>
+
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <Button
+                                className="w-full text-white border-0 hover:opacity-90 cursor-pointer bg-lime-500"
+                              >
+                                Bắt đầu luyện tập
+                              </Button>
+                            </motion.div>
+                          </motion.div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="conversation" className="mt-6">
+            <div className="mb-6">
+              <h2
+                className="text-2xl font-bold mb-3 text-slate-800"
+              >
+                Hội thoại với AI
+              </h2>
+              <p className="text-slate-700">
+                Thực hành giao tiếp thực tế với AI trong các tình huống khác
+                nhau
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {isLoading ? (
+                // Loading skeleton cho conversation topics
+                Array.from({ length: 6 }).map((_, index) => (
+                  <Card
+                    key={index}
+                    className="border animate-pulse overflow-hidden shadow-sm"
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      borderColor: "#E5E7EB",
+                    }}
+                  >
+                    <div className="w-full h-48 bg-gray-200"></div>
+                    <CardContent className="p-6">
+                      <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                      <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                      <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                      </div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : error ? (
+                // Error state
+                <div className="col-span-full text-center py-8">
+                  <p className="text-red-400 mb-4">Có lỗi khi tải dữ liệu</p>
+                  <Button
+                    onClick={() => window.location.reload()}
+                    style={{ backgroundColor: "#F3713B" }}
+                    className="text-white"
+                  >
+                    Thử lại
+                  </Button>
+                </div>
+              ) : filteredTopics.length === 0 ? (
+                // Empty state
+                <div className="col-span-full text-center py-8">
+                  <p className="text-gray-400 mb-4">Không có bài học nào</p>
+                </div>
+              ) : (
+                filteredTopics.map((topic, index) => (
+                  <motion.div
+                    key={topic.id}
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.1,
+                      ease: "easeOut",
+                    }}
+                    whileHover={{
+                      scale: 1.05,
+                      y: -5,
+                      transition: { duration: 0.2 },
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Card
+                      className="overflow-hidden border cursor-pointer shadow-sm hover:shadow-md transition-shadow"
+                      style={{
+                        backgroundColor: "#FFFFFF",
+                        borderColor: "#E5E7EB",
+                      }}
+                    >
+                      <motion.div
+                        className="relative"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <img
+                          src={topic.image || "/placeholder.svg"}
+                          alt={topic.title}
+                          className="w-full h-48 object-cover"
+                        />
+                        <motion.div
+                          className="absolute top-4 right-4"
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.3 }}
+                        >
+                          <Badge
+                            className={getDifficultyColor(topic.difficulty)}
+                            style={{
+                              backgroundColor: getDifficultyBgColor(
+                                topic.difficulty
+                              ),
+                            }}
+                          >
+                            {topic.difficulty}
+                          </Badge>
+                        </motion.div>
+                        {topic.completed && (
+                          <motion.div
+                            className="absolute top-4 left-4"
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.4 }}
+                          >
+                            <Badge
+                              variant="outline"
+                              className="text-green-400 border-green-400 bg-transparent"
+                            >
+                              Đã thử
+                            </Badge>
+                          </motion.div>
+                        )}
+                      </motion.div>
+
+                      <CardContent className="p-6">
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                        >
+                          <h3
+                            className="text-xl font-bold mb-2 text-slate-800"
+                          >
+                            {topic.title}
+                          </h3>
+                          <p className="text-slate-700 mb-4">
+                            {topic.description}
+                          </p>
+
+                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm text-slate-600">
+                            <div className="flex items-center">
+                              <Clock className="h-4 w-4 mr-1" />
+                              {topic.duration}
+                            </div>
+                            <div className="flex items-center">
+                              <Users className="h-4 w-4 mr-1" />
+                              {topic.participants}
+                            </div>
+                            <div className="flex items-center">
+                              <Star
+                                className="h-4 w-4 mr-1"
+                                style={{ color: "#F3713B" }}
+                              />
+                              {topic.rating}/5.0
+                            </div>
+                            {topic.lastScore && (
+                              <div className="flex items-center">
+                                <TrendingUp
+                                  className="h-4 w-4 mr-1"
+                                  style={{ color: "#F3713B" }}
+                                />
+                                {topic.lastScore}%
+                              </div>
+                            )}
+                          </div>
+
+                          <Link
+                            href={`/learning/writing/paragraph/${topic.id}`}
+                          >
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <Button
+                                className="w-full text-white border-0 hover:opacity-90 cursor-pointer bg-lime-500"
+                              >
+                                <MessageCircle className="h-4 w-4 mr-2" />
+                                {topic.completed
+                                  ? "Thử lại"
+                                  : "Bắt đầu hội thoại"}
+                              </Button>
+                            </motion.div>
+                          </Link>
+                        </motion.div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
-  )
+  );
 }
