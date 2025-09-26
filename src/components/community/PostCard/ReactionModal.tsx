@@ -1,41 +1,84 @@
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { useTranslations } from "next-intl"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { dataReaction, reactions } from "@/types/postType";
+import { dataReaction, reactions, ReactionSummary } from "@/types/postType";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { ReactionType } from "@/types/emunType";
+import { useGetReaction } from "@/hooks/community/useCommunity";
 
 interface ReactionModalProps {
+  objectId: string
   open: boolean
   onOpenChange: () => void
-  topReactions: any
 }
 
-export function ReactionModal({ open, onOpenChange, topReactions }: ReactionModalProps) {
+export function ReactionModal({ objectId, open, onOpenChange }: ReactionModalProps) {
   const tPostCard = useTranslations("PostCard")
   const [showOpenReaction, setShowOpenReaction] = useState<string>("")
-  const [data, setData] = useState<dataReaction[]>(topReactions?.data || [])
-  console.log(topReactions);
+  const {data: reactionList = [], mutate: getReaction } = useGetReaction()
+  const [data, setData] = useState<dataReaction[]>(reactionList || [])
 
   useEffect(() => {
-    if (open && topReactions) {
-      setShowOpenReaction("All")
-      setData(topReactions?.data || [])
+    if (objectId) {
+      getReaction(objectId)
     }
-  }, [open, topReactions])
+  }, [objectId, getReaction])
+  
+  const calcReactions = useCallback(() => {
+    if (!reactionList) return { summary: [], top3: [] }
+  
+    const summary: Record<string, ReactionSummary & { items: dataReaction[] }> = {}
+    const order: string[] = []
+  
+    reactionList.forEach((item: dataReaction) => {
+      const type = item.reactionType as ReactionType
+      const base = reactions.find(r => r.type === type)
+      if (!base) return
+  
+      if (!summary[type]) {
+        summary[type] = { ...base, count: 1, items: [item] }
+        order.push(type) // lưu thứ tự xuất hiện đầu tiên
+      } else {
+        summary[type].count += 1
+        summary[type].items.push(item)
+      }
+    })
+  
+    const allTypes = order.map(type => summary[type])
+  
+    const topReactions = [...allTypes]
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3)
+  
+    return {
+      summary: allTypes,
+      topReactions,
+      data: reactionList
+    }
+  }, [reactionList])
+
+  useEffect(() => {
+    console.log(calcReactions().topReactions);
+  }, [open])
+
+  useEffect(() => {
+    if (open) {
+      setShowOpenReaction("All")
+      setData(calcReactions().data || [])
+    }
+  }, [open, calcReactions])
 
   const handleOpen = (type: string, index: number) => {
     setShowOpenReaction(type)
     if (type === "All") {
-      // Gộp tất cả items của mọi summary
-      setData(topReactions?.data || [])
+      setData(calcReactions()?.data || [])
     } else {
-      const items = topReactions?.summary?.[index]?.items || []
+      const items = calcReactions()?.summary?.[index]?.items || []
       setData(items)
     }
   }
-  // Use imported 'reactions' mapping from postType
   
   if (!open) return null
   return (
@@ -54,30 +97,47 @@ export function ReactionModal({ open, onOpenChange, topReactions }: ReactionModa
         </Button>
         <div className="space-y-4">
           <div className="flex gap-3">
-            {topReactions.summary.length !== 1 && (
+            {calcReactions().summary.length !== 1 && (
               <span onClick={() => handleOpen("All", 0)} className={showOpenReaction === "All" ? "font-bold" : ""}>All</span>
             )}
-            {topReactions.summary.map((item: any, index: number) => (
+            {calcReactions().summary.map((item: ReactionSummary & { items: dataReaction[] }, index: number) => (
               <span key={index} className={`text-lg mr-1 ${showOpenReaction === item.type ? "font-bold" : ""}`} onClick={() => handleOpen(item.type, index)}>{item.emoji}</span>
             ))}
           </div>
           {/* list reaction */}
-          <div className="flex gap-2 flex-col mt-4">
-            {data.length > 0 && data.map((item: dataReaction) => (
-              <div key={item.id} className="flex gap-3">
-                <div className="relative w-[32px]">
-                  <Avatar className="h-8 w-8 flex-shrink-0">
-                    <AvatarImage src={"/placeholder.svg"} />
-                    <AvatarFallback className="bg-[#93D333] text-black font-semibold">
-                      {item.userName?.[0] || "A"}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="absolute bottom-[-8px] right-[-8px]">{reactions.find(r => r.type === item.reactionType)?.emoji || item.reactionType}</span>
+          <div className="flex flex-col gap-3 mt-4">
+            {data.length > 0 &&
+              data.map((item: dataReaction) => (
+                <div
+                  key={item.id}
+                  className="flex items-center gap-3 rounded-lg p-2 hover:bg-[#1a1a1a] transition"
+                >
+                  {/* Avatar + Emoji */}
+                  <div className="relative w-10 h-10">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={item.userPicture} />
+                      <AvatarFallback className="bg-[#93D333] text-black font-semibold">
+                        {item.userName?.[0] || "A"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="absolute -bottom-1 -right-1 text-lg">
+                      {reactions.find((r) => r.type === item.reactionType)?.emoji ||
+                        item.reactionType}
+                    </span>
+                  </div>
+
+                  {/* User name */}
+                  <h5 className="font-medium text-sm text-white truncate">
+                    {item.userName}
+                  </h5>
                 </div>
-                <h5 className="font-semibold text-sm text-white truncate">{item.userName}</h5>
+              ))}
+
+            {data.length === 0 && (
+              <div className="text-gray-400 text-sm text-center py-2">
+                Không có người dùng nào cho emoji này.
               </div>
-            ))}
-            {data.length === 0 && <div className="text-gray-400 text-sm">Không có người dùng nào cho emoji này.</div>}
+            )}
           </div>
         </div>
       </DialogContent>

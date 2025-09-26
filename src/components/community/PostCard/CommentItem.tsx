@@ -7,6 +7,8 @@ import { ReactionPicker } from "./Reaction";
 import CommentList from "./CommentList";
 import { Comment, User } from "@/types/postType";
 import { useTranslations } from "next-intl";
+import { ReactionModal } from "./ReactionModal";
+import { ReactionsSummary } from "./ReactionsSummary";
 
 interface CommentItemProps {
   comment: Comment;
@@ -35,6 +37,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [showReplies, setShowReplies] = useState(false);
+  const [showReactionModal, setShowReactionModal] = useState(false)
 
   const handleReply = () => {
     if (!replyContent.trim()) return;
@@ -91,69 +94,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
             >
               {showReplyInput ? "Hủy" : "Trả lời"}
             </Button>
-              {comment.totalReaction}
+            <ReactionsSummary
+                objectId={comment.id}
+                onShowModal={() => setShowReactionModal(true)}
+              />
+            <ReactionModal objectId={comment.id} open={showReactionModal} onOpenChange={()=>setShowReactionModal(false)}/>
           </div>
-          {/* Reply Input */}
-          {showReplyInput && (
-            <div className="ml-11 mt-3">
-              <div className="bg-[#0f1619] rounded-lg p-3">
-                <div className="flex items-start space-x-2">
-                  <Avatar className="h-6 w-6 flex-shrink-0">
-                    <AvatarImage src={user?.picture} />
-                    <AvatarFallback className="bg-[#93D333] text-black text-xs font-semibold">
-                      {user?.name?.[0]?.toUpperCase() || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 space-y-2">
-                    <div className="flex space-x-2">
-                      <Input
-                        placeholder={tPostCard("replyPlaceholder") || "Viết trả lời..."}
-                        value={replyContent}
-                        onChange={(e) => setReplyContent(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === "Enter" && !e.shiftKey) {
-                            e.preventDefault();
-                            handleReply();
-                          }
-                        }}
-                        className="flex-1 h-8 text-sm bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400 focus:ring-2 focus:ring-[#93D333] focus:border-transparent"
-                        maxLength={300}
-                      />
-                      <Button
-                        onClick={handleReply}
-                        disabled={!replyContent.trim()}
-                        size="sm"
-                        className="bg-[#93D333] hover:bg-[#7bb32a] text-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                      >
-                        <Send className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="text-gray-400"
-                        onClick={() => setShowReplyInput(false)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                    {replyContent.length > 0 && (
-                      <div className="flex justify-between items-center text-xs text-gray-400">
-                        <span>{replyContent.length}/300 ký tự</span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setReplyContent("")}
-                          className="h-5 px-2 text-xs text-gray-400"
-                        >
-                          Xóa
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
           {/* Replies Section */}
           {showReplies && (
             <div className="ml-11 mt-3">
@@ -180,6 +126,66 @@ const CommentItem: React.FC<CommentItemProps> = ({
           )}
         </div>
       </div>
+      {showReplyInput && (
+          <div className="ml-11 mt-3">
+            <div className="bg-[#0f1619] rounded-lg p-3">
+              <div className="flex items-start space-x-2">
+                <Avatar className="h-6 w-6 flex-shrink-0">
+                  <AvatarImage src={user?.picture} />
+                  <AvatarFallback className="bg-[#93D333] text-black text-xs font-semibold">
+                    {user?.name?.[0]?.toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 space-y-2">
+                  <div className="flex space-x-2">
+                    <Input
+                      placeholder={tPostCard("replyPlaceholder") || "Viết trả lời..."}
+                      value={replyContent}
+                      onChange={(e) => setReplyContent(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          handleReply();
+                        }
+                      }}
+                      className="flex-1 h-8 text-sm bg-[#1a2a2f] border-[#93D333] text-white placeholder:text-gray-400 focus:ring-2 focus:ring-[#93D333] focus:border-transparent"
+                      maxLength={300}
+                    />
+                    <Button
+                      onClick={handleReply}
+                      disabled={!replyContent.trim()}
+                      size="sm"
+                      className="bg-[#93D333] hover:bg-[#7bb32a] text-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    >
+                      <Send className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-gray-400"
+                      onClick={() => setShowReplyInput(false)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  {replyContent.length > 0 && (
+                    <div className="flex justify-between items-center text-xs text-gray-400">
+                      <span>{replyContent.length}/300 ký tự</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setReplyContent("")}
+                        className="h-5 px-2 text-xs text-gray-400"
+                      >
+                        Xóa
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

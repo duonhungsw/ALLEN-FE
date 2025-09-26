@@ -68,7 +68,7 @@ export function CommentsSection({
     postComment({
       objectId: postId,
       userId: user.id,
-      commentParentId: parentId !== postId ? parentId : undefined,
+      parentId: parentId !== postId ? parentId : undefined,
       content,
     }, {
       onSuccess: () => {

@@ -3,9 +3,8 @@ import { MessageCircle, Share } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { ReactionPicker } from "./Reaction"
 import { Dispatch, SetStateAction } from "react"
-import { usePostReaction } from "@/hooks/community/useCommunity"
+import { useGetReaction, usePostReaction } from "@/hooks/community/useCommunity"
 import { ReactionType } from "@/types/emunType"
-import { UseMutateFunction } from "@tanstack/react-query"
 import { ApiPost } from "@/types/postType"
 
 interface ActionButtonsProps {
@@ -15,12 +14,12 @@ interface ActionButtonsProps {
   onReaction: (type: string) => void
   onShowComments: () => void
   onShare: () => void
-  getReaction: UseMutateFunction<string, Error, string, unknown>
 }
 
-export function ActionButtons({ post, userId, setUserReaction, onShowComments, onShare, getReaction}: ActionButtonsProps) {
+export function ActionButtons({ post, userId, setUserReaction, onShowComments, onShare}: ActionButtonsProps) {
   const tPostCard = useTranslations("PostCard")
   const {mutate: postReaction} = usePostReaction()
+  const {mutate: getReaction } = useGetReaction()
   
   const handleReaction = (type: ReactionType | string) => {
     const normalized = (type || "Like") as ReactionType

@@ -90,7 +90,7 @@ export const getCommentReply = async (commentID: string) => {
 export const postComment = async (data: {
   objectId: string;
   userId: string;
-  commentParentId?: string;
+  parentId?: string;
   content: string;
 }) => {
   const response = await api.post(`${APP_URL}/comments`, data, {

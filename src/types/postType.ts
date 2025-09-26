@@ -97,7 +97,8 @@ export interface dataReaction{
   objectType: string,
   userId: string,
   userName: string,
-  reactionType: string
+  reactionType: string,
+  userPicture: string
 }
 
 export interface ReactionSummary extends Reaction {

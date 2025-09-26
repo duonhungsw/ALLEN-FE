@@ -1,11 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-// import { Heart, ThumbsUp, Laugh, Smile, Frown, Angry } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { ApiPost, ReactionSummary, reactions, User, dataReaction } from "@/types/postType"
-import { level, ReactionType } from "@/types/emunType"
+import { ApiPost, User } from "@/types/postType"
+import { level } from "@/types/emunType"
 import { PostHeader } from "./PostCard/PostHeader"
 import { PostImages } from "./PostCard/PostImages"
 import { ReactionsSummary } from "./PostCard/ReactionsSummary"
@@ -13,7 +12,6 @@ import { ActionButtons } from "./PostCard/ActionButtons"
 import { CommentsSection } from "./PostCard/CommentsSection"
 import { ImageModal } from "./PostCard/ImageModal"
 import { ReactionModal } from "./PostCard/ReactionModal"
-import { useGetReaction } from "@/hooks/community/useCommunity"
 
 interface PostCardProps {
   user: User
@@ -26,17 +24,7 @@ export function PostCard({ post, user }: PostCardProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const tPostCard = useTranslations("PostCard")
   const [showComments, setShowComments] = useState<string>("")
-  const { data: dataReaction = [], mutate: getReaction } = useGetReaction()
 
-  useEffect(() => {
-    if (post.id) {
-      getReaction(post.id)
-    }
-    console.log("run");
-    
-  }, [post.id, getReaction])
-
-  // Gọi API khi cần (ví dụ khi bấm nút hoặc khi mount)
   const handleFetchComment = () => {
     if (showComments === post.id) {
       setShowComments("");
@@ -49,39 +37,6 @@ export function PostCard({ post, user }: PostCardProps) {
     const wasReacted = userReaction === type
     const newReaction = wasReacted ? null : type
     setUserReaction(newReaction)
-  }
-
-  const calcReactions = () => {
-    if (!dataReaction) return { summary: [], top3: [] }
-  
-    const summary: Record<string, ReactionSummary & { items: dataReaction[] }> = {}
-    const order: string[] = []
-  
-    dataReaction.forEach((item: dataReaction) => {
-      const type = item.reactionType as ReactionType
-      const base = reactions.find(r => r.type === type)
-      if (!base) return
-  
-      if (!summary[type]) {
-        summary[type] = { ...base, count: 1, items: [item] }
-        order.push(type) // lưu thứ tự xuất hiện đầu tiên
-      } else {
-        summary[type].count += 1
-        summary[type].items.push(item)
-      }
-    })
-  
-    const allTypes = order.map(type => summary[type])
-  
-    const topReactions = [...allTypes]
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 3)
-  
-    return {
-      summary: allTypes,
-      topReactions,
-      data: dataReaction
-    }
   }
 
   return (
@@ -111,14 +66,12 @@ export function PostCard({ post, user }: PostCardProps) {
           <div className="flex items-center justify-between py-3 border-t border-b" style={{ borderColor: '#334048' }}>
             <div className="flex items-center space-x-2">
               <ReactionsSummary
-                post={post}
-                topReactions={calcReactions()}
-                totalReactions={post.totalReaction ?? 0}
+                objectId={post.id}
                 onShowModal={() => setShowReactionModal(true)}
               />
             </div>
             <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>{post.totalReaction} {tPostCard("comments")}</span>
+              <span>{post.totalComment} {tPostCard("comments")}</span>
               <span>{tPostCard("shares")}</span>
             </div>
           </div>
@@ -130,7 +83,6 @@ export function PostCard({ post, user }: PostCardProps) {
             setUserReaction={setUserReaction}
             onReaction={handleReaction}
             onShowComments={handleFetchComment}
-            getReaction={getReaction}
             onShare={() => {}}
           />
 
@@ -173,7 +125,7 @@ export function PostCard({ post, user }: PostCardProps) {
       />
 
       {/* Reaction Modal */}
-      <ReactionModal open={showReactionModal} onOpenChange={()=>setShowReactionModal(false)} topReactions={calcReactions()} />
+      <ReactionModal objectId={post.id} open={showReactionModal} onOpenChange={()=>setShowReactionModal(false)}/>
     </>
   )
 }
