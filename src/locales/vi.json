@@ -337,5 +337,164 @@
         }
       }
     }
+  },
+  "Reading": {
+    "full": {
+      "AIChatModal": {
+        "teacherName": "Anh Giáo Đậu",
+        "suggestion1": "Hướng dẫn làm câu 4 😊",
+        "suggestion2": "Hướng dẫn làm câu 5 😊",
+        "suggestion3": "Tóm tắt bài đọc hiện tại 🤔",
+        "placeholder": "Bạn có thắc mắc gì về bài đọc không 🤔"
+      },
+      "DislikeFeedbackModal": {
+        "title": "Góp ý cải thiện",
+        "description": "Hãy cho chúng tôi biết vấn đề với bản dịch này để cải thiện chất lượng:",
+        "placeholder": "Nhập góp ý của bạn...",
+        "cancel": "Hủy",
+        "submit": "Gửi góp ý",
+        "thankYouTitle": "Cảm ơn đã góp ý!",
+        "thankYouDescription": "Chúng tôi sẽ cải thiện chất lượng dịch thuật."
+      },
+      "HighlightNoteDialog": {
+        "title": "Thêm ghi chú cho đoạn highlight",
+        "placeholder": "Nhập ghi chú của bạn...",
+        "cancel": "Hủy",
+        "save": "Lưu ghi chú"
+      },
+      "QuestionsPanel": {
+        "title": "Câu hỏi 1-5",
+        "desc1": "Bài đọc có bảy đoạn A-K.",
+        "desc2": "Đoạn nào chứa thông tin sau?",
+        "desc3": "Hãy viết chữ cái đúng A-K vào ô 1-5 trong phiếu trả lời.",
+        "explain": "Giải thích",
+        "complete": "Hoàn thành"
+      },
+      "readingHeader": {
+        "highlightMode": "🖍️ Chế độ Highlight",
+        "vocabularyMode": "📚 Chế độ tra từ vựng",
+        "vocabularyTab": "Tra từ vựng ở tab này bạn nhé! 🔥",
+        "settings": "Cài đặt",
+        "share": "📤 Chia sẻ bài làm"
+      },
+      "readingPassage": {
+        "recentTest": "[Recent Tests - Bộ VOL]"
+      },
+      "settings": {
+        "title": "Cài đặt",
+        "eyeProtection": "Chế độ bảo vệ mắt",
+        "fontSize": "Kích cỡ chữ",
+        "on": "BẬT",
+        "off": "TẮT"
+      },
+      "ShowResult": {
+        "title": "Hãi khó bạn nhỉ, bình tĩnh cùng luyện tập với YouPass nhé!",
+        "summaryTitle": "Kết quả làm bài",
+        "sentences": "Câu đúng",
+        "timeSpent": "Thời gian làm bài",
+        "correct": "Đúng",
+        "incorrect": "Sai",
+        "skipped": "Bỏ qua",
+        "recommend": "Bạn có muốn đề xuất bài tập này đến các bạn khác cùng level với bạn không?",
+        "detailTable": "Bảng dữ liệu chi tiết",
+        "questionType": "Loại câu hỏi",
+        "totalQuestions": "Số câu hỏi",
+        "correctAnswers": "Đúng",
+        "incorrectAnswers": "Sai",
+        "skippedAnswers": "Bỏ qua",
+        "viewExplanation": "Xem giải thích chi tiết",
+        "backToList": "Quay lại danh sách"
+      },
+      "VocabularyListModal": {
+        "title": "🔥 Yeah yeah yeah, vào đây để anh Đậu giúp bạn nào",
+        "saveVocabulary": "Lưu từ vựng vào",
+        "topic": "topic",
+        "table": {
+          "word": "Từ vựng",
+          "meaning": "Nghĩa",
+          "ipa": "IPA",
+          "example": "Ví dụ"
+        }
+      },
+      "VocabularyPopupModal": {
+        "exampleLabel": "Ví dụ:",
+        "saveWord": "Lưu từ vựng"
+      },
+      "VocabularyTranslationSection": {
+        "searchedWords": "Từ vựng đã tra"
+      }
+    },
+    "individual": {
+      "questions": {
+        "range": "Câu hỏi 1-{{count}}",
+        "complete": "Hoàn thành"
+      },
+      "IndividualReadingHeader": {
+        "highlight": "Chế độ Highlight",
+        "vocabulary": "Chế độ tra từ vựng",
+        "tip": "Tra từ vựng ở tab này bạn nhé! 🔥",
+        "settings": "Cài đặt"
+      },
+      "IndividualVocabularyPopup": {
+        "structure": "Từ/Cấu trúc liên quan:",
+        "example": "Ví dụ:",
+        "save": "Lưu từ vựng",
+        "copy": "Sao chép",
+        "explainedByAI": "Giải thích bởi 🧠 AI"
+      }
+    },
+    "exerciseCard": {
+      "redo": "Làm lại",
+      "start": "Bắt đầu",
+      "completed": "Hoàn thành",
+      "minutes": "phút",
+      "questions": "câu hỏi"
+    },
+    "FiltersSection": {
+      "searchPlaceholder": "Tìm kiếm bài đọc...",
+      "selectCategory": "Chọn chủ đề",
+      "allCategories": "Tất cả chủ đề",
+      "selectLevel": "Chọn cấp độ",
+      "allLevels": "Tất cả cấp độ"
+    },
+    "StatsSection": {
+      "completedExercises": "Bài đã hoàn thành",
+      "averageAccuracy": "Độ chính xác trung bình",
+      "totalMinutes": "Phút luyện tập"
+    },
+    "TipsSection": {
+      "title": "Mẹo luyện đọc hiệu quả",
+      "full": {
+        "title": "Bài đầy đủ",
+        "tip1": "Đọc lướt toàn bộ bài trước khi làm câu hỏi",
+        "tip2": "Sử dụng chế độ highlight để đánh dấu thông tin quan trọng",
+        "tip3": "Tra từ vựng khi cần thiết",
+        "tip4": "Quản lý thời gian hiệu quả"
+      },
+      "single": {
+        "title": "Bài lẻ",
+        "tip1": "Tập trung vào kỹ năng cụ thể",
+        "tip2": "Đọc kỹ và hiểu sâu nội dung",
+        "tip3": "Luyện tập thường xuyên",
+        "tip4": "Xem giải thích chi tiết sau khi làm"
+      }
+    },
+    "Reading": {
+      "back": "Quay lại",
+      "title": "Luyện Đọc",
+      "subtitle": "Nâng cao kỹ năng đọc hiểu tiếng Anh",
+      "tabs": {
+        "full": "Bài đầy đủ",
+        "individual": "Bài lẻ"
+      },
+      "full": {
+        "title": "Bài đọc đầy đủ",
+        "desc": "Các bài đọc IELTS hoàn chỉnh với nhiều dạng câu hỏi"
+      },
+      "individual": {
+        "title": "Bài đọc lẻ",
+        "desc": "Các đoạn văn ngắn tập trung vào kỹ năng cụ thể"
+      }
+    }
   }
 }

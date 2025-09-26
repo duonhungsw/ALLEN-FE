@@ -34,6 +34,11 @@ const nextConfig = {
         hostname: "allenblob.blob.core.windows.net",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "hebbkx1anhila5yf.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
     ],
   },
 
