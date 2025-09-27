@@ -97,7 +97,6 @@ export default function CategoryTable({
             transition={{ duration: 0.6, delay: 0.4 }}
             className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D2B48C]/30 overflow-hidden"
         >
-            {/* Desktop Table */}
             <div className="hidden lg:block overflow-x-auto">
                 <table className="w-full">
                     <thead className="bg-[#F5F3EA] border-b border-[#D2B48C]">

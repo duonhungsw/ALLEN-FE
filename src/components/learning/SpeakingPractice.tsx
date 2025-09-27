@@ -46,9 +46,6 @@ export default function SpeakingPractice({
     const [largeVideo, setLargeVideo] = useState(false);
     const [playbackSpeed, setPlaybackSpeed] = useState(1);
     const [activeTab, setActiveTab] = useState("transcript");
-    const [wasPlayingBeforeRecord, setWasPlayingBeforeRecord] = useState(false);
-    const [isPlayingRecorded, setIsPlayingRecorded] = useState(false);
-
     const [recordedAudioBlob, setRecordedAudioBlob] = useState<Blob | null>(null);
     const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
     const [voiceToText, setVoiceToText] = useState<string>("");
@@ -64,11 +61,9 @@ export default function SpeakingPractice({
     const recordedAudioRef = useRef<HTMLAudioElement>(null);
     const recognitionRef = useRef<any>(null);
     const streamRef = useRef<MediaStream | null>(null);
-
     const transcripts = speakingData?.media?.transcripts?.data || [];
     const currentTranscript = transcripts[currentTranscriptIndex];
 
-    // Initialize Web Speech API
     useEffect(() => {
         if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
             const SpeechRecognition =
@@ -81,7 +76,6 @@ export default function SpeakingPractice({
             recognitionRef.current.onresult = (event: any) => {
                 let finalTranscript = "";
                 let interimTranscript = "";
-
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     const transcript = event.results[i][0].transcript;
                     if (event.results[i].isFinal) {
@@ -93,10 +87,6 @@ export default function SpeakingPractice({
 
                 const newText = voiceToText + finalTranscript + interimTranscript;
                 setVoiceToText(newText);
-
-                console.log("🎤 Voice to Text:", newText);
-                console.log("📝 Final transcript:", finalTranscript);
-                console.log("⏳ Interim transcript:", interimTranscript);
             };
         }
     }, [voiceToText]);
@@ -150,7 +140,6 @@ export default function SpeakingPractice({
 
     const goToTranscript = (index: number) => {
         if (transcripts[index]) {
-            // Reset state for next question
             if (recognitionRef.current) {
                 try { recognitionRef.current.stop(); } catch { }
             }
@@ -194,13 +183,10 @@ export default function SpeakingPractice({
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             streamRef.current = stream;
 
-            // Setup MediaRecorder for audio recording
             const mimeType = getSupportedMimeType();
             const mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
             mediaRecorderRef.current = mediaRecorder;
-
             const audioChunks: BlobPart[] = [];
-
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     audioChunks.push(event.data);
@@ -214,9 +200,6 @@ export default function SpeakingPractice({
 
                 setRecordedAudioBlob(audioBlob);
                 setRecordedAudioUrl(audioUrl);
-
-                console.log("🎵 Audio recorded:", audioBlob);
-                console.log("🔗 Audio URL:", audioUrl);
             };
             mediaRecorder.start();
             if (recognitionRef.current) {
@@ -225,7 +208,6 @@ export default function SpeakingPractice({
             setVoiceToText("");
             setIsRecording(true);
 
-            console.log("🎤 Recording started!");
         } catch (error) {
             console.error("Error accessing microphone:", error);
         }
@@ -248,9 +230,6 @@ export default function SpeakingPractice({
         }
 
         setIsRecording(false);
-        console.log("Recording stopped!");
-        console.log("Final voice to text:", voiceToText);
-
         if (currentTranscript?.id && voiceToText.trim()) {
             try {
                 setIsChecking(true);
@@ -280,9 +259,6 @@ export default function SpeakingPractice({
             try { el.load(); } catch { }
             el.currentTime = 0;
             el.play();
-            console.log("▶️ Playing recorded audio:", recordedAudioUrl);
-        } else {
-            console.log(" No recorded audio to play");
         }
     };
 
@@ -374,9 +350,7 @@ export default function SpeakingPractice({
 
             <div className="container mx-auto px-6 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Main Content */}
                     <div className="lg:col-span-2 space-y-6">
-                        {/* Video/Audio Player */}
                         <Card
                             className="border-0 shadow-sm"
                             style={{ backgroundColor: "#FFFFFF" }}
@@ -481,7 +455,6 @@ export default function SpeakingPractice({
                             </CardContent>
                         </Card>
 
-                        {/* Current Transcript */}
                         {currentTranscript && (
                             <Card
                                 className="border-0 shadow-sm"
@@ -595,7 +568,6 @@ export default function SpeakingPractice({
                         )}
                     </div>
 
-                    {/* Sidebar */}
                     <div className="space-y-6">
                         <Card
                             className="border-0 shadow-sm"

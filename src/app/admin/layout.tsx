@@ -15,9 +15,7 @@ export default function AdminLayout({
 
             <div className="flex-1 flex flex-col">
                 <AdminHeader />
-
-                {/* Page Content */}
-                <main className="flex-1 p-6">
+                <main className="flex-1 p-5">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}

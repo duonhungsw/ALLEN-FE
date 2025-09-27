@@ -7,13 +7,12 @@ import {
   Filter,
   Eye,
   Edit,
-  ArrowLeft,
   Users,
-  Calendar,
   Mail,
   Phone,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,7 +33,7 @@ export default function UsersManagement() {
   const [roleFilter, setRoleFilter] = useState("all");
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 5;
 
   const { searchInput, searchTerm, setSearchInput, clearSearch } =
     useDebounceSearch({
@@ -52,6 +51,8 @@ export default function UsersManagement() {
   };
 
   const { data: usersData, error } = useAdminUsers(filters);
+  console.log("111",usersData);
+  
   const users = usersData?.data || [];
   const totalCount = usersData?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
@@ -134,13 +135,6 @@ export default function UsersManagement() {
     }
   };
 
-  if (error) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-red-600">Có lỗi xảy ra khi tải dữ liệu</p>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -151,20 +145,10 @@ export default function UsersManagement() {
         className="flex items-center justify-between"
       >
         <div className="flex items-center space-x-4">
-          <Link href="/admin">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-[#8B4513] hover:bg-[#F5F3EA]"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại
-            </Button>
-          </Link>
           <div>
-            <h1 className="text-3xl font-bold text-[#8B4513] flex items-center">
+            <h1 className="text-2xl font-calistoga-regular text-black flex items-center">
               <Users className="w-8 h-8 mr-3" />
-              Quản lý người dùng
+              Users Management
             </h1>
           </div>
         </div>
@@ -178,30 +162,30 @@ export default function UsersManagement() {
       >
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#8B4513] w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#4B5563] w-4 h-4" />
             <Input
-              placeholder="Tìm kiếm theo tên hoặc email... (tự động search)"
+              placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="pl-10 border-[#D2B48C] focus:border-[#8B4513] focus:ring-[#8B4513] text-[#8B4513] placeholder:text-[#A0522D] placeholder:font-medium"
+              className="pl-10 border-gray-300 focus:border-[#8B4513] focus:ring-[#8B4513] text-[#4B5563] placeholder:text-[#4B5563] placeholder:font-medium"
             />
           </div>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="border-[#D2B48C] focus:border-[#8B4513] focus:ring-[#8B4513] text-[#8B4513] font-medium">
+            <SelectTrigger className="border-gray-300 focus:border-[#8B4513] focus:ring-[#8B4513] text-[#4B5563] font-medium">
               <SelectValue
                 placeholder="Tất cả trạng thái"
-                className="text-[#A0522D] font-medium"
+                className="text-[#4B5563] font-medium"
               />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all" className="text-[#8B4513] font-medium">
+              <SelectItem value="all" className="text-[#4B5563] font-medium">
                 Tất cả trạng thái
               </SelectItem>
-              <SelectItem value="active" className="text-[#8B4513] font-medium">
+              <SelectItem value="active" className="text-[#4B5563] font-medium">
                 Hoạt động
               </SelectItem>
-              <SelectItem value="banned" className="text-[#8B4513] font-medium">
+              <SelectItem value="banned" className="text-[#4B5563] font-medium">
                 Bị cấm
               </SelectItem>
               <SelectItem
@@ -214,17 +198,17 @@ export default function UsersManagement() {
           </Select>
 
           <Select value={roleFilter} onValueChange={setRoleFilter}>
-            <SelectTrigger className="border-[#D2B48C] focus:border-[#8B4513] focus:ring-[#8B4513] text-[#8B4513] font-medium">
+            <SelectTrigger className="border-gray-300 focus:border-[#8B4513] focus:ring-[#8B4513] text-[#4B5563] font-medium">
               <SelectValue
                 placeholder="Tất cả vai trò"
-                className="text-[#A0522D] font-medium"
+                className="text-[#4B5563] font-medium"
               />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all" className="text-[#8B4513] font-medium">
+              <SelectItem value="all" className="text-[#4B5563] font-medium">
                 Tất cả vai trò
               </SelectItem>
-              <SelectItem value="user" className="text-[#8B4513] font-medium">
+              <SelectItem value="user" className="text-[#4B5563] font-medium">
                 Người dùng
               </SelectItem>
               <SelectItem
@@ -238,7 +222,7 @@ export default function UsersManagement() {
 
           <div className="flex space-x-2">
             <Button
-              className="bg-[#8B4513] hover:bg-[#A0522D] text-white"
+              className="bg-[#f3713b] hover:bg-[#A0522D] text-white"
               onClick={() => {
                 clearSearch();
                 setStatusFilter("all");
@@ -246,23 +230,22 @@ export default function UsersManagement() {
                 setCurrentPage(1);
               }}
             >
-              <Filter className="w-4 h-4 mr-2" />
+              <Filter className="w-4 h-4 mr-2" stroke="white" />
               Reset
             </Button>
           </div>
         </div>
       </motion.div>
 
-      {/* Users Table */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D2B48C]/30 overflow-hidden"
+        className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-300 overflow-hidden"
       >
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#F5F3EA] border-b border-[#D2B48C]">
+            <thead className="bg-[#F5F3EA] border-b border-gray-300">
               <tr>
                 <th className="px-6 py-4 text-left">
                   <input
@@ -275,22 +258,19 @@ export default function UsersManagement() {
                     className="w-4 h-4 text-[#8B4513] border-[#D2B48C] rounded focus:ring-[#8B4513]"
                   />
                 </th>
-                <th className="px-6 py-4 text-left text-[#8B4513] font-semibold">
+                <th className="px-6 py-4 text-left text-gray-500 font-semibold">
                   Người dùng
                 </th>
-                <th className="px-6 py-4 text-left text-[#8B4513] font-semibold">
+                <th className="px-6 py-4 text-left text-gray-500 font-semibold">
                   Vai trò
                 </th>
-                <th className="px-6 py-4 text-left text-[#8B4513] font-semibold">
+                <th className="px-6 py-4 text-left text-gray-500 font-semibold">
                   Trạng thái
                 </th>
-                <th className="px-6 py-4 text-left text-[#8B4513] font-semibold">
-                  Bài học
+                <th className="px-6 py-4 text-left text-gray-500 font-semibold">
+                  Phone
                 </th>
-                <th className="px-6 py-4 text-left text-[#8B4513] font-semibold">
-                  Hoạt động cuối
-                </th>
-                <th className="px-6 py-4 text-left text-[#8B4513] font-semibold">
+                <th className="px-6 py-4 text-left text-gray-500 font-semibold">
                   Hành động
                 </th>
               </tr>
@@ -309,7 +289,7 @@ export default function UsersManagement() {
                       type="checkbox"
                       checked={selectedUsers.includes(user.id)}
                       onChange={() => handleSelectUser(user.id)}
-                      className="w-4 h-4 text-[#8B4513] border-[#D2B48C] rounded focus:ring-[#8B4513]"
+                      className="w-4 h-4 border-[#D2B48C] rounded focus:ring-[#8B4513] checked:bg-black checked:border-black"
                     />
                   </td>
                   <td className="px-6 py-4">
@@ -341,15 +321,15 @@ export default function UsersManagement() {
                         </div>
                       </div>
                       <div>
-                        <div className="font-medium text-[#8B4513]">
+                        <div className="font-medium text-[#4B5563]">
                           {user.name}
                         </div>
-                        <div className="text-sm text-[#A0522D] flex items-center">
+                        <div className="text-sm text-[#4B5563] flex items-center">
                           <Mail className="w-3 h-3 mr-1" />
                           {user.email}
                         </div>
                         {user.phone && (
-                          <div className="text-sm text-[#A0522D] flex items-center">
+                          <div className="text-sm text-[#4B5563] flex items-center">
                             <Phone className="w-3 h-3 mr-1" />
                             {user.phone}
                           </div>
@@ -359,30 +339,20 @@ export default function UsersManagement() {
                   </td>
                   <td className="px-6 py-4">{getRoleBadge(user.role)}</td>
                   <td className="px-6 py-4">{getStatusBadge(user.status)}</td>
-                  <td className="px-6 py-4 text-[#8B4513] font-medium">
-                    {user.totalLessons}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-[#A0522D]">
-                      <div className="flex items-center">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        {new Date(user.lastActive).toLocaleDateString("vi-VN")}
-                      </div>
-                    </div>
-                  </td>
+                  <td className="px-6 py-4">{user?.phone}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="text-[#8B4513] hover:bg-[#F5F3EA]"
+                        className=" text-[#66cca0] hover:bg-[#F5F3EA]"
                       >
                         <Eye className="w-4 h-4" />
                       </Button>
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="text-[#8B4513] hover:bg-[#F5F3EA]"
+                        className="text-black hover:bg-[#F5F3EA]"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -397,24 +367,23 @@ export default function UsersManagement() {
         {filteredUsers.length === 0 && (
           <div className="text-center py-12">
             <Users className="w-16 h-16 text-[#D2B48C] mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-[#8B4513] mb-2">
+            <h3 className="text-lg font-medium text-[#4B5563] mb-2">
               Không tìm thấy người dùng
             </h3>
-            <p className="text-[#A0522D]">
+            <p className="text-white">
               Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
             </p>
           </div>
         )}
       </motion.div>
 
-      {/* Pagination */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.6 }}
         className="flex items-center justify-between bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-[#D2B48C]/30"
       >
-        <div className="text-[#8B4513] text-sm font-medium">
+        <div className="text-black text-sm font-medium">
           Hiển thị {(currentPage - 1) * itemsPerPage + 1}-
           {Math.min(currentPage * itemsPerPage, totalCount)} trong tổng số{" "}
           {totalCount} người dùng (7 items/trang)
@@ -423,14 +392,13 @@ export default function UsersManagement() {
           <Button
             variant="outline"
             size="sm"
-            className="border-[#D2B48C] text-[#8B4513] hover:bg-[#F5F3EA]"
+            className="border-[#D2B48C] bg-gray-300 text-gray-400 hover:bg-[#F5F3EA]"
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
           >
-            Trước
+           <ChevronLeft className="w-4 h-4" />
           </Button>
 
-          {/* Page numbers */}
           <div className="flex space-x-1">
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               let pageNum;
@@ -450,7 +418,7 @@ export default function UsersManagement() {
                   size="sm"
                   className={`${
                     currentPage === pageNum
-                      ? "bg-[#8B4513] hover:bg-[#A0522D] text-white"
+                      ? "bg-[#f3713b] hover:bg-[#A0522D] text-white"
                       : "border-[#D2B48C] text-[#8B4513] hover:bg-[#F5F3EA]"
                   }`}
                   onClick={() => handlePageChange(pageNum)}
@@ -464,11 +432,11 @@ export default function UsersManagement() {
           <Button
             variant="outline"
             size="sm"
-            className="border-[#D2B48C] text-[#8B4513] hover:bg-[#F5F3EA]"
+            className="border-[#D2B48C] bg-gray-300 text-gray-400 hover:bg-[#F5F3EA]"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
           >
-            Sau
+            <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
       </motion.div>

@@ -6,6 +6,8 @@
   --foreground: #171717;
   --font-calistoga-regular: 'Calistoga Regular', serif;
   --font-inter-medium: 'Inter Medium', serif;
+  --font-roboto-regular: 'Roboto Regular', HelveticaNeue, serif;
+  --font-open-sans: 'Open Sans', "Noto Sans", Roboto, sans-serif;
 }
 
 @theme inline {
@@ -44,6 +46,14 @@ body {
   font-family: var(--font-inter-medium);
 }
 
+.font-roboto-regular {
+  font-family: var(--font-roboto-regular);
+}
+
+.font-open-sans {
+  font-family: var(--font-open-sans);
+}
+
 @font-face {
   font-family: 'Calistoga Regular';
   src: url('/fonts/Calistoga-Regular.ttf') format('truetype');
@@ -58,5 +68,22 @@ body {
   font-weight: 500;
   font-style: normal;
   line-height: 24px;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto Regular';
+  src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  line-height: 24px;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/open-sans-latin-700-normal.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
