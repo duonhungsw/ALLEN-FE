@@ -40,16 +40,16 @@ export default function CategoryPagination({
             className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-[#D2B48C]/30"
         >
             <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
-                <div className="text-[#8B4513] text-sm font-medium font-calistoga-regular">
+                <div className="text-black text-sm font-medium font-calistoga-regular">
                     <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                        <span className="text-center sm:text-left">
+                        <span className="text-center sm:text-left text-black">
                             Hiển thị {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, totalCount)} trong tổng số {totalCount} danh mục
                         </span>
                         <div className="flex items-center space-x-2">
                             <Badge className={`${skillTypes.find(s => s.value === activeSkillType)?.color} font-medium font-calistoga-regular`}>
                                 {activeSkillType}
                             </Badge>
-                            <span className="text-xs text-[#A0522D] font-calistoga-regular">({itemsPerPage} items/trang)</span>
+                            <span className="text-xs text-black font-calistoga-regular">({itemsPerPage} items/trang)</span>
                         </div>
                     </div>
                 </div>

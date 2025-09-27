@@ -28,7 +28,6 @@ export default function ForgotPasswordPage() {
         forgotPassword(data, {
             onSuccess: () => {
                 toast.success("Link reset mật khẩu đã được gửi đến email của bạn!");
-                // Chuyển đến trang reset password
                 router.push("/reset-password");
             },
         });

@@ -218,7 +218,7 @@ export default function TopicManagement() {
           <div className="relative md:col-span-3">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#8B4513] w-4 h-4" />
             <Input
-              placeholder="Tìm kiếm theo tên hoặc mô tả... (tự động search)"
+              placeholder="Tìm kiếm"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="pl-10 border-[#D2B48C] focus:border-[#8B4513] focus:ring-[#8B4513] text-[#8B4513] placeholder:text-[#A0522D] placeholder:font-medium font-calistoga-regular"
@@ -237,7 +237,7 @@ export default function TopicManagement() {
               </Button>
             )}
             <Button
-              className="bg-[#8B4513] hover:bg-[#A0522D] text-white font-calistoga-regular"
+              className="bg-[#f3713b] hover:bg-[#A0522D] text-white"
               onClick={handleResetFilters}
             >
               <Filter className="w-4 h-4 mr-2" />
