@@ -200,7 +200,6 @@ export default function SpeakingPage() {
                   </Card>
                 ))
               ) : error ? (
-                // Error state
                 <div className="col-span-full text-center py-8">
                   <p className="text-red-400 mb-4">Có lỗi khi tải dữ liệu</p>
                   <Button
@@ -322,7 +321,6 @@ export default function SpeakingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {isLoading ? (
-                // Loading skeleton cho conversation topics
                 Array.from({ length: 6 }).map((_, index) => (
                   <Card
                     key={index}
@@ -347,7 +345,6 @@ export default function SpeakingPage() {
                   </Card>
                 ))
               ) : error ? (
-                // Error state
                 <div className="col-span-full text-center py-8">
                   <p className="text-red-400 mb-4">Có lỗi khi tải dữ liệu</p>
                   <Button
@@ -359,7 +356,6 @@ export default function SpeakingPage() {
                   </Button>
                 </div>
               ) : filteredTopics.length === 0 ? (
-                // Empty state
                 <div className="col-span-full text-center py-8">
                   <p className="text-gray-400 mb-4">Không có bài học nào</p>
                 </div>

@@ -51,11 +51,10 @@ export default function CategoryModals({
 }: CategoryModalsProps) {
     return (
         <>
-            {/* Create Category Modal */}
             <Dialog open={createModalOpen} onOpenChange={onCreateModalChange}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle className="text-[#8B4513] font-calistoga-regular">Tạo danh mục mới</DialogTitle>
+                        <DialogTitle className="text-white font-calistoga-regular">Tạo danh mục mới</DialogTitle>
                         <DialogDescription className="font-calistoga-regular">
                             Tạo danh mục mới cho kỹ năng <span className="font-semibold text-[#8B4513]">{activeSkillType}</span>
                         </DialogDescription>
@@ -98,7 +97,6 @@ export default function CategoryModals({
                 </DialogContent>
             </Dialog>
 
-            {/* Update Category Modal */}
             <Dialog open={updateModalOpen} onOpenChange={onUpdateModalChange}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>

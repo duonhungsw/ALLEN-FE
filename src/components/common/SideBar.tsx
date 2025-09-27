@@ -6,17 +6,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Home,
-  BookOpen,
-  Headphones,
-  Mic,
-  FileText,
-  PenTool,
-  Brain,
-  Users,
   Settings,
   ChevronLeft,
   ChevronRight,
+  Circle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -24,20 +17,35 @@ import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useProfile } from "@/hooks/auth/useProfile";
 
-const navigation = [
-  { name: "Home", href: "/home", icon: Home },
-  { name: "Lộ trình học", href: "/learning/course", icon: BookOpen },
-  { name: "Luyện nghe", href: "/learning/listening", icon: Headphones },
-  { name: "Luyện nói", href: "/learning/speaking", icon: Mic },
-  { name: "Luyện đọc", href: "/learning/reading", icon: FileText },
-  { name: "Luyện viết", href: "/learning/writing", icon: PenTool },
-  { name: "Từ vựng", href: "/learning/vocabulary", icon: Brain },
-  { name: "Cộng đồng", href: "/learning/community", icon: Users },
-];
+const navigation: Array<{
+  name: string;
+  href: string;
+  icon: any;
+  iconPath?: string;
+}> = [
+    { name: "Trang chủ", href: "/", icon: "svg", iconPath: "/svg/Home.png" },
+    { name: "Lộ trình học", href: "/learning/course", icon: "svg", iconPath: "/svg/maps.png" },
+    { name: "Luyện nghe", href: "/learning/listening", icon: "svg", iconPath: "/svg/headphone.png" },
+    { name: "Luyện nói", href: "/learning/speaking", icon: "svg", iconPath: "/svg/mic.png" },
+    {
+      name: "Luyện đọc",
+      href: "/learning/reading",
+      icon: "svg",
+      iconPath: "/svg/Writting.svg",
+    },
+    { name: "Luyện viết", href: "/learning/writing", icon: "svg", iconPath: "/svg/writing_language.png" },
+    {
+      name: "Từ vựng",
+      href: "/learning/vocabulary",
+      icon: "svg",
+      iconPath: "/svg/Vocabulary.svg",
+    },
+    { name: "Cộng đồng", href: "/learning/community", icon: "svg", iconPath: "/svg/group.png" },
+  ];
 
 export function Sidebar() {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
   const tSidebar = useTranslations("Sidebar");
@@ -99,7 +107,10 @@ export function Sidebar() {
         <div className="flex items-center justify-between">
           {!collapsed && (
             <div>
-              <h1 className="text-lg font-bold" style={{ color: "#F3713B" }}>
+              <h1
+                className="text-lg font-calistoga-regular"
+                style={{ color: "#F3713B" }}
+              >
                 Allen
               </h1>
               <p className="text-xs text-gray-300">Learning Platform</p>
@@ -122,21 +133,29 @@ export function Sidebar() {
 
       <div className="p-4 border-b" style={{ borderColor: "#1e3a5f" }}>
         <div className="flex items-center space-x-3 gap-3">
-          {isLoading ? (
-            <div className="w-10 h-10 bg-gray-600 rounded-full animate-pulse"></div>
-          ) : (
-            <Image
-              src={
-                user?.picture && user.picture !== ""
-                  ? user.picture
-                  : `https://avatar.vercel.sh/${user?.name ?? "default"}.svg`
-              }
-              alt={user?.name || "User Avatar"}
-              width={40}
-              height={40}
-              className="w-10 h-10 mx-auto rounded-full object-cover border-2 border-gray-300 shadow-md"
+          <div className="relative w-10 h-10">
+            {isLoading ? (
+              <div className="w-10 h-10 bg-gray-600 rounded-full animate-pulse"></div>
+            ) : (
+              <Image
+                src={
+                  user?.picture && user.picture !== ""
+                    ? user.picture
+                    : `https://avatar.vercel.sh/${user?.name ?? "default"}.svg`
+                }
+                alt={user?.name || "User Avatar"}
+                width={40}
+                height={40}
+                className="w-10 h-10 mx-auto rounded-full object-cover border-2 border-gray-300 shadow-md"
+              />
+            )}
+            <Circle
+              className="absolute bottom-0 right-0  w-2.5 h-2.5 text-green-500 bg-white rounded-full"
+              strokeWidth={2}
+              stroke="white"
+              fill="currentColor"
             />
-          )}
+          </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
               {isLoading ? (
@@ -176,7 +195,7 @@ export function Sidebar() {
                   <Button
                     variant="ghost"
                     className={cn(
-                      "w-full justify-start font-roboto text-base font-normal leading-5 text-white hover:text-white hover:bg-gray-600 relative",
+                      "w-full py-6 justify-start font-open-sans font-normal leading-5 text-lg text-white hover:text-white hover:bg-gray-600 relative",
                       isActive && "text-white hover:text-white",
                       collapsed && "px-2"
                     )}
@@ -188,12 +207,26 @@ export function Sidebar() {
                         style={{ backgroundColor: "#F3713B" }}
                       />
                     )}
-                    <Icon
-                      className={cn(
-                        "h- w-6 text-[18px",
-                        !collapsed && "mr-3 text-[18px] font-semibold"
-                      )}
-                    />
+                    {item.icon === "svg" ? (
+                      <Image
+                        src={item.iconPath || ""}
+                        alt={item.name}
+                        width={collapsed ? 24 : 18}
+                        height={collapsed ? 24 : 18}
+                        className={cn(
+                          "text-white",
+                          !collapsed && "mr-3 text-[18px] font-semibold"
+                        )}
+                      />
+                    ) : (
+                      <Icon
+                        className={cn(
+                          "text-[24px] text-white",
+                          collapsed ? "h-8 w-8" : "h-6 w-6",
+                          !collapsed && "mr-3 text-[18px] font-semibold"
+                        )}
+                      />
+                    )}
                     {!collapsed && item.name}
                   </Button>
                 </Link>
@@ -203,7 +236,7 @@ export function Sidebar() {
         </ul>
       </nav>
 
-      <div className="p-4 border-t" style={{ borderColor: "#1e3a5f" }}>
+      <div className="p-4 border-t" style={{ borderColor: "#374151" }}>
         <Link href="/settings">
           <Button
             variant="ghost"

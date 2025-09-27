@@ -76,7 +76,6 @@ export default function CategoryManagement() {
         setCategoryName("");
     };
 
-    // CRUD handlers
     const handleCreateCategory = async () => {
         if (!categoryName.trim()) return;
 
@@ -165,7 +164,6 @@ export default function CategoryManagement() {
         }
     };
 
-    // Filter handlers
     const clearSearch = () => {
         setSearchInput("");
     };
@@ -178,7 +176,6 @@ export default function CategoryManagement() {
         setCurrentPage(1);
     };
 
-    // Reset page when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [activeSkillType, searchTerm, statusFilter, levelFilter]);
@@ -204,14 +201,6 @@ export default function CategoryManagement() {
                 isCreating={createCategoryMutation.isPending}
             />
 
-            <SkillTypeTabs
-                activeSkillType={activeSkillType}
-                onSkillTypeChange={(value) => {
-                    setActiveSkillType(value);
-                    setCurrentPage(1);
-                }}
-            />
-
             <CategoryFilters
                 searchInput={searchInput}
                 onSearchChange={setSearchInput}
@@ -223,6 +212,14 @@ export default function CategoryManagement() {
                 onDeleteSelected={handleDeleteSelectedCategories}
                 onResetFilters={handleResetFilters}
                 isDeleting={deleteCategoryMutation.isPending}
+            />
+
+            <SkillTypeTabs
+                activeSkillType={activeSkillType}
+                onSkillTypeChange={(value) => {
+                    setActiveSkillType(value);
+                    setCurrentPage(1);
+                }}
             />
 
             <CategoryTable

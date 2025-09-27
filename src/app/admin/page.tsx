@@ -92,14 +92,13 @@ export default function AdminDashboard() {
                 </div>
             </motion.div>
 
-            {/* Quick Actions */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-[#D2B48C]/30"
             >
-                <h2 className="text-2xl font-semibold text-[#8B4513] mb-6">Hành động nhanh</h2>
+                <h2 className="text-2xl font-semibold text-[#D2B48C] mb-6">Hành động nhanh</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {quickActions.map((action, index) => (
                         <motion.button

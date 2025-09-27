@@ -34,7 +34,6 @@ export default function ResetPasswordPage() {
   });
 
   const password = watch("password");
-
   const onSubmit = (data: ResetPasswordForm) => {
     resetPassword(
       {
